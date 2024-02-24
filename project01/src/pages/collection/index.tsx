@@ -5,9 +5,11 @@ import { ChevronRightIcon } from "~/components/Icons";
 import { ChevronLeftIcon } from "~/components/Icons";
 import { ClothingSlotsList } from "~/components/ClothingSlotsList";
 import { ScrollableClotingSlotsList } from "~/components/ScrollableClothingSlotsList";
+import Link from "next/link";
 
 export default function collection() {
   //fetch 3 lists of data
+  // max 6 elements
   const data1 = [
     {
       name: "product 1",
@@ -35,27 +37,6 @@ export default function collection() {
       description: "Lorem ipsum dolor sit amet",
       price: "12",
       picture: "/cat.jpg",
-      link: "#",
-    },
-    {
-      name: "1",
-      description: "asdasdasd",
-      price: "122",
-      picture: "",
-      link: "#",
-    },
-    {
-      name: "1",
-      description: "asdasdasd",
-      price: "900",
-      picture: "",
-      link: "#",
-    },
-    {
-      name: "product 1",
-      description: "Lorem ipsum dolor sit amet",
-      price: "12",
-      picture: "",
       link: "#",
     },
     {
@@ -122,9 +103,18 @@ export default function collection() {
   return (
     <>
       <IndexHeader />
-      <ScrollableClotingSlotsList data={data1} />
-      <ScrollableClotingSlotsList data={data2} />
-      <ScrollableClotingSlotsList data={data3} />
+      <ClothingSlotsList data={data1} />
+      <Link className="flex flex-col items-center" href="/collection/clothing">
+        <Button>Още дрехи</Button>
+      </Link>
+      <ClothingSlotsList data={data2} />
+      <Link className="flex flex-col items-center" href="/collection/clothing">
+        <Button>Още аксесоари</Button>
+      </Link>
+      <ClothingSlotsList data={data3} />
+      <Link className="flex flex-col items-center" href="/collection/clothing">
+        <Button>Още обувки</Button>
+      </Link>
     </>
   );
 }
