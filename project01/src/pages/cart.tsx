@@ -50,8 +50,8 @@ export default function cart() {
               </div>
             </div>
             <div className="divide-y">
-              {data.map((el) => {
-                return <CartItem data={el} />;
+              {data.map((el, index) => {
+                return <CartItem key={index} data={el} />;
               })}
             </div>
             <div className="flex flex-col gap-2 px-4 py-2 md:grid md:grid-cols-4 md:items-start lg:gap-6">
