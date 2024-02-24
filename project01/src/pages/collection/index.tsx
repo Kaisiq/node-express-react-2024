@@ -128,8 +128,8 @@ export default function collection() {
         </Button>
         <div className="overflow-x-auto rounded-xl border dark:border-gray-800">
           <div className="flex px-6 py-4">
-            {data1.map((el) => {
-              return <ClothingSlot product={el} />;
+            {data1.map((el, index) => {
+              return <ClothingSlot key={index} product={el} />;
             })}
           </div>
         </div>

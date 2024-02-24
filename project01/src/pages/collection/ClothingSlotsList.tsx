@@ -29,8 +29,8 @@ export function ClothingSlotsList() {
   const div = createElement("div");
   return (
     <>
-      {data.map((el) => {
-        return <ClothingSlot product={el} />;
+      {data.map((el, index) => {
+        return <ClothingSlot key={index} product={el} />;
       })}
     </>
   );

@@ -53,7 +53,7 @@ export default function Home() {
               <p className="mx-auto max-w-[600px] text-gray-500 dark:text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                 Embrace eco-friendly style with our carefully curated selection
                 of sustainable fashion choices. Each item is timeless, and by
-                choosing vintage, you're reducing waste and making a positive
+                choosing vintage, youre reducing waste and making a positive
                 impact on the environment.
               </p>
             </div>
@@ -68,7 +68,7 @@ export default function Home() {
               <p className="mx-auto max-w-[600px] text-gray-500 dark:text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                 Uncover hidden gems and score amazing deals with our collection
                 of affordable retro finds. From classic tees to statement
-                pieces, we've got everything you need to add a vintage touch to
+                pieces, weve got everything you need to add a vintage touch to
                 your wardrobe without breaking the bank.
               </p>
             </div>
