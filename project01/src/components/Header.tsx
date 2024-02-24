@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Button } from "../../components/ui/button";
-import { Input } from "../../components/ui/input";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 import {
   DropdownMenuTrigger,
   DropdownMenuLabel,
@@ -8,7 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuContent,
   DropdownMenu,
-} from "../../components/ui/dropdown-menu";
+} from "./ui/dropdown-menu";
 import { Package2Icon } from "~/components/Icons";
 import { SearchIcon } from "~/components/Icons";
 

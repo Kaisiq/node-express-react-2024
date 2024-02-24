@@ -1,6 +1,6 @@
-import { Sidebar } from "./Sidebar";
-import { Header } from "./Header";
-import { OrdersTable } from "./OrdersTable";
+import { Sidebar } from "~/components/Sidebar";
+import { Header } from "~/components/Header";
+import { OrdersTable } from "~/components/OrdersTable";
 
 export default function orders() {
   return (

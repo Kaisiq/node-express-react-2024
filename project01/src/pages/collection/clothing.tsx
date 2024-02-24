@@ -3,8 +3,8 @@
  * @see https://v0.dev/t/w9VqQyJzXZS
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
-import { IndexHeader } from "../IndexHeader";
-import { ClothingSlotsList } from "./ClothingSlotsList";
+import { IndexHeader } from "~/components/IndexHeader";
+import { ClothingSlotsList } from "~/components/ClothingSlotsList";
 
 export default function Component() {
   return (

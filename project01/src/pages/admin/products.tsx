@@ -3,9 +3,9 @@
  * @see https://v0.dev/t/0vL2DADddLt
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
-import { Sidebar } from "./Sidebar";
-import { Header } from "./Header";
-import { AddProduct } from "./AddProduct";
+import { Sidebar } from "~/components/Sidebar";
+import { Header } from "~/components/Header";
+import { AddProduct } from "~/components/AddProduct";
 
 export default function Component() {
   return (

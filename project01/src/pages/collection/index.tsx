@@ -1,7 +1,6 @@
-import { Button } from "../../components/ui/button";
-import Link from "next/link";
-import { IndexHeader } from "../IndexHeader";
-import { ClothingSlot } from "./ClothingSlot";
+import { Button } from "~/components/ui/button";
+import { IndexHeader } from "~/components/IndexHeader";
+import { ClothingSlot } from "~/components/ClothingSlot";
 import { ChevronRightIcon } from "~/components/Icons";
 import { ChevronLeftIcon } from "~/components/Icons";
 

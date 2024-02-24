@@ -1,8 +1,8 @@
-import { Button } from "../../components/ui/button";
-import { Label } from "../../components/ui/label";
-import { Input } from "../../components/ui/input";
-import { RadioGroupItem, RadioGroup } from "../../components/ui/radio-group";
-import { CardContent, Card } from "../../components/ui/card";
+import { Button } from "./ui/button";
+import { Label } from "./ui/label";
+import { Input } from "./ui/input";
+import { RadioGroupItem, RadioGroup } from "./ui/radio-group";
+import { CardContent, Card } from "./ui/card";
 
 export function AddProduct() {
   return (

@@ -4,8 +4,8 @@
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
 import Link from "next/link";
-import { Button } from "../components/ui/button";
-import { IndexHeader } from "./IndexHeader";
+import { Button } from "~/components/ui/button";
+import { IndexHeader } from "~/components/IndexHeader";
 import { BookMarkedIcon } from "~/components/Icons";
 
 export default function Home() {

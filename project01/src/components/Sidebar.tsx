@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Button } from "../../components/ui/button";
+import { Button } from "./ui/button";
 import { Package2Icon } from "~/components/Icons";
 import { BellIcon } from "~/components/Icons";
 import { HomeIcon } from "~/components/Icons";

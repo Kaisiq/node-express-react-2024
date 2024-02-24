@@ -3,14 +3,9 @@
  * @see https://v0.dev/t/2MbAAiwC9VO
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
-import {
-  CardTitle,
-  CardHeader,
-  CardContent,
-  Card,
-} from "../../components/ui/card";
-import { Sidebar } from "./Sidebar";
-import { Header } from "./Header";
+import { CardTitle, CardHeader, CardContent, Card } from "~/components/ui/card";
+import { Sidebar } from "~/components/Sidebar";
+import { Header } from "~/components/Header";
 import { DollarSignIcon } from "~/components/Icons";
 import { CreditCardIcon } from "~/components/Icons";
 import { ActivityIcon } from "~/components/Icons";
