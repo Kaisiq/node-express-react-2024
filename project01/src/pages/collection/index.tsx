@@ -2,6 +2,8 @@ import { Button } from "../../components/ui/button";
 import Link from "next/link";
 import { IndexHeader } from "../IndexHeader";
 import { ClothingSlot } from "./ClothingSlot";
+import { ChevronRightIcon } from "~/components/Icons";
+import { ChevronLeftIcon } from "~/components/Icons";
 
 export default function collection() {
   //fetch 3 lists of data
@@ -127,7 +129,7 @@ export default function collection() {
         <div className="overflow-x-auto rounded-xl border dark:border-gray-800">
           <div className="flex px-6 py-4">
             {data1.map((el) => {
-              return <ClothingSlot product={el} className="mr-4 p-4" />;
+              return <ClothingSlot product={el} />;
             })}
           </div>
         </div>
@@ -137,43 +139,5 @@ export default function collection() {
         </Button>
       </div>
     </>
-  );
-}
-
-function ChevronLeftIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="m15 18-6-6 6-6" />
-    </svg>
-  );
-}
-
-function ChevronRightIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="m9 18 6-6-6-6" />
-    </svg>
   );
 }

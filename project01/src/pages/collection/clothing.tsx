@@ -3,8 +3,6 @@
  * @see https://v0.dev/t/w9VqQyJzXZS
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
-import Link from "next/link";
-import { ClothingSlot } from "./ClothingSlot";
 import { IndexHeader } from "../IndexHeader";
 import { ClothingSlotsList } from "./ClothingSlotsList";
 

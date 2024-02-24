@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Link from "next/link";
 import LoginForm from "./LoginForm";
 
 export default function Home() {

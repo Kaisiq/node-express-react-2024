@@ -1,6 +1,18 @@
 import Link from "next/link";
 
-export function ClothingSlot({ product }: any) {
+interface Product {
+  name: string;
+  description: string;
+  price: string;
+  picture: string;
+  link: string;
+}
+
+interface Props {
+  product: Product;
+}
+
+export function ClothingSlot({ product }: Props) {
   console.log(product);
   return (
     <div className="group relative overflow-hidden rounded-xl shadow-xl transition-transform duration-300 ease-in-out hover:translate-y-[-4px] hover:shadow-2xl">
