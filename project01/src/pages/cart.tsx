@@ -33,20 +33,27 @@ export default function cart() {
       price: 30,
     },
   ];
+  let totalPrice = 0;
+  data.forEach((el) => {
+    totalPrice += el.price;
+  });
+
   return (
     <>
       <IndexHeader />
       <Card className="grid gap-4 md:grid-cols-[300px_1fr]">
         <CardHeader className="pb-0">
-          <CardTitle>Shopping Cart</CardTitle>
+          <CardTitle>Вашата Количка</CardTitle>
         </CardHeader>
         <CardContent className="p-0">
           <div className="rounded-lg border">
             <div className="border-b bg-gray-100 px-4 py-2 dark:bg-gray-800">
               <div className="grid grid-cols-3 text-sm font-medium">
-                <div className="pb-1">Product</div>
-                <div className="pb-1 text-center">Price</div>
-                <div className="pb-1 text-right">Total</div>
+                <div className="pb-1">Продукт</div>
+                <div className="pb-1 text-center"></div>
+                <div className="pb-1 text-right md:flex md:justify-end">
+                  Цена
+                </div>
               </div>
             </div>
             <div className="divide-y">
@@ -60,20 +67,20 @@ export default function cart() {
                 href="/collection"
               >
                 <ChevronLeftIcon className="h-4 w-4" />
-                Continue Shopping
+                Обратно към магазина
               </Link>
               <div className="text-2xl font-semibold md:col-span-2 md:flex md:justify-end md:text-right">
-                Total: $148.00
+                общо: {totalPrice}лв
               </div>
               <Button className="w-full md:col-span-1 md:w-auto" size="lg">
-                Update Cart
+                Continue to Checkout
               </Button>
             </div>
           </div>
         </CardContent>
         <CardFooter className="flex flex-col gap-2">
           <Button className="w-full" size="lg">
-            Continue to Checkout
+            Обновяване на Количката
           </Button>
         </CardFooter>
       </Card>

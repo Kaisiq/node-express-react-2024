@@ -22,7 +22,9 @@ export function CartItem({ data }: { data: Item }) {
         <div>
           <h2 className="font-semibold">{data.name}</h2>
           <div className="text-sm text-gray-500 dark:text-gray-400">
-            {...data.properties.split(" ")}
+            {data.properties.split(" ").map((el) => {
+              return <p>{el}</p>;
+            })}
           </div>
           <Button size="icon" variant="ghost">
             <TrashIcon className="h-4 w-4" />
@@ -30,7 +32,7 @@ export function CartItem({ data }: { data: Item }) {
           </Button>
         </div>
       </div>
-      <div className="text-right md:flex md:justify-end">${data.price}</div>
+      <div className="text-right md:flex md:justify-end">{data.price}лв</div>
     </div>
   );
 }

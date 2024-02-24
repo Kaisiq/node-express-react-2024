@@ -6,7 +6,7 @@
 import { IndexHeader } from "~/components/IndexHeader";
 import { ClothingSlotsList } from "~/components/ClothingSlotsList";
 
-export default function Component() {
+export default function footwear() {
   //TODO: fetch data from db
   const products = [
     {
@@ -35,7 +35,7 @@ export default function Component() {
     <>
       <IndexHeader />
       <h1 className="text-center text-3xl font-bold tracking-tighter sm:text-5xl">
-        Дрехи
+        Обувки
       </h1>
       <ClothingSlotsList data={products} />
     </>
