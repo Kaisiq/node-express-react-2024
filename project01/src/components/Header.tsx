@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -14,12 +15,25 @@ import { SearchIcon } from "~/components/Icons";
 import Image from "next/image";
 
 export function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <header className="flex h-14 items-center gap-4 border-b bg-gray-100/40 px-6 dark:bg-gray-800/40 lg:h-[60px]">
-      <Link className="lg:hidden" href="#">
-        <Package2Icon className="h-6 w-6" />
-        <span className="sr-only">Home</span>
-      </Link>
+      <div className="lg:hidden">
+        <Button
+          className="h-8 w-8 rounded-full border border-gray-200 dark:border-gray-800"
+          size="icon"
+          variant="ghost"
+          onClick={toggleMenu}
+        >
+          <Package2Icon className="h-6 w-6" />
+          <span className="sr-only">Toggle Menu</span>
+        </Button>
+      </div>
       <div className="w-full flex-1">
         <form>
           <div className="relative">

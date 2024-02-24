@@ -103,16 +103,28 @@ export default function collection() {
   return (
     <>
       <IndexHeader />
+      <h1 className="text-center text-3xl font-bold tracking-tighter sm:text-5xl">
+        Дрехи
+      </h1>
       <ClothingSlotsList data={data1} />
       <Link className="flex flex-col items-center" href="/collection/clothing">
         <Button>Още дрехи</Button>
       </Link>
+      <h1 className="mt-20 text-center text-3xl font-bold tracking-tighter sm:text-5xl">
+        Аксесоари
+      </h1>
       <ClothingSlotsList data={data2} />
-      <Link className="flex flex-col items-center" href="/collection/clothing">
+      <Link
+        className="flex flex-col items-center"
+        href="/collection/accessories"
+      >
         <Button>Още аксесоари</Button>
       </Link>
+      <h1 className="mt-20 text-center text-3xl font-bold tracking-tighter sm:text-5xl">
+        Обувки
+      </h1>
       <ClothingSlotsList data={data3} />
-      <Link className="flex flex-col items-center" href="/collection/clothing">
+      <Link className="flex flex-col items-center" href="/collection/footwear">
         <Button>Още обувки</Button>
       </Link>
     </>
