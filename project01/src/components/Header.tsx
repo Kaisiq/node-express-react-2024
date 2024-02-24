@@ -11,6 +11,7 @@ import {
 } from "./ui/dropdown-menu";
 import { Package2Icon } from "~/components/Icons";
 import { SearchIcon } from "~/components/Icons";
+import Image from "next/image";
 
 export function Header() {
   return (
@@ -38,11 +39,11 @@ export function Header() {
             size="icon"
             variant="ghost"
           >
-            <img
+            <Image
               alt="Avatar"
               className="rounded-full"
               height="32"
-              src="/placeholder.svg"
+              src="/public/cat.jpg"
               style={{
                 aspectRatio: "32/32",
                 objectFit: "cover",

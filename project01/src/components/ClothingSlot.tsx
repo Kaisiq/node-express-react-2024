@@ -15,15 +15,15 @@ interface Props {
 export function ClothingSlot({ product }: Props) {
   console.log(product);
   return (
-    <div className="group relative overflow-hidden rounded-xl shadow-xl transition-transform duration-300 ease-in-out hover:translate-y-[-4px] hover:shadow-2xl">
+    <div className="group relative w-full overflow-hidden rounded-xl shadow-xl transition-transform duration-300 ease-in-out hover:translate-y-[-4px] hover:shadow-2xl">
       <Link className="absolute inset-0 z-10" href={product.link}>
         <span className="sr-only">View</span>
       </Link>
       <img
-        alt="Garment 1"
+        alt={product.name}
         className="h-60 w-full object-cover"
         height={400}
-        src="/placeholder.svg"
+        src={product.picture}
         style={{
           aspectRatio: "300/400",
           objectFit: "cover",

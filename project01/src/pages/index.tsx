@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Button } from "~/components/ui/button";
 import { IndexHeader } from "~/components/IndexHeader";
 import { BookMarkedIcon } from "~/components/Icons";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -16,11 +17,11 @@ export default function Home() {
         <section className="w-full">
           <div className="grid gap-6 lg:grid-cols-[1fr_2fr]">
             <div className="flex items-center justify-center overflow-hidden rounded-t-lg">
-              <img
+              <Image
                 alt="Hero"
                 className="aspect-video w-full object-cover object-top"
                 height="400"
-                src="/placeholder.svg"
+                src="/cat.jpg"
                 width="1200"
               />
             </div>
@@ -86,13 +87,11 @@ export default function Home() {
                   accessories.
                 </p>
               </div>
-              <Button
-                className="shrink-0 md:ml-auto"
-                size="lg"
-                variant="outline"
-              >
-                View all
-              </Button>
+              <Link href="/collection" className="shrink-0 md:ml-auto">
+                <Button size="lg" variant="outline">
+                  View all
+                </Button>
+              </Link>
             </div>
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" />
           </div>

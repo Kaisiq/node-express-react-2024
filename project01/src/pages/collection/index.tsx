@@ -3,6 +3,8 @@ import { IndexHeader } from "~/components/IndexHeader";
 import { ClothingSlot } from "~/components/ClothingSlot";
 import { ChevronRightIcon } from "~/components/Icons";
 import { ChevronLeftIcon } from "~/components/Icons";
+import { ClothingSlotsList } from "~/components/ClothingSlotsList";
+import { ScrollableClotingSlotsList } from "~/components/ScrollableClothingSlotsList";
 
 export default function collection() {
   //fetch 3 lists of data
@@ -11,7 +13,7 @@ export default function collection() {
       name: "product 1",
       description: "Lorem ipsum dolor sit amet",
       price: "12",
-      picture: "",
+      picture: "/cat.jpg",
       link: "#",
     },
     {
@@ -25,14 +27,14 @@ export default function collection() {
       name: "1",
       description: "asdasdasd",
       price: "900",
-      picture: "",
+      picture: "/cat.jpg",
       link: "#",
     },
     {
       name: "product 1",
       description: "Lorem ipsum dolor sit amet",
       price: "12",
-      picture: "",
+      picture: "/cat.jpg",
       link: "#",
     },
     {
@@ -83,7 +85,7 @@ export default function collection() {
       name: "1",
       description: "asdasdasd",
       price: "122",
-      picture: "",
+      picture: "/cat.jpg",
       link: "#",
     },
     {
@@ -113,30 +115,16 @@ export default function collection() {
       name: "1",
       description: "asdasdasd",
       price: "900",
-      picture: "",
+      picture: "/cat.jpg",
       link: "#",
     },
   ];
   return (
     <>
       <IndexHeader />
-      <div className="mx-auto flex w-full max-w-3xl items-center space-x-4">
-        <Button className="h-8 w-8 rounded-full p-0 shadow-sm" variant="ghost">
-          <ChevronLeftIcon className="h-4 w-4" />
-          <span className="sr-only">Previous</span>
-        </Button>
-        <div className="overflow-x-auto rounded-xl border dark:border-gray-800">
-          <div className="flex px-6 py-4">
-            {data1.map((el, index) => {
-              return <ClothingSlot key={index} product={el} />;
-            })}
-          </div>
-        </div>
-        <Button className="h-8 w-8 rounded-full p-0 shadow-sm" variant="ghost">
-          <ChevronRightIcon className="h-4 w-4" />
-          <span className="sr-only">Next</span>
-        </Button>
-      </div>
+      <ScrollableClotingSlotsList data={data1} />
+      <ScrollableClotingSlotsList data={data2} />
+      <ScrollableClotingSlotsList data={data3} />
     </>
   );
 }
