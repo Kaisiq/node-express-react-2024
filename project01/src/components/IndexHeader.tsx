@@ -1,51 +1,79 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ShoppingCartIcon } from "./Icons";
+import { MenuIcon } from "lucide-react";
+import { useState } from "react";
 
 export function IndexHeader() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
-    <header className="flex items-center px-4 py-4 lg:px-6 lg:py-6">
-      <Link href="/">
-        <div className="flex items-center space-x-2">
-          <Image
-            alt="Logo"
-            className="rounded-full"
-            height="40"
-            src="/cat.jpg"
-            style={{
-              aspectRatio: "40/40",
-              objectFit: "cover",
-            }}
-            width="40"
-          />
-          <h1 className="text-2xl font-bold tracking-tighter sm:text-3xl xl:text-4xl">
-            Две/Трети
-          </h1>
-        </div>
-      </Link>
-      <nav className="ml-auto hidden gap-4 text-sm font-medium lg:flex xl:gap-6">
+    <header className="flex flex-col items-center px-4 py-4 lg:flex-row lg:justify-between lg:px-6 lg:py-6">
+      <div className="flex w-full items-center justify-between lg:w-auto">
+        <Link href="/">
+          <div className="flex items-center space-x-2">
+            <Image
+              alt="Logo"
+              className="rounded-full"
+              height="40"
+              src="/cat.jpg"
+              style={{
+                aspectRatio: "40/40",
+                objectFit: "cover",
+              }}
+              width="40"
+            />
+            <h1 className="text-2xl font-bold tracking-tighter sm:text-3xl xl:text-4xl">
+              Две/Трети
+            </h1>
+          </div>
+        </Link>
+        {/* Hamburger menu button for mobile */}
+        <button
+          className="block lg:hidden"
+          onClick={toggleMenu}
+          aria-label="Toggle Menu"
+        >
+          <MenuIcon className="h-6 w-6" />
+        </button>
+        {/* End of Hamburger menu button */}
+      </div>
+      {/* Navigation menu */}
+      <nav
+        className={`${
+          isMenuOpen ? "mt-4 flex flex-col items-center" : "hidden"
+        } lg:flex lg:flex-row lg:gap-4 xl:gap-6`}
+      >
         <Link
-          className="underline-offset-4 hover:underline"
+          className="underline-offset-4 hover:underline sm:block lg:mt-0"
           href="/collection/clothing"
         >
           Clothing
         </Link>
         <Link
-          className="underline-offset-4 hover:underline"
+          className="underline-offset-4 hover:underline sm:block lg:mt-0"
           href="/collection/accessories"
         >
           Accessories
         </Link>
         <Link
-          className="underline-offset-4 hover:underline"
+          className="underline-offset-4 hover:underline sm:block lg:mt-0"
           href="/collection/footwear"
         >
           Footwear
         </Link>
-        <Link className="underline-offset-4 hover:underline" href="/cart">
+        <Link
+          className="underline-offset-4 hover:underline sm:block lg:mt-0"
+          href="/cart"
+        >
           <ShoppingCartIcon />
         </Link>
       </nav>
+      {/* End of Navigation menu */}
     </header>
   );
 }
