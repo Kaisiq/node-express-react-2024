@@ -17,6 +17,9 @@ import { TrashIcon } from "lucide-react";
 import { ChevronLeftIcon } from "~/components/Icons";
 import { IndexHeader } from "~/components/IndexHeader";
 import { CartItem } from "~/components/CartItem";
+import { Layout } from "~/components/Layout";
+import { useSession } from "next-auth/react";
+import { LoginPage } from "./LoginPage";
 
 export default function cart() {
   const data = [
@@ -38,9 +41,13 @@ export default function cart() {
     totalPrice += el.price;
   });
 
+  const { data: session } = useSession();
+  if (!session) {
+    return <LoginPage />;
+  }
+
   return (
-    <>
-      <IndexHeader />
+    <Layout>
       <Card className="grid gap-4 md:grid-cols-[300px_1fr]">
         <CardHeader className="pb-0">
           <CardTitle>Вашата Количка</CardTitle>
@@ -84,6 +91,6 @@ export default function cart() {
           </Button>
         </CardFooter>
       </Card>
-    </>
+    </Layout>
   );
 }

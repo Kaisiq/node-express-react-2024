@@ -1,11 +1,7 @@
 import { Button } from "~/components/ui/button";
-import { IndexHeader } from "~/components/IndexHeader";
-import { ClothingSlot } from "~/components/ClothingSlot";
-import { ChevronRightIcon } from "~/components/Icons";
-import { ChevronLeftIcon } from "~/components/Icons";
 import { ClothingSlotsList } from "~/components/ClothingSlotsList";
-import { ScrollableClotingSlotsList } from "~/components/ScrollableClothingSlotsList";
 import Link from "next/link";
+import { Layout } from "~/components/Layout";
 
 export default function collection() {
   //fetch 3 lists of data
@@ -101,8 +97,7 @@ export default function collection() {
     },
   ];
   return (
-    <>
-      <IndexHeader />
+    <Layout>
       <h1 className="text-center text-3xl font-bold tracking-tighter sm:text-5xl">
         Дрехи
       </h1>
@@ -127,6 +122,6 @@ export default function collection() {
       <Link className="flex flex-col items-center" href="/collection/footwear">
         <Button>Още обувки</Button>
       </Link>
-    </>
+    </Layout>
   );
 }

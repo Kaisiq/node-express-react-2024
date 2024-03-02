@@ -17,6 +17,11 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "lh3.googleusercontent.com", port: "" },
+    ],
+  },
 };
 
 export default config;

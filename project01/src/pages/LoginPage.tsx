@@ -1,7 +1,7 @@
 import Head from "next/head";
 import LoginForm from "~/components/LoginForm";
 
-export default function Home() {
+export function LoginPage() {
   return (
     <>
       <Head>

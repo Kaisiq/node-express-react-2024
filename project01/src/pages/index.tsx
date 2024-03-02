@@ -5,14 +5,14 @@
  */
 import Link from "next/link";
 import { Button } from "~/components/ui/button";
-import { IndexHeader } from "~/components/IndexHeader";
-import { BookMarkedIcon } from "~/components/Icons";
 import Image from "next/image";
+import { useSession, signIn, signOut } from "next-auth/react";
+import { LoginPage } from "./LoginPage";
+import { Layout } from "~/components/Layout";
 
 export default function Home() {
   return (
-    <div className="flex min-h-[100dvh] flex-col">
-      <IndexHeader />
+    <Layout>
       <main className="flex-1">
         <section className="w-full">
           <div className="grid gap-6 lg:grid-cols-[1fr_2fr]">
@@ -97,28 +97,6 @@ export default function Home() {
           </div>
         </section>
       </main>
-      <footer className="flex w-full shrink-0 flex-col items-center gap-2 border-t px-4 py-4 sm:flex-row sm:py-6 md:px-6">
-        <div className="flex items-center gap-2">
-          <BookMarkedIcon className="h-6 w-6" />
-          <span className="text-sm font-semibold tracking-wide">
-            Retro Threads
-          </span>
-        </div>
-        <p className="text-xs text-gray-500 dark:text-gray-400">
-          123 Vintage Ave, Retroville, 54321
-        </p>
-        <nav className="flex gap-4 sm:ml-auto sm:gap-6">
-          <Link className="text-xs underline-offset-4 hover:underline" href="#">
-            About Us
-          </Link>
-          <Link className="text-xs underline-offset-4 hover:underline" href="#">
-            Contact
-          </Link>
-          <Link className="text-xs underline-offset-4 hover:underline" href="#">
-            FAQs
-          </Link>
-        </nav>
-      </footer>
-    </div>
+    </Layout>
   );
 }

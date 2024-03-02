@@ -13,9 +13,11 @@ import {
 import { Package2Icon } from "~/components/Icons";
 import { SearchIcon } from "~/components/Icons";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { data: session } = useSession();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -57,7 +59,7 @@ export function Header() {
               alt="Avatar"
               className="rounded-full"
               height="32"
-              src="/public/cat.jpg"
+              src={session?.user?.image ? session?.user?.image : ""}
               style={{
                 aspectRatio: "32/32",
                 objectFit: "cover",

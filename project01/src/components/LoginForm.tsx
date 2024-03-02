@@ -9,6 +9,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { AppleIcon } from "~/components/Icons";
 import { ChromeIcon } from "~/components/Icons";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 export default function LoginForm() {
   return (
@@ -52,13 +53,24 @@ export default function LoginForm() {
             </div>
             <Input id="password" required type="password" />
           </div>
-          <Button className="w-full bg-[#4285F4] text-white" variant="outline">
+          <Button onClick={() => signIn()} className="w-full text-white">
+            Login
+          </Button>
+          <Button
+            onClick={() => signIn("google")}
+            className="w-full bg-[#4285F4] text-white"
+            variant="outline"
+          >
             <div className="flex items-center justify-center">
               <ChromeIcon className="mr-2 h-5 w-5" />
               Login with Google
             </div>
           </Button>
-          <Button className="w-full bg-black text-white" variant="outline">
+          <Button
+            onClick={() => signIn("apple")}
+            className="w-full bg-black text-white"
+            variant="outline"
+          >
             <div className="flex items-center justify-center">
               <AppleIcon className="mr-2 h-5 w-5" />
               Login with Apple
