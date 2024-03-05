@@ -1,13 +1,14 @@
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import { type GetServerSidePropsContext } from "next";
 import {
   getServerSession,
   type DefaultSession,
   type NextAuthOptions,
 } from "next-auth";
-import DiscordProvider from "next-auth/providers/discord";
 import GoogleProvider from "next-auth/providers/google";
 
 import { env } from "~/env";
+import clientPromise from "~/lib/mongodb";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -36,15 +37,15 @@ declare module "next-auth" {
  * @see https://next-auth.js.org/configuration/options
  */
 export const authOptions: NextAuthOptions = {
-  callbacks: {
-    session: ({ session, token }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: token.sub,
-      },
-    }),
-  },
+  // callbacks: {
+  //   session: ({ session, token }) => ({
+  //     ...session,
+  //     user: {
+  //       ...session.user,
+  //       id: token.sub,
+  //     },
+  //   }),
+  // },
   providers: [
     GoogleProvider({
     clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -65,6 +66,7 @@ export const authOptions: NextAuthOptions = {
      * @see https://next-auth.js.org/providers/github
      */
   ],
+  adapter: MongoDBAdapter(clientPromise),
 };
 
 /**
