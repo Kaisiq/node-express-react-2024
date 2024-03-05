@@ -3,36 +3,73 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { RadioGroupItem, RadioGroup } from "./ui/radio-group";
 import { CardContent, Card } from "./ui/card";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import axios from "axios";
+import { useRouter } from "next/router";
 
-export function AddProduct() {
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
-  const [size, setSize] = useState("");
+interface Product {
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  size: string;
+  status: string;
+  _id: string;
+}
+
+export function AddProduct({
+  _id = "",
+  name: existingName = "",
+  description: existingDescription = "",
+  price: existingPrice = null as unknown as number,
+  category: existingCategory = "",
+  size: existingSize = "",
+  status = "",
+}: Product) {
+  const [name, setName] = useState(existingName || "");
+  const [price, setPrice] = useState(existingPrice || undefined);
+  const [description, setDescription] = useState(existingDescription || "");
+  const [category, setCategory] = useState(existingCategory || "");
+  const [size, setSize] = useState(existingSize || "");
+  const [addedProduct, setAddedProduct] = useState(0);
+  const router = useRouter();
 
   async function saveProduct(ev: FormEvent) {
     ev.preventDefault();
     if (!name || !price || !category || !size || !description) {
       return;
     }
-    const status = "ok";
-    const product = {
-      name,
-      description,
-      size,
-      price,
-      category,
-      status,
-    };
-    await axios.post("/api/products", product);
+    if (!_id) {
+      status = "ok";
+      const product = {
+        name,
+        description,
+        size,
+        price,
+        category,
+        status,
+      };
+      await axios.post("/api/products", product);
+    } else {
+      const product = {
+        name,
+        description,
+        size,
+        price,
+        category,
+        status,
+        _id,
+      };
+      await axios.put("/api/products", product);
+    }
+    setAddedProduct(1);
+  }
+  if (addedProduct === 1) {
+    router.push("/admin/products");
   }
   return (
     <form onSubmit={saveProduct}>
       <div className="flex items-center gap-4">
-        <h1 className="text-lg font-semibold md:text-2xl">Add new product</h1>
         <Button className="ml-auto" size="sm">
           <input type="submit" className="cursor-pointer" value="Добавяне" />
         </Button>
@@ -44,7 +81,7 @@ export function AddProduct() {
               <Label htmlFor="name">Name</Label>
               <Input
                 id="name"
-                placeholder="Enter product name"
+                placeholder={existingName || "Enter product name"}
                 onChange={(ev) => setName(ev.target.value)}
               />
             </div>
@@ -52,16 +89,20 @@ export function AddProduct() {
               <Label htmlFor="price">Price</Label>
               <Input
                 id="price"
-                placeholder="Enter product price"
+                placeholder={
+                  existingPrice
+                    ? existingPrice.toString()
+                    : "Enter product price"
+                }
                 type="number"
-                onChange={(ev) => setPrice(ev.target.value)}
+                onChange={(ev) => setPrice(Number(ev.target.value))}
               />
             </div>
             <div className="flex flex-col gap-1">
               <Label htmlFor="size">Size</Label>
               <Input
                 id="size"
-                placeholder="Enter product size"
+                placeholder={existingSize || "Enter product size"}
                 type="text"
                 onChange={(ev) => setSize(ev.target.value)}
               />
@@ -70,7 +111,7 @@ export function AddProduct() {
               <Label htmlFor="description">Description</Label>
               <Input
                 id="description"
-                placeholder="Enter product description"
+                placeholder={existingDescription || "Enter product description"}
                 type="text"
                 onChange={(ev) => setDescription(ev.target.value)}
               />

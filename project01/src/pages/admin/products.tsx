@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { AddProduct } from "~/components/AddProduct";
 import { AdminLayout } from "~/components/AdminLayout";
+import { ProductsList } from "~/components/ProductsList";
 import { Button } from "~/components/ui/button";
 
 export default function Component() {
@@ -11,6 +11,7 @@ export default function Component() {
           <Button>Add a product</Button>
         </Link>
         Show products
+        <ProductsList />
       </main>
     </AdminLayout>
   );
