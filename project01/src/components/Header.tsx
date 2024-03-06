@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Link from "next/link";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import {
@@ -77,7 +76,10 @@ export function Header() {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
-              signOut();
+              signOut().catch((err) => {
+                console.log(err);
+                return;
+              });
             }}
           >
             Logout

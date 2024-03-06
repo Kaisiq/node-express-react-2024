@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { Badge } from "./ui/badge";
 import { Input } from "./ui/input";
 import { Package2Icon } from "~/components/Icons";
 import { SearchIcon } from "~/components/Icons";

@@ -3,7 +3,8 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { RadioGroupItem, RadioGroup } from "./ui/radio-group";
 import { CardContent, Card } from "./ui/card";
-import { FormEvent, useEffect, useState } from "react";
+import { useState } from "react";
+import type { FormEvent } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { UploadDropzone } from "~/utils/uploadthing";
@@ -72,7 +73,9 @@ export function AddProduct({
     setAddedProduct(1);
   }
   if (addedProduct === 1) {
-    router.push("/admin/products");
+    router.push("/admin/products").catch((err) => {
+      console.log(err);
+    });
   }
   return (
     <form onSubmit={saveProduct}>

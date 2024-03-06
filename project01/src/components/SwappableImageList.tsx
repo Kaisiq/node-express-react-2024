@@ -3,13 +3,20 @@ import Image from "next/image";
 import { useState } from "react";
 import { useCallback } from "react";
 
+interface SwappableImage {
+  id: string;
+  content: JSX.Element;
+}
+
+interface SwappableImageListProps {
+  images: string[];
+  onImagesChange: (images: string[]) => void;
+}
+
 export function SwappableImageList({
   images,
   onImagesChange,
-}: {
-  images: string[];
-  onImagesChange: Function;
-}) {
+}: SwappableImageListProps) {
   const [imageItems, setImageItems] = useState(
     images.map((image) => ({
       id: image,
@@ -33,8 +40,7 @@ export function SwappableImageList({
     [onImagesChange],
   );
 
-
-  function sortImages(imageItems: any[]) {
+  function sortImages(imageItems: SwappableImage[]) {
     setImageItems(imageItems);
     const onlyLinks: string[] = [];
     imageItems.forEach((el) => onlyLinks.push(el.id));

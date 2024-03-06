@@ -1,13 +1,6 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/8lUIAiMxj5e
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
 import Link from "next/link";
 import { Button } from "~/components/ui/button";
 import Image from "next/image";
-import { useSession, signIn, signOut } from "next-auth/react";
-import { LoginPage } from "./LoginPage";
 import { Layout } from "~/components/Layout";
 
 export default function Home() {

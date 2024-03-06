@@ -2,6 +2,7 @@ import Link from "next/link";
 import { FileEditIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import { TrashIcon } from "lucide-react";
+import Image from "next/image";
 interface Product {
   name: string;
   description: string;
@@ -16,17 +17,21 @@ interface Product {
 export function ProductCardAdmin(product: Product, index: number) {
   const editLink = "/admin/products/";
   const deleteLink = "/admin/products/delete/";
+  let imageLink = "/cat.jpg";
+  if (product?.images?.[0]) {
+    imageLink = product.images[0];
+  }
   return (
     <div
       className="group relative overflow-hidden rounded-lg bg-gray-200"
       key={index}
     >
       <Link href={editLink + product._id}>
-        <img
+        <Image
           alt={product.name}
           className="aspect-square w-full overflow-hidden rounded-lg border border-gray-200 object-cover dark:border-gray-800"
           height={600}
-          src={product.images?.length ? product.images[0] : "/cat.jpg"}
+          src={imageLink}
           width={600}
         />
       </Link>

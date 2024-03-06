@@ -1,6 +1,18 @@
-import { Schema, model, models } from "mongoose";
+import { Schema, model, models, Document, Model } from "mongoose";
 
-const ProductSchema = new Schema({
+export interface ProductDocument extends Document {
+  name: string;
+  description?: string;
+  price: number;
+  category: string;
+  size: string;
+  images?: string[];
+  status: string;
+}
+
+export type ProductModel = Model<ProductDocument>;
+
+const ProductSchema = new Schema<ProductDocument>({
   name: { type: String, required: true },
   description: String,
   price: { type: Number, required: true },
@@ -10,4 +22,6 @@ const ProductSchema = new Schema({
   status: { type: String, required: true },
 });
 
-export const Product = models.Product || model("Product", ProductSchema);
+export const Product =
+  models.Product ??
+  model<ProductDocument, ProductModel>("Product", ProductSchema);

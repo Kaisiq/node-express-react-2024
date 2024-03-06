@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 interface Product {
@@ -18,7 +19,7 @@ export function ClothingSlot({ product }: Props) {
       <Link className="absolute inset-0 z-10" href={product.link}>
         <span className="sr-only">View</span>
       </Link>
-      <img
+      <Image
         alt={product.name}
         className="h-60 w-full object-cover"
         height={400}
@@ -50,7 +51,7 @@ export function EmptyClothingSlot() {
       <Link className="absolute inset-0 z-10" href="#">
         <span className="sr-only">View</span>
       </Link>
-      <img
+      <Image
         alt="empty product"
         className="h-60 w-full object-cover"
         height={400}

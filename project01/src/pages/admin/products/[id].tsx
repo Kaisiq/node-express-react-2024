@@ -1,6 +1,7 @@
 import { AdminLayout } from "~/components/AdminLayout";
 import { useRouter } from "next/router";
 import { AddProduct } from "~/components/AddProduct";
+import type { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Spinner } from "~/components/Spinner";
@@ -36,9 +37,15 @@ export default function Component() {
     if (!itemID) {
       return;
     }
-    axios.get("/api/products?id=" + itemID).then((res) => {
-      setProductInfo(res.data);
-    });
+    axios
+      .get("/api/products?id=" + itemID)
+      .then((res: AxiosResponse<Product>) => {
+        setProductInfo(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        return;
+      });
   }, []);
   return (
     <AdminLayout>

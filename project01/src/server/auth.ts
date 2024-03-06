@@ -1,13 +1,11 @@
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
-import { type GetServerSidePropsContext } from "next";
+import type { NextApiResponse, GetServerSidePropsContext, NextApiRequest } from "next";
 import {
   getServerSession,
   type DefaultSession,
   type NextAuthOptions,
 } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-
-import { env } from "~/env";
 import clientPromise from "~/lib/mongodb";
 
 /**
@@ -47,14 +45,14 @@ export const authOptions: NextAuthOptions = {
     //     id: token.sub,
     //   },
     // }),
-    session: ({session, token, user}) => {
+    session: ({session}) => {
       return session;
     }
   },
   providers: [
     GoogleProvider({
-    clientId: process.env.GOOGLE_CLIENT_ID as string,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET as string
+    clientId: process.env.GOOGLE_CLIENT_ID ? process.env.GOOGLE_CLIENT_ID : "" ,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET ? process.env.GOOGLE_CLIENT_SECRET : "" ,
   })
 
     // DiscordProvider({
@@ -86,7 +84,7 @@ export const getServerAuthSession = (ctx: {
   return getServerSession(ctx.req, ctx.res, authOptions);
 };
 
-export async function isAdminRequest(req,res){
+export async function isAdminRequest(req: NextApiRequest,res: NextApiResponse){
   const session = await getServerSession(req,res,authOptions);
   if(!session || !session.user || !session.user.email || !adminEmails.includes(session.user.email)){
     throw "not admin";

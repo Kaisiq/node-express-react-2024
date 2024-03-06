@@ -9,7 +9,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { AppleIcon } from "~/components/Icons";
 import { ChromeIcon } from "~/components/Icons";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { signIn } from "next-auth/react";
 
 export default function LoginForm() {
   return (

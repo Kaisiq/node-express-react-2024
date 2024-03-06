@@ -20,12 +20,15 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         const res = await axios.post("/api/authAdmin/", {
           email: session.user.email,
         });
-        setIsAdminUser(res.data);
+        const toSet = Boolean(res.data);
+        setIsAdminUser(toSet);
       } catch (error) {
         setIsAdminUser(false);
       }
     }
-    fetchAdminStatus();
+    fetchAdminStatus().catch((err) => {
+      console.log(err);
+    });
   }, []);
 
   if (isAdminUser === null) {
@@ -51,7 +54,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
             404 Error
           </h1>
           <p className="max-w-[600px] text-gray-500 dark:text-gray-400 md:text-xl/relaxed">
-            Sorry, we couldn't find the page you're looking for.
+            Sorry, we couldn`&apos`t find the page you`&apos`re looking for.
           </p>
         </div>
         <Link

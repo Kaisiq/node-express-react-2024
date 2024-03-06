@@ -5,16 +5,25 @@ import axios from "axios";
 
 export default function Component() {
   const router = useRouter();
-  const id = router.query.id;
+  const id = router.query.id as string;
 
   function goBack() {
-    router.push("/admin/products");
+    router.push("/admin/products").catch((err) => {
+      console.log(err);
+    });
   }
 
   function deleteProduct() {
-    axios.delete("/api/products?id=" + id).then((res) => {
-      router.push("/admin/products");
-    });
+    axios
+      .delete("/api/products?id=" + id)
+      .then((res) => {
+        router.push("/admin/products").catch((err) => {
+          console.log(err);
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   return (

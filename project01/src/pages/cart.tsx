@@ -1,8 +1,3 @@
-/**
- * v0 by Vercel.
- * ~see https://v0.dev/t/PIDfer5bBUW
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
 import {
   CardTitle,
   CardHeader,
@@ -11,17 +6,37 @@ import {
   Card,
 } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
 import Link from "next/link";
-import { TrashIcon } from "lucide-react";
 import { ChevronLeftIcon } from "~/components/Icons";
-import { IndexHeader } from "~/components/IndexHeader";
 import { CartItem } from "~/components/CartItem";
 import { Layout } from "~/components/Layout";
 import { useSession } from "next-auth/react";
 import { LoginPage } from "./LoginPage";
 
-export default function cart() {
+// import { Schema, model, models, Document, Model } from "mongoose";
+
+// export interface UserDocument extends Document {
+//   name: string;
+//   email: string;
+//   image?: string;
+//   emailVerified?: boolean;
+//   admin?: boolean;
+// }
+
+// export type UserModel = Model<UserDocument>;
+
+// const UserSchema = new Schema<UserDocument>({
+//   name: { type: String, required: true },
+//   email: { type: String, required: true },
+//   image: { type: String },
+//   emailVerified: { type: Boolean, default: null },
+//   admin: { type: Boolean },
+// });
+
+// export const User =
+//   models.User ?? model<UserDocument, UserModel>("User", UserSchema);
+
+export default function Cart() {
   const data = [
     {
       name: "asd",
