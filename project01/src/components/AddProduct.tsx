@@ -6,6 +6,8 @@ import { CardContent, Card } from "./ui/card";
 import { FormEvent, useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { UploadDropzone } from "~/utils/uploadthing";
+import { SwappableImageList } from "./SwappableImageList";
 
 interface Product {
   name: string;
@@ -15,6 +17,7 @@ interface Product {
   size: string;
   status: string;
   _id: string;
+  images: string[];
 }
 
 export function AddProduct({
@@ -25,12 +28,14 @@ export function AddProduct({
   category: existingCategory = "",
   size: existingSize = "",
   status = "",
+  images: existingImages = [],
 }: Product) {
   const [name, setName] = useState(existingName || "");
   const [price, setPrice] = useState(existingPrice || undefined);
   const [description, setDescription] = useState(existingDescription || "");
   const [category, setCategory] = useState(existingCategory || "");
   const [size, setSize] = useState(existingSize || "");
+  const [images, setImages] = useState(existingImages || []);
   const [addedProduct, setAddedProduct] = useState(0);
   const router = useRouter();
 
@@ -47,6 +52,7 @@ export function AddProduct({
         size,
         price,
         category,
+        images,
         status,
       };
       await axios.post("/api/products", product);
@@ -58,6 +64,7 @@ export function AddProduct({
         price,
         category,
         status,
+        images,
         _id,
       };
       await axios.put("/api/products", product);
@@ -81,7 +88,8 @@ export function AddProduct({
               <Label htmlFor="name">Name</Label>
               <Input
                 id="name"
-                placeholder={existingName || "Enter product name"}
+                value={name}
+                placeholder="Enter product name"
                 onChange={(ev) => setName(ev.target.value)}
               />
             </div>
@@ -89,11 +97,8 @@ export function AddProduct({
               <Label htmlFor="price">Price</Label>
               <Input
                 id="price"
-                placeholder={
-                  existingPrice
-                    ? existingPrice.toString()
-                    : "Enter product price"
-                }
+                value={price}
+                placeholder="Enter product price"
                 type="number"
                 onChange={(ev) => setPrice(Number(ev.target.value))}
               />
@@ -102,7 +107,8 @@ export function AddProduct({
               <Label htmlFor="size">Size</Label>
               <Input
                 id="size"
-                placeholder={existingSize || "Enter product size"}
+                value={size}
+                placeholder="Enter product size"
                 type="text"
                 onChange={(ev) => setSize(ev.target.value)}
               />
@@ -111,7 +117,8 @@ export function AddProduct({
               <Label htmlFor="description">Description</Label>
               <Input
                 id="description"
-                placeholder={existingDescription || "Enter product description"}
+                value={description}
+                placeholder="Enter product description"
                 type="text"
                 onChange={(ev) => setDescription(ev.target.value)}
               />
@@ -176,20 +183,25 @@ export function AddProduct({
                 </div>
               </RadioGroup>
             </div>
-            {/* <div className="flex flex-col gap-1">
-              <Label htmlFor="image">Picture</Label>
-              <label
-                className="relative cursor-pointer rounded-md border border-gray-200 p-2"
-                htmlFor="image"
-              >
-                <Input
-                  className="absolute inset-0 h-full w-full opacity-0"
-                  id="image"
-                  type="file"
-                />
-                Upload Image
-              </label>
-            </div> */}
+            <UploadDropzone
+              endpoint="imageUploader"
+              onClientUploadComplete={(res) => {
+                // Do something with the response
+                res.forEach((el) => {
+                  setImages((oldImages) => {
+                    return [...oldImages, el.url];
+                  });
+                });
+                return images;
+              }}
+              onUploadError={(error: Error) => {
+                // Do something with the error.
+                alert(`ERROR! ${error.message}`);
+              }}
+            />
+            {images && (
+              <SwappableImageList images={images} onImagesChange={setImages} />
+            )}
           </div>
         </CardContent>
       </Card>

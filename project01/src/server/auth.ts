@@ -31,21 +31,26 @@ declare module "next-auth" {
   // }
 }
 
+const adminEmails = ["dahudohu@gmail.com"]
+
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
  *
  * @see https://next-auth.js.org/configuration/options
  */
 export const authOptions: NextAuthOptions = {
-  // callbacks: {
-  //   session: ({ session, token }) => ({
-  //     ...session,
-  //     user: {
-  //       ...session.user,
-  //       id: token.sub,
-  //     },
-  //   }),
-  // },
+  callbacks: {
+    // session: ({ session, token, user }) => ({
+    //   ...session,
+    //   user: {
+    //     ...session.user,
+    //     id: token.sub,
+    //   },
+    // }),
+    session: ({session, token, user}) => {
+      return session;
+    }
+  },
   providers: [
     GoogleProvider({
     clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -80,3 +85,11 @@ export const getServerAuthSession = (ctx: {
 }) => {
   return getServerSession(ctx.req, ctx.res, authOptions);
 };
+
+export async function isAdminRequest(req,res){
+  const session = await getServerSession(req,res,authOptions);
+  if(!session || !session.user || !session.user.email || !adminEmails.includes(session.user.email)){
+    throw "not admin";
+  }
+  return true;
+}

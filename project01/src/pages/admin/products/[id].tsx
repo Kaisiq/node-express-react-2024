@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { AddProduct } from "~/components/AddProduct";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Spinner } from "~/components/Spinner";
 
 interface Product {
   name: string;
@@ -12,6 +13,7 @@ interface Product {
   size: string;
   status: string;
   _id: string;
+  images: string[];
 }
 
 export default function Component() {
@@ -24,6 +26,7 @@ export default function Component() {
     size: "",
     status: "",
     _id: "",
+    images: [],
   });
   const itemID = router.query.id
     ? Array.prototype.join.call(router.query.id, "")
@@ -36,14 +39,14 @@ export default function Component() {
     axios.get("/api/products?id=" + itemID).then((res) => {
       setProductInfo(res.data);
     });
-  }, [itemID]);
+  }, []);
   return (
     <AdminLayout>
       <main className="p-10">
         <h1 className="text-lg font-semibold md:text-2xl">
           editing product with id: {itemID}
         </h1>
-        <AddProduct {...productInfo} />
+        {productInfo?._id ? <AddProduct {...productInfo} /> : <Spinner />}
       </main>
     </AdminLayout>
   );
