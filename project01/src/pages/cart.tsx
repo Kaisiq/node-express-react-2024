@@ -11,7 +11,7 @@ import { ChevronLeftIcon } from "~/components/Icons";
 import { CartItem } from "~/components/CartItem";
 import { Layout } from "~/components/Layout";
 import { useSession } from "next-auth/react";
-import { LoginPage } from "./LoginPage";
+import { LoginPage } from "../components/LoginPage";
 
 // import { Schema, model, models, Document, Model } from "mongoose";
 
