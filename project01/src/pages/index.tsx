@@ -41,6 +41,7 @@ export async function getServerSideProps() {
         sort: { _id: -1 },
       })
       .limit(3);
+    /* eslint-disable */
     return {
       props: {
         featuredProduct: JSON.parse(JSON.stringify(featuredProduct)),
@@ -49,6 +50,7 @@ export async function getServerSideProps() {
         featuredProduct: ProductInterface | null;
         newProducts: ProductInterface[];
       },
+      /* eslint-enable */
     };
   } catch (err) {
     console.log(err);

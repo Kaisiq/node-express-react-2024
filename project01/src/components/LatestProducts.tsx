@@ -3,8 +3,6 @@ import Link from "next/link";
 import Image from "next/image";
 
 export function LatestProducts({ products }: { products: ProductInterface[] }) {
-  console.log(products);
-
   return (
     <>
       <h1 className="text-center text-3xl font-bold">Най-нови продукти</h1>
@@ -36,10 +34,15 @@ export function LatestProducts({ products }: { products: ProductInterface[] }) {
                       {product.name}
                     </h3>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                      {product.size}
+                      {product.description}
+                    </p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      Размер: {product.size}
                     </p>
                   </div>
-                  <h4 className="text-base font-semibold md:text-lg">$59.99</h4>
+                  <h4 className="text-base font-semibold md:text-lg">
+                    {product.price}лв
+                  </h4>
                 </div>
               </div>
             </div>
