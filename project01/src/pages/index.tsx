@@ -1,12 +1,12 @@
 import { Layout } from "~/components/Layout";
 import { FeaturedProduct } from "~/components/FeaturedProduct";
 import { mongooseConnect } from "~/lib/mongoose";
-import { Product, ProductModel } from "~/models/Product";
+import { Product, type ProductModel } from "~/models/Product";
 import { LatestProducts } from "~/components/LatestProducts";
 import { Separator } from "~/components/ui/separator";
 import { HeroSection } from "~/components/HeroSection";
 import { IndexAbout } from "~/components/IndexAbout";
-import { ProductInterface } from "~/models/Product";
+import type { ProductInterface } from "~/models/Product";
 
 export default function Home({
   featuredProduct,

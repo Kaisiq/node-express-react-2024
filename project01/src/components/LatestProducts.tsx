@@ -1,5 +1,6 @@
 import type { ProductInterface } from "~/models/Product";
 import Link from "next/link";
+import Image from "next/image";
 
 export function LatestProducts({ products }: { products: ProductInterface[] }) {
   console.log(products);
@@ -10,7 +11,7 @@ export function LatestProducts({ products }: { products: ProductInterface[] }) {
       <section className="grid grid-cols-1 gap-10 p-10 md:grid-cols-2 md:p-6 lg:grid-cols-3">
         {products.map((product) => {
           return (
-            <div className="flex flex-col">
+            <div className="flex flex-col" key={product._id}>
               <div className="group relative overflow-hidden rounded-lg">
                 <Link
                   className="absolute inset-0 z-10"
@@ -18,7 +19,7 @@ export function LatestProducts({ products }: { products: ProductInterface[] }) {
                 >
                   <span className="sr-only">View</span>
                 </Link>
-                <img
+                <Image
                   alt="Product 1"
                   className="h-60 w-full object-cover"
                   height={400}

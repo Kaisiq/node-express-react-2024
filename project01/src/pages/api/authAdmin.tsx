@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
 import { User, type UserModel } from "~/models/User"; // Import UserModel interface
 import { mongooseConnect } from "~/lib/mongoose";
 

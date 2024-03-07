@@ -16,7 +16,7 @@ export default function Component() {
   function deleteProduct() {
     axios
       .delete("/api/products?id=" + id)
-      .then((res) => {
+      .then(() => {
         router.push("/admin/products").catch((err) => {
           console.log(err);
         });

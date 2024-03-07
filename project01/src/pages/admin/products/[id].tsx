@@ -36,7 +36,7 @@ export default function Component() {
         console.log(err);
         return;
       });
-  }, []);
+  }, [itemID]);
   return (
     <AdminLayout>
       <main className="p-10">

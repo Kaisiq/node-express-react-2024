@@ -1,4 +1,4 @@
-import { StarIcon } from "lucide-react";
+import { Images, StarIcon } from "lucide-react";
 import { Label } from "~/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import { useEffect, useState } from "react";
@@ -50,7 +50,7 @@ export default function Page() {
         console.log(err);
         return;
       });
-  }, [router.query.id]);
+  }, [productID]);
   if (productInfo) {
     return (
       <Layout>
