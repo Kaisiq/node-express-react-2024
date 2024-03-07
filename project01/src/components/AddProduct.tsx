@@ -9,17 +9,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { UploadDropzone } from "~/utils/uploadthing";
 import { SwappableImageList } from "./SwappableImageList";
-
-interface Product {
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  size: string;
-  status: string;
-  _id: string;
-  images: string[];
-}
+import type { ProductInterface } from "~/models/Product";
 
 export function AddProduct({
   _id = "",
@@ -30,7 +20,7 @@ export function AddProduct({
   size: existingSize = "",
   status = "",
   images: existingImages = [],
-}: Product) {
+}: ProductInterface) {
   const [name, setName] = useState(existingName || "");
   const [price, setPrice] = useState(existingPrice || undefined);
   const [description, setDescription] = useState(existingDescription || "");

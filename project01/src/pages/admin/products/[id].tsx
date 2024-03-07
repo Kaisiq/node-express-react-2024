@@ -5,21 +5,11 @@ import type { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Spinner } from "~/components/Spinner";
-
-interface Product {
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  size: string;
-  status: string;
-  _id: string;
-  images: string[];
-}
+import type { ProductInterface } from "~/models/Product";
 
 export default function Component() {
   const router = useRouter();
-  const [productInfo, setProductInfo] = useState<Product>({
+  const [productInfo, setProductInfo] = useState<ProductInterface>({
     name: "",
     price: null as unknown as number,
     description: "",
@@ -39,7 +29,7 @@ export default function Component() {
     }
     axios
       .get("/api/products?id=" + itemID)
-      .then((res: AxiosResponse<Product>) => {
+      .then((res: AxiosResponse<ProductInterface>) => {
         setProductInfo(res.data);
       })
       .catch((err) => {

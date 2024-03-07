@@ -1,7 +1,50 @@
-export function LatestProducts() {
+import type { ProductInterface } from "~/models/Product";
+import Link from "next/link";
+
+export function LatestProducts({ products }: { products: ProductInterface[] }) {
+  console.log(products);
+
   return (
-    <div>
-      <h1>asdasd</h1>
-    </div>
+    <>
+      <h1 className="text-center text-3xl font-bold">Най-нови продукти</h1>
+      <section className="grid grid-cols-1 gap-10 p-10 md:grid-cols-2 md:p-6 lg:grid-cols-3">
+        {products.map((product) => {
+          return (
+            <div className="flex flex-col">
+              <div className="group relative overflow-hidden rounded-lg">
+                <Link
+                  className="absolute inset-0 z-10"
+                  href={"/product/" + product._id}
+                >
+                  <span className="sr-only">View</span>
+                </Link>
+                <img
+                  alt="Product 1"
+                  className="h-60 w-full object-cover"
+                  height={400}
+                  src={product?.images?.[0] ? product.images[0] : "/cat.jpg"}
+                  style={{
+                    aspectRatio: "500/400",
+                    objectFit: "cover",
+                  }}
+                  width={500}
+                />
+                <div className="flex flex-1 flex-col justify-between bg-white p-4 dark:bg-gray-950">
+                  <div className="grid gap-1">
+                    <h3 className="text-lg font-semibold md:text-xl">
+                      {product.name}
+                    </h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      {product.size}
+                    </p>
+                  </div>
+                  <h4 className="text-base font-semibold md:text-lg">$59.99</h4>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </section>
+    </>
   );
 }

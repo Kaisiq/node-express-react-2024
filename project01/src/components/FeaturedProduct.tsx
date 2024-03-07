@@ -1,15 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-interface ProductInterface {
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  size: string;
-  status: string;
-  _id: string;
-  images: string[];
-}
+import type { ProductInterface } from "~/models/Product";
+
 export function FeaturedProduct({ product }: { product: ProductInterface }) {
   return (
     <section className="w-full py-6 md:py-12">
@@ -19,7 +11,7 @@ export function FeaturedProduct({ product }: { product: ProductInterface }) {
             alt="Smartphone"
             className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full"
             height="700"
-            src="/cat.jpg"
+            src={product?.images?.[0] ? product.images[0] : ""}
             width="700"
           />
           <div className="space-y-4 text-center lg:text-left">
@@ -42,13 +34,13 @@ export function FeaturedProduct({ product }: { product: ProductInterface }) {
             </div>
             <Link
               className="inline-flex h-10 items-center justify-center rounded-md border border-gray-200 border-gray-200 bg-white px-8 text-sm font-medium shadow-sm transition-colors hover:bg-gray-100 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:border-gray-800 dark:border-gray-800 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus-visible:ring-gray-300"
-              href="/"
+              href={"/product/" + product._id}
             >
               Разгледай
             </Link>
             <Link
               className="inline-flex h-10 items-center justify-center rounded-md border border-gray-200 border-gray-200 bg-white px-8 text-sm font-medium shadow-sm transition-colors hover:bg-gray-100 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:border-gray-800 dark:border-gray-800 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus-visible:ring-gray-300"
-              href="/"
+              href={"/product/" + product._id}
             >
               Buy Now
             </Link>
