@@ -50,27 +50,41 @@ export function IndexHeader() {
       >
         <Link
           className="underline-offset-4 hover:underline sm:block lg:mt-0"
+          href="/"
+        >
+          Начало
+        </Link>
+        <Link
+          className="underline-offset-4 hover:underline sm:block lg:mt-0"
           href="/collection/clothing"
         >
-          Clothing
+          Дрехи
         </Link>
         <Link
           className="underline-offset-4 hover:underline sm:block lg:mt-0"
           href="/collection/accessories"
         >
-          Accessories
+          Аксесоари
         </Link>
         <Link
           className="underline-offset-4 hover:underline sm:block lg:mt-0"
           href="/collection/footwear"
         >
-          Footwear
+          Обувки
+        </Link>
+        <Link
+          className="underline-offset-4 hover:underline sm:block lg:mt-0"
+          href="/account"
+        >
+          Акаунт
         </Link>
         <Link
           className="underline-offset-4 hover:underline sm:block lg:mt-0"
           href="/cart"
         >
-          <ShoppingCartIcon />
+          <div className="flex">
+            <ShoppingCartIcon /> (0)
+          </div>
         </Link>
       </nav>
       {/* End of Navigation menu */}

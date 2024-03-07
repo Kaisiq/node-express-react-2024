@@ -2,8 +2,23 @@ import Link from "next/link";
 import { Button } from "~/components/ui/button";
 import Image from "next/image";
 import { Layout } from "~/components/Layout";
+import { FeaturedProduct } from "~/components/FeaturedProduct";
+import { mongooseConnect } from "~/lib/mongoose";
+import { Product, ProductModel } from "~/models/Product";
+import { LatestProducts } from "~/components/LatestProducts";
 
-export default function Home() {
+interface ProductInterface {
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  size: string;
+  status: string;
+  _id: string;
+  images: string[];
+}
+
+export default function Home({ product }: { product: ProductInterface }) {
   return (
     <Layout>
       <main className="flex-1">
@@ -21,7 +36,10 @@ export default function Home() {
             <div className="grid gap-4 px-4 md:px-6">
               <div className="space-y-2">
                 <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                  Handpicked Vintage Treasures
+                  По-добри от
+                  <span className="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
+                    втора употреба
+                  </span>
                 </h1>
                 <p className="max-w-[900px] text-gray-500 dark:text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   Discover a curated collection of unique and stylish vintage
@@ -33,11 +51,13 @@ export default function Home() {
                 className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-8 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
                 href="/collection"
               >
-                Explore Collection
+                Разгледай колекцията от дрехи
               </Link>
             </div>
           </div>
         </section>
+        <FeaturedProduct product={product} />
+        <LatestProducts />
         <section className="w-full border-t py-12 md:py-16 lg:py-20 xl:py-24">
           <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6">
             <div className="space-y-3">
@@ -92,4 +112,17 @@ export default function Home() {
       </main>
     </Layout>
   );
+}
+
+export async function getServerSideProps() {
+  try {
+    const featuredProductID = "65e758495fa65d0b43824843";
+    await mongooseConnect();
+    const product = await (Product as ProductModel).findById(featuredProductID);
+    return {
+      props: { product: JSON.parse(JSON.stringify(product)) },
+    };
+  } catch (err) {
+    console.log(err);
+  }
 }
