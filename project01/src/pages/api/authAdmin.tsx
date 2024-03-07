@@ -1,22 +1,6 @@
-// import { NextApiRequest, NextApiResponse } from "next";
-// import { User } from "~/models/User";
-
-// export default async function handle(
-//   req: NextApiRequest,
-//   res: NextApiResponse,
-// ) {
-//   if (req.method === "POST") {
-//     const { email } = req.body;
-//     const data = await User.findOne({ email });
-//     if(data.admin){
-//         res.json(true);
-//     }
-//     res.json(false);
-//   }
-// }
-
 import { NextApiRequest, NextApiResponse } from "next";
-import { User, UserModel } from "~/models/User"; // Import UserModel interface
+import { User, type UserModel } from "~/models/User"; // Import UserModel interface
+import { mongooseConnect } from "~/lib/mongoose";
 
 interface ReqBody {
   email: string;
@@ -27,7 +11,9 @@ export default async function handle(
   res: NextApiResponse,
 ) {
   if (req.method === "POST") {
-    const { email }: { email: string } = req.body as ReqBody;
+    await mongooseConnect();
+
+    const { email }: ReqBody = req.body as ReqBody;
     // Use UserModel interface to specify the type of User model
     try {
       const admin = await (User as UserModel).findOne(
