@@ -19,8 +19,6 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  await isAdminRequest(req, res);
-
   function linksToFileKeys(links: string[] | undefined) {
     if (!links) return "";
     const fileKeys: string[] = [];
@@ -40,6 +38,7 @@ export default async function handle(
   await mongooseConnect();
 
   if (req.method === "POST") {
+    await isAdminRequest(req, res);
     const requestBody: RequestBody = req.body as RequestBody;
     const {
       name,
@@ -68,11 +67,12 @@ export default async function handle(
       });
       res.json(data);
     } else {
-      const data = await (Product as ProductModel).find();
+      const data = await (Product as ProductModel).find().limit(50);
       res.json(data);
     }
   }
   if (req.method === "PUT") {
+    await isAdminRequest(req, res);
     const requestBody: RequestBody = req.body as RequestBody;
     const {
       name,
@@ -91,6 +91,7 @@ export default async function handle(
     res.json(true);
   }
   if (req.method === "DELETE") {
+    await isAdminRequest(req, res);
     if (req.query?.id) {
       const data = await (Product as ProductModel).findOne({
         _id: req.query.id,
