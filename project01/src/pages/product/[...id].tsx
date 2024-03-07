@@ -1,14 +1,6 @@
-import { Images, StarIcon } from "lucide-react";
 import { Label } from "~/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import { useEffect, useState } from "react";
-import {
-  Select,
-  SelectItem,
-  SelectTrigger,
-  SelectContent,
-  SelectValue,
-} from "~/components/ui/select";
 import { Button } from "~/components/ui/button";
 import { useRouter } from "next/router";
 import type { ProductInterface } from "~/models/Product";

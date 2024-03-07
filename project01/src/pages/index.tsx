@@ -45,6 +45,9 @@ export async function getServerSideProps() {
       props: {
         featuredProduct: JSON.parse(JSON.stringify(featuredProduct)),
         newProducts: JSON.parse(JSON.stringify(latestProducts)),
+      } as {
+        featuredProduct: ProductInterface | null;
+        newProducts: ProductInterface[];
       },
     };
   } catch (err) {
