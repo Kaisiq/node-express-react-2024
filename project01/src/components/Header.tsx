@@ -17,7 +17,6 @@ import { useSession, signOut } from "next-auth/react";
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: session } = useSession();
-
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };

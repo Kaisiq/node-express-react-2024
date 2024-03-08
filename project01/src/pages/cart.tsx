@@ -12,45 +12,26 @@ import { CartItem } from "~/components/CartItem";
 import { Layout } from "~/components/Layout";
 import { useSession } from "next-auth/react";
 import { LoginPage } from "../components/LoginPage";
-
-// import { Schema, model, models, Document, Model } from "mongoose";
-
-// export interface UserDocument extends Document {
-//   name: string;
-//   email: string;
-//   image?: string;
-//   emailVerified?: boolean;
-//   admin?: boolean;
-// }
-
-// export type UserModel = Model<UserDocument>;
-
-// const UserSchema = new Schema<UserDocument>({
-//   name: { type: String, required: true },
-//   email: { type: String, required: true },
-//   image: { type: String },
-//   emailVerified: { type: Boolean, default: null },
-//   admin: { type: Boolean },
-// });
-
-// export const User =
-//   models.User ?? model<UserDocument, UserModel>("User", UserSchema);
+import { useContext, useEffect, useState } from "react";
+import { CartContext } from "~/components/CartContextProvider";
+import axios from "axios";
+import { ProductInterface } from "~/models/Product";
 
 export default function Cart() {
-  const data = [
-    {
-      name: "asd",
-      properties: "1 2 3",
-      picture: "/cat.jpg",
-      price: 30,
-    },
-    {
-      name: "asd",
-      properties: "1 2 3",
-      picture: "/cat.jpg",
-      price: 30,
-    },
-  ];
+  const { cartProducts } = useContext(CartContext);
+  const [data, setData] = useState<ProductInterface[]>([]);
+  function updateCart() {
+    if (cartProducts.length > 0) {
+      axios.post("/api/products", { ids: cartProducts }).then((res) => {
+        setData(res.data);
+      });
+    } else {
+      setData([]);
+    }
+  }
+  useEffect(() => {
+    updateCart();
+  }, [cartProducts]);
   let totalPrice = 0;
   data.forEach((el) => {
     totalPrice += el.price;
@@ -101,7 +82,7 @@ export default function Cart() {
           </div>
         </CardContent>
         <CardFooter className="flex flex-col gap-2">
-          <Button className="w-full" size="lg">
+          <Button onClick={updateCart} className="w-full" size="lg">
             Обновяване на Количката
           </Button>
         </CardFooter>

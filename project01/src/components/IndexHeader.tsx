@@ -2,10 +2,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { ShoppingCartIcon } from "./Icons";
 import { MenuIcon } from "lucide-react";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { CartContext } from "./CartContextProvider";
 
 export function IndexHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { cartProducts }: { cartProducts: string[] } = useContext(CartContext);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -83,7 +85,7 @@ export function IndexHeader() {
           href="/cart"
         >
           <div className="flex">
-            <ShoppingCartIcon /> (0)
+            <ShoppingCartIcon /> {cartProducts.length}
           </div>
         </Link>
       </nav>

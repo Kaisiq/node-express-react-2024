@@ -3,6 +3,7 @@ import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 import "@uploadthing/react/styles.css";
 import "~/styles/globals.css";
+import { CartContextProvider } from "~/components/CartContextProvider";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -10,7 +11,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <Component {...pageProps} />
+      <CartContextProvider>
+        <Component {...pageProps} />
+      </CartContextProvider>
     </SessionProvider>
   );
 };

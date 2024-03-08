@@ -1,8 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "./ui/button";
+import { useContext } from "react";
 import type { ProductInterface } from "~/models/Product";
+import { CartContext } from "./CartContextProvider";
 
 export function FeaturedProduct({ product }: { product: ProductInterface }) {
+  const { addProduct } = useContext(CartContext);
+  function addToCart() {
+    addProduct(product._id);
+  }
   return (
     <section className="w-full py-6 md:py-12">
       <div className="container px-4 md:px-6">
@@ -38,12 +45,12 @@ export function FeaturedProduct({ product }: { product: ProductInterface }) {
             >
               Разгледай
             </Link>
-            <Link
-              className="inline-flex h-10 items-center justify-center rounded-md border border-gray-200 border-gray-200 bg-white px-8 text-sm font-medium shadow-sm transition-colors hover:bg-gray-100 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:border-gray-800 dark:border-gray-800 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus-visible:ring-gray-300"
-              href={"/product/" + product._id}
+            <Button
+              className="inline-flex h-10 items-center justify-center rounded-md border border-gray-200 border-gray-200 bg-white px-8 text-sm font-medium text-black shadow-sm transition-colors hover:bg-gray-100 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:border-gray-800 dark:border-gray-800 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus-visible:ring-gray-300"
+              onClick={addToCart}
             >
               Buy Now
-            </Link>
+            </Button>
           </div>
         </div>
       </div>

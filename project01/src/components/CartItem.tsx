@@ -1,15 +1,13 @@
 import { TrashIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import Image from "next/image";
+import { ProductInterface } from "~/models/Product";
+import { useContext } from "react";
+import { CartContext } from "./CartContextProvider";
 
-interface Item {
-  name: string;
-  properties: string;
-  picture: string;
-  price: number;
-}
+export function CartItem({ data }: { data: ProductInterface }) {
+  const { removeProduct } = useContext(CartContext);
 
-export function CartItem({ data }: { data: Item }) {
   return (
     <div className="flex items-center gap-4 px-4 py-2 md:grid md:grid-cols-3 md:items-start lg:gap-6">
       <div className="flex items-start gap-4 text-sm md:col-span-2">
@@ -17,17 +15,24 @@ export function CartItem({ data }: { data: Item }) {
           alt="Thumbnail"
           className="aspect-video rounded-md border object-cover"
           height="200"
-          src={data.picture}
+          src={data?.images?.[0] ? data.images[0] : ""}
           width="150"
         />
         <div>
           <h2 className="font-semibold">{data.name}</h2>
           <div className="text-sm text-gray-500 dark:text-gray-400">
-            {data.properties.split(" ").map((el, index) => {
+            {/* {data.properties.split(" ").map((el, index) => {
               return <p key={index}>{el}</p>;
-            })}
+            })} */}
+            {data.description}
           </div>
-          <Button size="icon" variant="ghost">
+          <Button
+            onClick={() => {
+              removeProduct(data._id);
+            }}
+            size="icon"
+            variant="ghost"
+          >
             <TrashIcon className="h-4 w-4" />
             <span className="sr-only">Remove</span>
           </Button>

@@ -38,6 +38,10 @@ export default async function handle(
   await mongooseConnect();
 
   if (req.method === "POST") {
+    if (req.body?.ids) {
+      const data = await (Product as ProductModel).find({ _id: req.body.ids });
+      res.json(data);
+    }
     await isAdminRequest(req, res);
     const requestBody: RequestBody = req.body as RequestBody;
     const {
