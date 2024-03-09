@@ -29,6 +29,7 @@ export function AddProduct({
   const [images, setImages] = useState(existingImages || []);
   const [addedProduct, setAddedProduct] = useState(0);
   const router = useRouter();
+  const [rerenderKey, setRerenderKey] = useState(0);
 
   async function saveProduct(ev: FormEvent) {
     ev.preventDefault();
@@ -62,11 +63,13 @@ export function AddProduct({
     }
     setAddedProduct(1);
   }
+
   if (addedProduct === 1) {
     router.push("/admin/products").catch((err) => {
       console.log(err);
     });
   }
+
   return (
     <form onSubmit={saveProduct}>
       <div className="flex items-center gap-4">
@@ -179,21 +182,22 @@ export function AddProduct({
             <UploadDropzone
               endpoint="imageUploader"
               onClientUploadComplete={(res) => {
-                // Do something with the response
-                res.forEach((el) => {
-                  setImages((oldImages) => {
-                    return [...oldImages, el.url];
-                  });
+                setImages((oldImages) => {
+                  const data = res.map((el) => el.url);
+                  return [...oldImages, ...data];
                 });
-                return images;
+                setRerenderKey((rk) => rk + 1);
               }}
               onUploadError={(error: Error) => {
-                // Do something with the error.
                 alert(`ERROR! ${error.message}`);
               }}
             />
             {images && (
-              <SwappableImageList images={images} onImagesChange={setImages} />
+              <SwappableImageList
+                key={rerenderKey}
+                images={images}
+                onImagesChange={setImages}
+              />
             )}
           </div>
         </CardContent>

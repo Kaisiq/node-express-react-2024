@@ -16,6 +16,7 @@ import { useContext, useEffect, useState } from "react";
 import { CartContext } from "~/components/CartContextProvider";
 import axios from "axios";
 import { ProductInterface } from "~/models/Product";
+import { CheckoutSection } from "~/components/CheckoutSection";
 
 export default function Cart() {
   const { cartProducts } = useContext(CartContext);
@@ -75,9 +76,7 @@ export default function Cart() {
               <div className="text-2xl font-semibold md:col-span-2 md:flex md:justify-end md:text-right">
                 общо: {totalPrice}лв
               </div>
-              <Button className="w-full md:col-span-1 md:w-auto" size="lg">
-                Continue to Checkout
-              </Button>
+              <CheckoutSection />
             </div>
           </div>
         </CardContent>

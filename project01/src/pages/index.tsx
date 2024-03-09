@@ -31,14 +31,14 @@ export default function Home({
 
 export async function getServerSideProps() {
   try {
-    const featuredProductID = "65e758495fa65d0b43824843";
+    const featuredProductID = "65e72fe03188c9b2c3a8ba27";
     await mongooseConnect();
     const featuredProduct = await (Product as ProductModel).findById(
       featuredProductID,
     );
     const latestProducts = await (Product as ProductModel)
       .find({}, null, {
-        sort: { _id: -1 },
+        sort: { updatedAt: -1 },
       })
       .limit(3);
     /* eslint-disable */
