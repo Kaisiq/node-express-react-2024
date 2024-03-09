@@ -15,7 +15,7 @@ import { LoginPage } from "../components/LoginPage";
 import { useContext, useEffect, useState } from "react";
 import { CartContext } from "~/components/CartContextProvider";
 import axios from "axios";
-import { ProductInterface } from "~/models/Product";
+import type { ProductInterface } from "~/models/Product";
 import { CheckoutSection } from "~/components/CheckoutSection";
 
 export default function Cart() {
@@ -23,11 +23,16 @@ export default function Cart() {
   const [data, setData] = useState<ProductInterface[]>([]);
   function updateCart() {
     if (cartProducts.length > 0) {
-      axios.post("/api/products", { ids: cartProducts }).then((res) => {
-        setData(res.data);
-      });
+      axios
+        .post("/api/products", { ids: cartProducts })
+        .then((res) => {
+          setData(res.data as ProductInterface[]);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
-      setData([]);
+      setData([] as ProductInterface[]);
     }
   }
   useEffect(() => {

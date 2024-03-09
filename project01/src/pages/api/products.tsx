@@ -1,5 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Product, type ProductModel } from "~/models/Product";
+import {
+  Product,
+  type ProductInterface,
+  type ProductModel,
+} from "~/models/Product";
 import { mongooseConnect } from "~/lib/mongoose";
 import axios from "axios";
 import { isAdminRequest } from "~/server/auth";
@@ -38,10 +42,21 @@ export default async function handle(
   await mongooseConnect();
 
   if (req.method === "POST") {
-    if (req.body?.ids) {
-      const data = await (Product as ProductModel).find({ _id: req.body.ids });
-      res.json(data);
+    interface RB {
+      ids: string[];
+      // Add other properties if needed
     }
+
+    const reqBody: RB = req.body as RB;
+    const { ids }: RB = reqBody;
+    if (ids) {
+      const data: ProductInterface[] = await (Product as ProductModel).find({
+        _id: ids,
+      });
+      res.json(data);
+      return;
+    }
+
     await isAdminRequest(req, res);
     const requestBody: RequestBody = req.body as RequestBody;
     const {

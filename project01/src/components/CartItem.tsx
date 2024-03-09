@@ -1,7 +1,7 @@
 import { TrashIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import Image from "next/image";
-import { ProductInterface } from "~/models/Product";
+import type { ProductInterface } from "~/models/Product";
 import { useContext } from "react";
 import { CartContext } from "./CartContextProvider";
 

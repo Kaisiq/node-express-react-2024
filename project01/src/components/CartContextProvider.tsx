@@ -1,5 +1,5 @@
-import { ReactNode, createContext, useEffect, useState } from "react";
-import { Dispatch, SetStateAction } from "react";
+import { type ReactNode, createContext, useEffect, useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
 
 interface CartContextType {
   cartProducts: string[];
@@ -10,9 +10,9 @@ interface CartContextType {
 
 export const CartContext = createContext<CartContextType>({
   cartProducts: [],
-  setCartProducts: () => {},
-  addProduct: () => {},
-  removeProduct: () => {},
+  setCartProducts: () => {}, // eslint-disable-line
+  addProduct: () => {}, // eslint-disable-line
+  removeProduct: () => {}, // eslint-disable-line
 });
 
 export function CartContextProvider({ children }: { children: ReactNode }) {
@@ -39,10 +39,13 @@ export function CartContextProvider({ children }: { children: ReactNode }) {
   }
 
   useEffect(() => {
-    if (ls && ls.getItem("cart")) {
-      setCartProducts(JSON.parse(ls.getItem("cart") as string) || []);
+    if (ls?.getItem("cart")) {
+      const cartData = JSON.parse(ls.getItem("cart")!) as string[];
+      if (Array.isArray(cartData)) {
+        setCartProducts(cartData);
+      }
     }
-  }, []);
+  }, [ls]);
   return (
     <CartContext.Provider
       value={{ cartProducts, setCartProducts, addProduct, removeProduct }}

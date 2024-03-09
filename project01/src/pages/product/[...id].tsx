@@ -16,7 +16,7 @@ import {
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
-  CarouselApi,
+  type CarouselApi,
 } from "~/components/ui/carousel";
 
 export default function Page() {
@@ -144,7 +144,7 @@ export default function Page() {
                 <CarouselContent>
                   {productInfo.images.map((image) => {
                     return (
-                      <CarouselItem>
+                      <CarouselItem key={image}>
                         {image ? (
                           <Image
                             alt={image}
