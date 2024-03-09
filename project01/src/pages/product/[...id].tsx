@@ -36,7 +36,6 @@ export default function Page() {
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
   const { addProduct } = useContext(CartContext);
-  const [imageToShow, setImageToShow] = useState("");
   useEffect(() => {
     if (!productID) return;
     axios
@@ -44,19 +43,15 @@ export default function Page() {
       .then((res: AxiosResponse<ProductInterface>) => {
         setProductInfo(res.data);
       })
-      .then(() => {
-        const toShow = productInfo?.images?.[0]
-          ? productInfo?.images?.[0]
-          : imageToShow;
-        setImageToShow(toShow);
-      })
       .catch((err) => {
         console.log(err);
         return;
       });
   }, [productID]);
   useEffect(() => {
-    if (!api) return;
+    if (!api) {
+      return;
+    }
     setCount(api.scrollSnapList().length);
     setCurrent(api.selectedScrollSnap() + 1);
     api.on("select", () => {
@@ -144,47 +139,6 @@ export default function Page() {
                 {productInfo.price}лв
               </div>
             </div>
-            {/* <div className="hidden gap-4">
-              {productInfo?.images?.[0] || imageToShow ? (
-                <Image
-                  alt="Product Image"
-                  className="aspect-square w-full overflow-hidden rounded-lg border border-gray-200 object-cover dark:border-gray-800"
-                  height={600}
-                  src={
-                    imageToShow
-                      ? imageToShow
-                      : productInfo?.images?.[0]
-                        ? productInfo?.images?.[0]
-                        : ""
-                  }
-                  width={600}
-                />
-              ) : (
-                <Skeleton className="h-[600] w-[600] rounded-lg" />
-              )}
-              <div className="hidden items-start gap-4 md:flex ">
-                {productInfo.images.map((image) => {
-                  return (
-                    <button
-                      onClick={() => {
-                        setImageToShow(image);
-                      }}
-                      key={image}
-                      className="overflow-hidden rounded-lg border transition-colors hover:border-gray-900 dark:hover:border-gray-50"
-                    >
-                      <Image
-                        alt={image}
-                        className="aspect-square object-cover"
-                        height={100}
-                        src={image}
-                        width={100}
-                      />
-                    </button>
-                  );
-                })}
-              </div>
-            </div> */}
-            {/* Only for phone */}
             <div className="block rounded-lg">
               <Carousel setApi={setApi}>
                 <CarouselContent>
@@ -209,9 +163,13 @@ export default function Page() {
                 <CarouselPrevious className="hidden md:flex" />
                 <CarouselNext className="hidden md:flex" />
               </Carousel>
-              <div className="py-2 text-center text-sm text-muted-foreground">
-                Снимка {current} от {count}
-              </div>
+              {current && count ? (
+                <div className="py-2 text-center text-sm text-muted-foreground">
+                  Снимка {current} от {count}
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
         </div>
