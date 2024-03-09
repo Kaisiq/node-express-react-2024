@@ -1,6 +1,6 @@
 import { Label } from "~/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Button } from "~/components/ui/button";
 import { useRouter } from "next/router";
 import type { ProductInterface } from "~/models/Product";
@@ -8,6 +8,15 @@ import axios from "axios";
 import type { AxiosResponse } from "axios";
 import Image from "next/image";
 import { Layout } from "~/components/Layout";
+import { CartContext } from "~/components/CartContextProvider";
+import { Skeleton } from "~/components/ui/skeleton";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "~/components/ui/carousel";
 
 export default function Page() {
   const router = useRouter();
@@ -22,6 +31,7 @@ export default function Page() {
     _id: "",
     images: [],
   });
+  const { addProduct } = useContext(CartContext);
   const [imageToShow, setImageToShow] = useState("");
   useEffect(() => {
     if (!productID) {
@@ -93,12 +103,21 @@ export default function Page() {
                     className="flex cursor-pointer items-center gap-2 rounded-md border p-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
                     htmlFor="size-m"
                   >
-                    <RadioGroupItem id="size-m" value="m" />M
+                    <RadioGroupItem id="size-m" value="m" />
+                    {productInfo.size}
                     {"\n                          "}
                   </Label>
                 </RadioGroup>
               </div>
-              <Button size="lg">Add to cart</Button>
+              <Button
+                onClick={(ev) => {
+                  ev.preventDefault();
+                  addProduct(productID);
+                }}
+                size="lg"
+              >
+                Add to cart
+              </Button>
             </form>
           </div>
           <div className="order-1 grid items-start gap-3">
@@ -115,20 +134,24 @@ export default function Page() {
                 {productInfo.price}лв
               </div>
             </div>
-            <div className="grid gap-4">
-              <Image
-                alt="Product Image"
-                className="aspect-square w-full overflow-hidden rounded-lg border border-gray-200 object-cover dark:border-gray-800"
-                height={600}
-                src={
-                  imageToShow
-                    ? imageToShow
-                    : productInfo?.images?.[0]
-                      ? productInfo?.images?.[0]
-                      : ""
-                }
-                width={600}
-              />
+            <div className="hidden gap-4 md:grid">
+              {productInfo?.images?.[0] || imageToShow ? (
+                <Image
+                  alt="Product Image"
+                  className="aspect-square w-full overflow-hidden rounded-lg border border-gray-200 object-cover dark:border-gray-800"
+                  height={600}
+                  src={
+                    imageToShow
+                      ? imageToShow
+                      : productInfo?.images?.[0]
+                        ? productInfo?.images?.[0]
+                        : ""
+                  }
+                  width={600}
+                />
+              ) : (
+                <Skeleton className="h-[600] w-[600] rounded-lg" />
+              )}
               <div className="hidden items-start gap-4 md:flex">
                 {productInfo.images.map((image) => {
                   return (
@@ -148,12 +171,31 @@ export default function Page() {
                         src={image ? image : ""}
                         width={100}
                       />
-                      <span className="sr-only">View Image 1</span>
                     </button>
                   );
                 })}
               </div>
             </div>
+            {/* Only for phone */}
+            <Carousel>
+              <CarouselContent>
+                {productInfo.images.map((image) => {
+                  return (
+                    <CarouselItem>
+                      <Image
+                        alt={image}
+                        className="aspect-square object-cover"
+                        height={600}
+                        src={image ? image : ""}
+                        width={600}
+                      />
+                    </CarouselItem>
+                  );
+                })}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
           </div>
         </div>
       </Layout>

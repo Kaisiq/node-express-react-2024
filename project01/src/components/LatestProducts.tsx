@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Button } from "./ui/button";
 import { useContext } from "react";
 import { CartContext } from "./CartContextProvider";
+import { Skeleton } from "./ui/skeleton";
 
 export function LatestProducts({ products }: { products: ProductInterface[] }) {
   const { addProduct } = useContext(CartContext);
@@ -17,17 +18,21 @@ export function LatestProducts({ products }: { products: ProductInterface[] }) {
               <div className="group relative overflow-hidden rounded-lg">
                 <Link href={"/product/" + product._id}>
                   <span className="sr-only">View</span>
-                  <Image
-                    alt="Product 1"
-                    className="h-60 w-full object-cover"
-                    height={400}
-                    src={product?.images?.[0] ? product.images[0] : "/cat.jpg"}
-                    style={{
-                      aspectRatio: "500/400",
-                      objectFit: "cover",
-                    }}
-                    width={500}
-                  />
+                  {product?.images?.[0] ? (
+                    <Image
+                      alt="Product 1"
+                      className="h-60 w-full object-cover"
+                      height={400}
+                      src={product.images[0]}
+                      style={{
+                        aspectRatio: "500/400",
+                        objectFit: "cover",
+                      }}
+                      width={500}
+                    />
+                  ) : (
+                    <Skeleton className="h-[400] w-[500]" />
+                  )}
                 </Link>
                 <div className="justify-space-between flex">
                   <div className="flex flex-1 flex-col justify-between bg-white p-4 dark:bg-gray-950">

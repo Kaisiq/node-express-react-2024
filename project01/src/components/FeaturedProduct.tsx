@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import { useContext } from "react";
 import type { ProductInterface } from "~/models/Product";
 import { CartContext } from "./CartContextProvider";
+import { Skeleton } from "~/components/ui/skeleton";
 
 export function FeaturedProduct({ product }: { product: ProductInterface }) {
   const { addProduct } = useContext(CartContext);
@@ -14,13 +15,17 @@ export function FeaturedProduct({ product }: { product: ProductInterface }) {
     <section className="w-full py-6 md:py-12">
       <div className="container px-4 md:px-6">
         <div className="grid items-center gap-6 lg:grid-cols-[1fr_500px] lg:gap-12 xl:grid-cols-[1fr_700px] xl:gap-16">
-          <Image
-            alt="Smartphone"
-            className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full"
-            height="700"
-            src={product?.images?.[0] ? product.images[0] : ""}
-            width="700"
-          />
+          {product?.images?.[0] ? (
+            <Image
+              alt="Smartphone"
+              className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full"
+              height="700"
+              src={product.images[0]}
+              width="700"
+            />
+          ) : (
+            <Skeleton className="h-[700] w-[700]" />
+          )}
           <div className="space-y-4 text-center lg:text-left">
             <div className="space-y-2">
               <div className="inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800">
