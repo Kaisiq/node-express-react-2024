@@ -16,6 +16,7 @@ import {
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
+  CarouselApi,
 } from "~/components/ui/carousel";
 
 export default function Page() {
@@ -31,12 +32,13 @@ export default function Page() {
     _id: "",
     images: [],
   });
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const [count, setCount] = useState(0);
   const { addProduct } = useContext(CartContext);
   const [imageToShow, setImageToShow] = useState("");
   useEffect(() => {
-    if (!productID) {
-      return;
-    }
+    if (!productID) return;
     axios
       .get("/api/products?id=" + productID)
       .then((res: AxiosResponse<ProductInterface>) => {
@@ -53,6 +55,14 @@ export default function Page() {
         return;
       });
   }, [productID]);
+  useEffect(() => {
+    if (!api) return;
+    setCount(api.scrollSnapList().length);
+    setCurrent(api.selectedScrollSnap() + 1);
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap() + 1);
+    });
+  }, [api]);
   if (productInfo) {
     return (
       <Layout>
@@ -134,7 +144,7 @@ export default function Page() {
                 {productInfo.price}лв
               </div>
             </div>
-            <div className="hidden gap-4 md:grid">
+            {/* <div className="hidden gap-4">
               {productInfo?.images?.[0] || imageToShow ? (
                 <Image
                   alt="Product Image"
@@ -152,14 +162,12 @@ export default function Page() {
               ) : (
                 <Skeleton className="h-[600] w-[600] rounded-lg" />
               )}
-              <div className="hidden items-start gap-4 md:flex">
+              <div className="hidden items-start gap-4 md:flex ">
                 {productInfo.images.map((image) => {
                   return (
                     <button
                       onClick={() => {
-                        if (image) {
-                          setImageToShow(image);
-                        }
+                        setImageToShow(image);
                       }}
                       key={image}
                       className="overflow-hidden rounded-lg border transition-colors hover:border-gray-900 dark:hover:border-gray-50"
@@ -168,34 +176,43 @@ export default function Page() {
                         alt={image}
                         className="aspect-square object-cover"
                         height={100}
-                        src={image ? image : ""}
+                        src={image}
                         width={100}
                       />
                     </button>
                   );
                 })}
               </div>
-            </div>
+            </div> */}
             {/* Only for phone */}
-            <Carousel>
-              <CarouselContent>
-                {productInfo.images.map((image) => {
-                  return (
-                    <CarouselItem>
-                      <Image
-                        alt={image}
-                        className="aspect-square object-cover"
-                        height={600}
-                        src={image ? image : ""}
-                        width={600}
-                      />
-                    </CarouselItem>
-                  );
-                })}
-              </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
-            </Carousel>
+            <div className="block rounded-lg">
+              <Carousel setApi={setApi}>
+                <CarouselContent>
+                  {productInfo.images.map((image) => {
+                    return (
+                      <CarouselItem>
+                        {image ? (
+                          <Image
+                            alt={image}
+                            className="aspect-square rounded-lg object-cover"
+                            height={600}
+                            src={image ? image : ""}
+                            width={600}
+                          />
+                        ) : (
+                          <Skeleton className="h-[600] w-[600]" />
+                        )}
+                      </CarouselItem>
+                    );
+                  })}
+                </CarouselContent>
+                <CarouselPrevious className="hidden md:flex" />
+                <CarouselNext className="hidden md:flex" />
+              </Carousel>
+              <div className="py-2 text-center text-sm text-muted-foreground">
+                Снимка {current} от {count}
+              </div>
+            </div>
           </div>
         </div>
       </Layout>

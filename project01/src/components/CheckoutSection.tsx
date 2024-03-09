@@ -21,6 +21,7 @@ import {
   FormLabel,
   FormMessage,
 } from "~/components/ui/form";
+import { Textarea } from "./ui/textarea";
 import { toast } from "~/components/ui/use-toast";
 
 const FormSchema = z.object({
@@ -150,7 +151,7 @@ export function CheckoutSection() {
                 <FormItem>
                   <FormLabel>Допълнителна информация</FormLabel>
                   <FormControl>
-                    <Input placeholder="" {...field} />
+                    <Textarea placeholder="" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
