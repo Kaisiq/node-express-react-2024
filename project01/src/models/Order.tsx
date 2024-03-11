@@ -1,5 +1,5 @@
 import { Schema, model, models, type Document, type Model } from "mongoose";
-import { FormSchemaType } from "~/pages/api/orders";
+import type { FormSchemaType } from "~/pages/api/orders";
 
 export type OrderInterface = FormSchemaType & { _id: string; createdAt: Date };
 

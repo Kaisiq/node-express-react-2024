@@ -21,7 +21,6 @@ import { CheckoutSection } from "~/components/CheckoutSection";
 export default function Cart() {
   const { cartProducts } = useContext(CartContext);
   const [data, setData] = useState<ProductInterface[]>([]);
-  const [productNames, setProductNames] = useState<string[]>([]);
   function updateCart() {
     if (cartProducts.length > 0) {
       axios

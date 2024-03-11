@@ -24,6 +24,9 @@ export function OrdersTable() {
       .get("/api/orders")
       .then((response: AxiosResponse<OrderInterface[]>) => {
         setOrders(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   }, []);
   return (
@@ -72,7 +75,7 @@ export function OrdersTable() {
               {orders &&
                 orders.map((order) => {
                   return (
-                    <TableRow>
+                    <TableRow key={order._id}>
                       <TableCell>{order.flname}</TableCell>
                       <TableCell>{order.email}</TableCell>
                       <TableCell>{order.tel}</TableCell>

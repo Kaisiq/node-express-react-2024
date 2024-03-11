@@ -59,14 +59,20 @@ export function CheckoutSection() {
 
   useEffect(() => {
     if (reserveProducts) {
-      setProductStatus("selling");
+      setProductStatus("selling").catch((err) => {
+        console.log(err);
+      });
     } else {
-      setProductStatus("ok");
+      setProductStatus("ok").catch((err) => {
+        console.log(err);
+      });
     }
   }, [reserveProducts]);
 
   useEffect(() => {
-    setProductStatus("ok");
+    setProductStatus("ok").catch((err) => {
+      console.log(err);
+    });
   }, [router.query, router.pathname]);
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -117,7 +123,7 @@ export function CheckoutSection() {
     const order = {
       flname: data.flname,
       tel: data.tel,
-      email: session?.user.email || "",
+      email: session?.user.email ?? "",
       address: data.address,
       info: data.info,
       city: data.city,
@@ -132,7 +138,8 @@ export function CheckoutSection() {
       "Скоро ще получите имейл с потвърждение за поръчката на следният продукт: " +
       productNames.join("");
     if (productNames.length > 1) {
-      "Скоро ще получите имейл с потвърждение за поръчката на продуктите: " +
+      description =
+        "Скоро ще получите имейл с потвърждение за поръчката на продуктите: " +
         productNames.join(" ,");
     }
     toast({
