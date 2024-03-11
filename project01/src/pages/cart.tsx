@@ -8,7 +8,7 @@ import {
 import { Button } from "~/components/ui/button";
 import Link from "next/link";
 import { ChevronLeftIcon } from "~/components/Icons";
-import { CartItem } from "~/components/CartItem";
+import { CartItem, CartItemSkeleton } from "~/components/CartItem";
 import { Layout } from "~/components/Layout";
 import { useSession } from "next-auth/react";
 import { LoginPage } from "../components/LoginPage";
@@ -66,9 +66,13 @@ export default function Cart() {
               </div>
             </div>
             <div className="divide-y">
-              {data.map((el, index) => {
-                return <CartItem key={index} data={el} />;
-              })}
+              {data
+                ? data.map((el, index) => {
+                    return <CartItem key={index} data={el} />;
+                  })
+                : cartProducts.map((el) => {
+                    return <CartItemSkeleton key={el} />;
+                  })}
             </div>
             <div className="flex flex-col gap-2 px-4 py-2 md:grid md:grid-cols-4 md:items-start lg:gap-6">
               <Link
