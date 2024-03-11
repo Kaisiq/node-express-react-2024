@@ -1,5 +1,6 @@
 import { IndexHeader } from "./IndexHeader";
 import { Footer } from "./Footer";
+import { Toaster } from "./ui/toaster";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -7,6 +8,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <IndexHeader />
       {children}
       <Footer />
+      <Toaster />
     </div>
   );
 }

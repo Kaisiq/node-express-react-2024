@@ -1,5 +1,6 @@
 import { type ReactNode, createContext, useEffect, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
+import { useToast } from "./ui/use-toast";
 
 interface CartContextType {
   cartProducts: string[];
@@ -17,6 +18,7 @@ export const CartContext = createContext<CartContextType>({
 
 export function CartContextProvider({ children }: { children: ReactNode }) {
   const ls = typeof window !== "undefined" ? window.localStorage : null;
+  const { toast } = useToast();
   const [cartProducts, setCartProducts] = useState<string[]>([]);
   useEffect(() => {
     if (cartProducts.length > 0) {
@@ -27,8 +29,16 @@ export function CartContextProvider({ children }: { children: ReactNode }) {
   function addProduct(productID: string) {
     setCartProducts((prev) => {
       if (!prev.includes(productID)) {
+        toast({
+          title: "Добавен продукт",
+          description: "Продуктът бе успешно добавен в количката Ви!",
+        });
         return [...prev, productID];
       } else {
+        toast({
+          title: "Добавен продукт",
+          description: "Продуктът вече се намира в количката Ви.",
+        });
         return prev;
       }
     });

@@ -5,9 +5,12 @@ import { Button } from "./ui/button";
 import { useContext } from "react";
 import { CartContext } from "./CartContextProvider";
 import { Skeleton } from "./ui/skeleton";
+import { useRouter } from "next/router";
+import { useToast } from "./ui/use-toast";
 
 export function LatestProducts({ products }: { products: ProductInterface[] }) {
   const { addProduct } = useContext(CartContext);
+  const router = useRouter();
   return (
     <>
       <h1 className="text-center text-3xl font-bold">Най-нови продукти</h1>
@@ -51,13 +54,22 @@ export function LatestProducts({ products }: { products: ProductInterface[] }) {
                       {product.price}лв
                     </h4>
                   </div>
-                  <Button
-                    onClick={() => {
-                      addProduct(product._id);
-                    }}
-                  >
-                    Buy now
-                  </Button>
+                  <div className="flex flex-col gap-3 pt-4">
+                    <Button
+                      onClick={() => {
+                        router.push("product/" + product._id);
+                      }}
+                    >
+                      Разгледай
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        addProduct(product._id);
+                      }}
+                    >
+                      Добави в количката
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
