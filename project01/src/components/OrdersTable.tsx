@@ -12,8 +12,20 @@ import {
   TableBody,
   Table,
 } from "./ui/table";
+import { OrderInterface } from "~/models/Order";
+import { useEffect, useState } from "react";
+import axios, { AxiosResponse } from "axios";
 
 export function OrdersTable() {
+  const [orders, setOrders] = useState<OrderInterface[]>([]);
+
+  useEffect(() => {
+    axios
+      .get("/api/orders")
+      .then((response: AxiosResponse<OrderInterface[]>) => {
+        setOrders(response.data);
+      });
+  }, []);
   return (
     <>
       <header className="flex h-14 items-center gap-4 border-b bg-gray-100/40 px-6 dark:bg-gray-800/40 lg:h-[60px]">
@@ -45,6 +57,11 @@ export function OrdersTable() {
             <TableHeader>
               <TableRow>
                 <TableHead>Customer</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Telephone</TableHead>
+                <TableHead>City</TableHead>
+                <TableHead>Address</TableHead>
+                <TableHead>Info</TableHead>
                 <TableHead>Product Name</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Date</TableHead>
@@ -52,62 +69,23 @@ export function OrdersTable() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              <TableRow>
-                <TableCell>Olivia Martin</TableCell>
-                <TableCell>Online Store</TableCell>
-                <TableCell>Shipped</TableCell>
-                <TableCell>February 20, 2022</TableCell>
-                <TableCell>$42.25</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Ava Johnson</TableCell>
-                <TableCell>Shop</TableCell>
-                <TableCell>Paid</TableCell>
-                <TableCell>January 5, 2022</TableCell>
-                <TableCell>$74.99</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Michael Johnson</TableCell>
-                <TableCell>Shop</TableCell>
-                <TableCell>Unfulfilled</TableCell>
-                <TableCell>August 3, 2021</TableCell>
-                <TableCell>$64.75</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Lisa Anderson</TableCell>
-                <TableCell>Online Store</TableCell>
-                <TableCell>Shipped</TableCell>
-                <TableCell>July 15, 2021</TableCell>
-                <TableCell>$34.50</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Samantha Green</TableCell>
-                <TableCell>Shop</TableCell>
-                <TableCell>Paid</TableCell>
-                <TableCell>June 5, 2021</TableCell>
-                <TableCell>$89.99</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Adam Barlow</TableCell>
-                <TableCell>Online Store</TableCell>
-                <TableCell>Unfulfilled</TableCell>
-                <TableCell>May 20, 2021</TableCell>
-                <TableCell>$24.99</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Sophia Anderson</TableCell>
-                <TableCell>Shop</TableCell>
-                <TableCell>Paid</TableCell>
-                <TableCell>November 2, 2021</TableCell>
-                <TableCell>$99.99</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Daniel Smith</TableCell>
-                <TableCell>Online Store</TableCell>
-                <TableCell>Shipped</TableCell>
-                <TableCell>October 7, 2021</TableCell>
-                <TableCell>$67.50</TableCell>
-              </TableRow>
+              {orders &&
+                orders.map((order) => {
+                  return (
+                    <TableRow>
+                      <TableCell>{order.flname}</TableCell>
+                      <TableCell>{order.email}</TableCell>
+                      <TableCell>{order.tel}</TableCell>
+                      <TableCell>{order.city}</TableCell>
+                      <TableCell>{order.address}</TableCell>
+                      <TableCell>{order.info}</TableCell>
+                      <TableCell>{order.productNames.join(" ")}</TableCell>
+                      <TableCell>{order.status}</TableCell>
+                      <TableCell>{order.createdAt.toString()}</TableCell>
+                      <TableCell>{order.price}</TableCell>
+                    </TableRow>
+                  );
+                })}
             </TableBody>
           </Table>
         </div>

@@ -97,62 +97,47 @@ export function CheckoutSection() {
     });
   }
 
-  function getProductInfo(): Promise<{
-    productNames: string[];
-    price: number;
-  }> {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const productNames: string[] = [];
-        let price: number = 0;
-        cartProducts.forEach(async (product) => {
-          const result: AxiosResponse<ProductInterface> = await axios.get(
-            "/api/products?id=" + product,
-          );
-          productNames.push(result.data.name);
-          price += result.data.price;
-        });
-        resolve({ productNames, price });
-      });
-    });
+  async function getProductInfo() {
+    const productNames: string[] = [];
+    let price = 0;
+    for await (const product of cartProducts) {
+      const result: AxiosResponse<ProductInterface> = await axios.get(
+        "/api/products?id=" + product,
+      );
+      productNames.push(result.data.name);
+      price += result.data.price;
+    }
+    return { productNames, price };
   }
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    setProductStatus("sold").then(() => {
-      getProductInfo().then(
-        async ({
-          productNames,
-          price,
-        }: {
-          productNames: string[];
-          price: number;
-        }) => {
-          const order = {
-            flname: data.flname,
-            tel: data.tel,
-            email: session?.user.email || "",
-            address: data.address,
-            info: data.info,
-            city: data.city,
-            price: price,
-            status: "new",
-            productIDs: cartProducts,
-            productNames: productNames,
-          };
-          await axios.post("/api/orders", order);
-          let description =
-            "Скоро ще получите имейл с потвърждение за поръчката на следният продукт: " +
-            productNames.join("");
-          if (productNames.length > 1) {
-            "Скоро ще получите имейл с потвърждение за поръчката на продуктите: " +
-              productNames.join(" ,");
-          }
-          toast({
-            title: "Покупката беше завършена!",
-            description,
-          });
-        },
-      );
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    await setProductStatus("sold");
+    const { productNames, price } = await getProductInfo();
+
+    const order = {
+      flname: data.flname,
+      tel: data.tel,
+      email: session?.user.email || "",
+      address: data.address,
+      info: data.info,
+      city: data.city,
+      price,
+      status: "new",
+      productIDs: cartProducts,
+      productNames,
+    };
+    console.log(productNames);
+    await axios.post("/api/orders", order);
+    let description =
+      "Скоро ще получите имейл с потвърждение за поръчката на следният продукт: " +
+      productNames.join("");
+    if (productNames.length > 1) {
+      "Скоро ще получите имейл с потвърждение за поръчката на продуктите: " +
+        productNames.join(" ,");
+    }
+    toast({
+      title: "Покупката беше завършена!",
+      description,
     });
   }
   return (
