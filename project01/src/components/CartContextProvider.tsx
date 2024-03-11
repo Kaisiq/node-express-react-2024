@@ -46,6 +46,10 @@ export function CartContextProvider({ children }: { children: ReactNode }) {
 
   function removeProduct(productID: string) {
     setCartProducts((prev) => prev.filter((el) => el != productID));
+    toast({
+      title: "Премахнат продукт",
+      description: "Продуктът бе премахнат от количката Ви.",
+    });
   }
 
   useEffect(() => {
