@@ -56,7 +56,7 @@ export function LatestProducts({ products }: { products: ProductInterface[] }) {
                   <div className="flex flex-col gap-3 pt-4">
                     <Button
                       onClick={async () => {
-                        router.push("product/" + product._id);
+                        await router.push("product/" + product._id);
                       }}
                     >
                       Разгледай

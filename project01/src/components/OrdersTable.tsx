@@ -72,23 +72,22 @@ export function OrdersTable() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {orders &&
-                orders.map((order) => {
-                  return (
-                    <TableRow key={order._id}>
-                      <TableCell>{order.flname}</TableCell>
-                      <TableCell>{order.email}</TableCell>
-                      <TableCell>{order.tel}</TableCell>
-                      <TableCell>{order.city}</TableCell>
-                      <TableCell>{order.address}</TableCell>
-                      <TableCell>{order.info}</TableCell>
-                      <TableCell>{order.productNames.join(" ")}</TableCell>
-                      <TableCell>{order.status}</TableCell>
-                      <TableCell>{order.createdAt.toString()}</TableCell>
-                      <TableCell>{order.price}</TableCell>
-                    </TableRow>
-                  );
-                })}
+              {orders?.map((order) => {
+                return (
+                  <TableRow key={order._id}>
+                    <TableCell>{order.flname}</TableCell>
+                    <TableCell>{order.email}</TableCell>
+                    <TableCell>{order.tel}</TableCell>
+                    <TableCell>{order.city}</TableCell>
+                    <TableCell>{order.address}</TableCell>
+                    <TableCell>{order.info}</TableCell>
+                    <TableCell>{order.productNames.join(" ")}</TableCell>
+                    <TableCell>{order.status}</TableCell>
+                    <TableCell>{order.createdAt.toString()}</TableCell>
+                    <TableCell>{order.price}</TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </div>
