@@ -12,7 +12,14 @@ import {
   TableBody,
   Table,
 } from "./ui/table";
-import { OrderInterface } from "~/models/Order";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
+import { OrderInterface } from "~/pages/api/orders";
 import { useEffect, useState } from "react";
 import axios, { AxiosResponse } from "axios";
 
@@ -82,7 +89,24 @@ export function OrdersTable() {
                     <TableCell>{order.address}</TableCell>
                     <TableCell>{order.info}</TableCell>
                     <TableCell>{order.productNames.join(" ")}</TableCell>
-                    <TableCell>{order.status}</TableCell>
+                    <TableCell>
+                      <Select
+                        onValueChange={(value) => {
+                          const updatedOrder = { ...order, status: value };
+                          axios.put("/api/orders" + updatedOrder);
+                        }}
+                      >
+                        <SelectTrigger className="w-[180px]">
+                          <SelectValue placeholder={order.status} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="new">new</SelectItem>
+                          <SelectItem value="shipped">shipped</SelectItem>
+                          <SelectItem value="completed">completed</SelectItem>
+                          <SelectItem value="canceled">canceled</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
                     <TableCell>{order.createdAt.toString()}</TableCell>
                     <TableCell>{order.price}</TableCell>
                   </TableRow>

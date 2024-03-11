@@ -8,16 +8,23 @@ import { mongooseConnect } from "~/lib/mongoose";
 import axios from "axios";
 import { isAdminRequest } from "~/server/auth";
 
-interface RequestBody {
-  name: string;
-  description: string;
-  size: string;
-  price: number;
-  category: string;
-  status: string;
-  images: string[];
-  _id: string;
-}
+import { z } from "zod";
+import { ProductService } from "~/services/ProductService";
+
+const ProductSchema = z.object({
+  name: z.string(),
+  description: z.string(),
+  price: z.number(),
+  category: z.string(),
+  size: z.string(),
+  status: z.string(),
+  _id: z.string(),
+  images: z.array(z.string()),
+});
+
+const productService = new ProductService();
+
+export type Product = z.infer<typeof ProductSchema>;
 
 export default async function handle(
   req: NextApiRequest,
@@ -58,56 +65,24 @@ export default async function handle(
     }
 
     await isAdminRequest(req, res);
-    const requestBody: RequestBody = req.body as RequestBody;
-    const {
-      name,
-      description,
-      size,
-      price,
-      category,
-      status,
-      images,
-    }: RequestBody = requestBody;
-    const data = await (Product as ProductModel).create({
-      name,
-      description,
-      price,
-      category,
-      size,
-      status,
-      images,
-    });
+    const input = ProductSchema.parse(req.body);
+    const data = await productService.createProduct(input);
     res.json(data);
   }
   if (req.method === "GET") {
     if (req.query?.id) {
-      const data = await (Product as ProductModel).findOne({
-        _id: req.query.id,
-      });
+      const data = productService.getProduct(req.query.id);
       res.json(data);
     } else {
-      const data = await (Product as ProductModel).find().limit(50);
+      const data = productService.getAllProducts();
       res.json(data);
     }
   }
   if (req.method === "PUT") {
     await isAdminRequest(req, res);
-    const requestBody: RequestBody = req.body as RequestBody;
-    const {
-      name,
-      description,
-      size,
-      price,
-      category,
-      status,
-      images,
-      _id,
-    }: RequestBody = requestBody;
-    await Product.updateOne(
-      { _id: _id },
-      { name, description, size, price, category, status, images },
-    );
-    res.json(true);
+    const input = ProductSchema.parse(req.body);
+    const data = await productService.updateProduct(input);
+    res.json(data);
   }
   if (req.method === "DELETE") {
     await isAdminRequest(req, res);

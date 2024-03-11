@@ -1,7 +1,4 @@
 import { Schema, model, models, type Document, type Model } from "mongoose";
-import type { FormSchemaType } from "~/pages/api/orders";
-
-export type OrderInterface = FormSchemaType & { _id: string; createdAt: Date };
 
 export interface OrderDocument extends Document {
   flname: string;
