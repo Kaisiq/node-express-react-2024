@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Order, OrderModel, OrderInterface } from "~/models/Order";
+import { Order, type OrderModel } from "~/models/Order";
 import { z } from "zod";
 
 const FormSchema = z.object({

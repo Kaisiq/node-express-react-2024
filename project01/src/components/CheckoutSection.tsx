@@ -86,21 +86,16 @@ export function CheckoutSection() {
     },
   });
 
-  function setProductStatus(status: string) {
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        cartProducts.forEach(async (product) => {
-          const result: AxiosResponse<ProductInterface> = await axios.get(
-            "/api/products?id=" + product,
-          );
-          if (result.data.status != "sold") {
-            result.data.status = status;
-          }
-          await axios.put("/api/products", result.data);
-        });
-        resolve();
-      });
-    });
+  async function setProductStatus(status: string) {
+    for await (const product of cartProducts) {
+      const result: AxiosResponse<ProductInterface> = await axios.get(
+        "/api/products?id=" + product,
+      );
+      if (result.data.status != "sold") {
+        result.data.status = status;
+      }
+      await axios.put("/api/products", result.data);
+    }
   }
 
   async function getProductInfo() {
