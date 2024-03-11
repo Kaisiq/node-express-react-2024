@@ -1,6 +1,6 @@
 import { type ReactNode, createContext, useEffect, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
-import { useToast } from "./ui/use-toast";
+import { toast } from "~/components/ui/use-toast";
 
 interface CartContextType {
   cartProducts: string[];
@@ -18,7 +18,6 @@ export const CartContext = createContext<CartContextType>({
 
 export function CartContextProvider({ children }: { children: ReactNode }) {
   const ls = typeof window !== "undefined" ? window.localStorage : null;
-  const { toast } = useToast();
   const [cartProducts, setCartProducts] = useState<string[]>([]);
   useEffect(() => {
     if (cartProducts.length > 0) {

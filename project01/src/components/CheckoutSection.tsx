@@ -23,6 +23,12 @@ import {
 } from "~/components/ui/form";
 import { Textarea } from "./ui/textarea";
 import { toast } from "~/components/ui/use-toast";
+import { useSession } from "next-auth/react";
+import { useContext, useEffect, useState } from "react";
+import { CartContext } from "./CartContextProvider";
+import axios, { AxiosResponse } from "axios";
+import { ProductInterface } from "~/models/Product";
+import { useRouter } from "next/router";
 
 const FormSchema = z.object({
   flname: z.string().min(2, {
@@ -46,6 +52,23 @@ const FormSchema = z.object({
 });
 
 export function CheckoutSection() {
+  const { cartProducts } = useContext(CartContext);
+  const { data: session } = useSession();
+  const [reserveProducts, setReserveProducts] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (reserveProducts) {
+      setProductStatus("selling");
+    } else {
+      setProductStatus("ok");
+    }
+  }, [reserveProducts]);
+
+  useEffect(() => {
+    setProductStatus("ok");
+  }, [router.query, router.pathname]);
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -57,18 +80,87 @@ export function CheckoutSection() {
     },
   });
 
+  function setProductStatus(status: string) {
+    return new Promise<void>((resolve) => {
+      setTimeout(() => {
+        cartProducts.forEach(async (product) => {
+          const result: AxiosResponse<ProductInterface> = await axios.get(
+            "/api/products?id=" + product,
+          );
+          if (result.data.status != "sold") {
+            result.data.status = status;
+          }
+          await axios.put("/api/products", result.data);
+        });
+        resolve();
+      });
+    });
+  }
+
+  function getProductInfo(): Promise<{
+    productNames: string[];
+    price: number;
+  }> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const productNames: string[] = [];
+        let price: number = 0;
+        cartProducts.forEach(async (product) => {
+          const result: AxiosResponse<ProductInterface> = await axios.get(
+            "/api/products?id=" + product,
+          );
+          productNames.push(result.data.name);
+          price += result.data.price;
+        });
+        resolve({ productNames, price });
+      });
+    });
+  }
+
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
+    setProductStatus("sold").then(() => {
+      getProductInfo().then(
+        async ({
+          productNames,
+          price,
+        }: {
+          productNames: string[];
+          price: number;
+        }) => {
+          const order = {
+            flname: data.flname,
+            tel: data.tel,
+            email: session?.user.email || "",
+            address: data.address,
+            info: data.info,
+            city: data.city,
+            price: price,
+            status: "new",
+            productIDs: cartProducts,
+            productNames: productNames,
+          };
+          await axios.post("/api/orders", order);
+          let description =
+            "Скоро ще получите имейл с потвърждение за поръчката на следният продукт: " +
+            productNames.join("");
+          if (productNames.length > 1) {
+            "Скоро ще получите имейл с потвърждение за поръчката на продуктите: " +
+              productNames.join(" ,");
+          }
+          toast({
+            title: "Покупката беше завършена!",
+            description,
+          });
+        },
+      );
     });
   }
   return (
-    <Sheet>
+    <Sheet
+      onOpenChange={(open) => {
+        setReserveProducts(open);
+      }}
+    >
       <SheetTrigger>
         <Button className="w-full md:col-span-1 md:w-auto">
           Продължаване към Плащане

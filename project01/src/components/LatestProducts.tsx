@@ -6,7 +6,6 @@ import { useContext } from "react";
 import { CartContext } from "./CartContextProvider";
 import { Skeleton } from "./ui/skeleton";
 import { useRouter } from "next/router";
-import { useToast } from "./ui/use-toast";
 
 export function LatestProducts({ products }: { products: ProductInterface[] }) {
   const { addProduct } = useContext(CartContext);
