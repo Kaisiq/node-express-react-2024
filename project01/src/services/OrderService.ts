@@ -1,10 +1,6 @@
-import { mongooseConnect } from "~/lib/mongoose";
 import { Order, OrderModel } from "~/models/Order";
 import { Product, ProductModel } from "~/models/Product";
 import { OrderInterface } from "~/pages/api/orders";
-import { ProductService } from "./ProductService";
-
-const productService = new ProductService();
 
 export class OrderService {
 	async updateOrder(input: OrderInterface) {
@@ -16,7 +12,6 @@ export class OrderService {
 		);
 		if (!result) return { message: "error" };
 		for await (const _id of rest.productIDs) {
-			const product = { _id, status: "ok" };
 			if (rest.status === "canceled") {
 				const res = await (Product as ProductModel).updateOne(
 					{ _id },
