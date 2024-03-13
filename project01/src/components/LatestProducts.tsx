@@ -9,7 +9,7 @@ export function LatestProducts({ n }: { n: number }) {
 	useEffect(() => {
 		axios
 			.get(`/api/products?newest=${n}`)
-			.then((res: AxiosResponse<ProductInterface>) => {
+			.then((res: AxiosResponse<ProductInterface[]>) => {
 				setProducts(res.data);
 			})
 			.catch((err) => {
