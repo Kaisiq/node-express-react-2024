@@ -78,19 +78,21 @@ export class ProductService {
 		}
 	}
 
+	/* eslint-disable */
 	async getProduct(input: string | string[]) {
 		if (Array.isArray(input)) {
-			const result = (await Product.find({
+			const result = (await (Product as ProductModel).find({
 				_id: input,
 			})) as ProductInterface[];
 			return result;
 		} else {
-			const result = (await Product.find({
+			const result = (await (Product as ProductModel).find({
 				_id: input,
 			})) as ProductInterface[];
 			return result[0];
 		}
 	}
+	/* eslint-enable */
 
 	async getAllProducts() {
 		const results = (await (Product as ProductModel)

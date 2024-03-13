@@ -7,19 +7,21 @@ export class OrderService {
 		const result = await (Order as OrderModel).create(input);
 		return { message: result ? "success" : "error" };
 	}
+	/* eslint-disable */
 	async getOrder(input: string | string[]) {
 		if (Array.isArray(input)) {
-			const result = (await Order.find({
+			const result = (await (Order as OrderModel).find({
 				_id: input,
 			})) as OrderInterface[];
 			return result;
 		} else {
-			const result = (await Order.find({
+			const result = (await (Order as OrderModel).find({
 				_id: input,
 			})) as OrderInterface[];
 			return result[0];
 		}
 	}
+	/* eslint-enable */
 	async getAllOrders() {
 		const result = (await (Order as OrderModel)
 			.find()
