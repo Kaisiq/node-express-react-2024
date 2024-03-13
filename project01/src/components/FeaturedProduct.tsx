@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import type { ProductInterface } from "~/pages/api/products";
 import { CartContext } from "./CartContextProvider";
 import { Skeleton } from "~/components/ui/skeleton";
-import axios, { AxiosResponse } from "axios";
+import axios, { type AxiosResponse } from "axios";
 
 export function FeaturedProduct({ productID }: { productID: string }) {
 	const [product, setProduct] = useState<ProductInterface>();
@@ -22,7 +22,7 @@ export function FeaturedProduct({ productID }: { productID: string }) {
 			.catch((err) => {
 				console.log(err);
 			});
-	}, []);
+	}, [productID]);
 	if (product) {
 		return (
 			<section className="w-full py-6 md:py-12">

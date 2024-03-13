@@ -2,7 +2,7 @@ import type { ProductInterface } from "~/pages/api/products";
 import { ProductCard, SkeletonProductCard } from "./ProductCard";
 import { EmptyClothingSlotsList } from "./ClothingSlotsList";
 import { useEffect, useState } from "react";
-import axios, { AxiosResponse } from "axios";
+import axios, { type AxiosResponse } from "axios";
 
 export function LatestProducts({ n }: { n: number }) {
 	const [products, setProducts] = useState<ProductInterface[]>([]);
@@ -15,7 +15,7 @@ export function LatestProducts({ n }: { n: number }) {
 			.catch((err) => {
 				console.log(err);
 			});
-	}, []);
+	}, [n]);
 	if (products && products.length > 0) {
 		return (
 			<>
