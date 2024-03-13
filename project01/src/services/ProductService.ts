@@ -75,13 +75,30 @@ export class ProductService {
 		}
 	}
 	async getProduct(input: string | string[]) {
-		const result = await (Product as ProductModel).find({ _id: input });
-		return result;
+		if (Array.isArray(input)) {
+			const result = (await (Product as ProductModel).find({
+				_id: input,
+			})) as ProductInterface[];
+			return result;
+		} else {
+			const result = (await (Product as ProductModel).find({
+				_id: input,
+			})) as ProductInterface[];
+			return result[0];
+		}
 	}
 	async getAllProducts() {
 		const results = (await (Product as ProductModel)
 			.find()
 			.limit(50)) as ProductInterface[];
+		return results;
+	}
+	async getNewestProducts(n: number) {
+		const results = (await (Product as ProductModel)
+			.find({}, null, {
+				sort: { updatedAt: -1 },
+			})
+			.limit(n)) as ProductInterface[];
 		return results;
 	}
 }
