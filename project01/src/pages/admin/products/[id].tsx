@@ -5,7 +5,7 @@ import type { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Spinner } from "~/components/Spinner";
-import type { ProductInterface } from "~/models/Product";
+import { ProductInterface } from "~/pages/api/products";
 
 export default function Component() {
   const router = useRouter();

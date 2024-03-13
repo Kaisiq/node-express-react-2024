@@ -3,7 +3,7 @@ import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import { useContext, useEffect, useState } from "react";
 import { Button } from "~/components/ui/button";
 import { useRouter } from "next/router";
-import type { ProductInterface } from "~/models/Product";
+import { ProductInterface } from "../api/products";
 import axios from "axios";
 import type { AxiosResponse } from "axios";
 import Image from "next/image";

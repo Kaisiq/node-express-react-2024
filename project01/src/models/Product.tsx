@@ -28,14 +28,3 @@ const ProductSchema = new Schema<ProductDocument>(
 export const Product =
 	models.Product ??
 	model<ProductDocument, ProductModel>("Product", ProductSchema);
-
-export interface ProductInterface {
-	name: string;
-	description: string;
-	price: number;
-	category: string;
-	size: string;
-	status: string;
-	_id: string;
-	images: string[];
-}

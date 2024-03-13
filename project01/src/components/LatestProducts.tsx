@@ -1,4 +1,4 @@
-import type { ProductInterface } from "~/models/Product";
+import { ProductInterface } from "~/pages/api/products";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./ui/button";
