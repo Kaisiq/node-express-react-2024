@@ -22,7 +22,7 @@ export function FeaturedProduct({ productID }: { productID: string }) {
 			.catch((err) => {
 				console.log(err);
 			});
-	}, [productID]);
+	}, []);
 	if (product) {
 		return (
 			<section className="w-full py-6 md:py-12">

@@ -15,7 +15,7 @@ export function LatestProducts({ n }: { n: number }) {
 			.catch((err) => {
 				console.log(err);
 			});
-	}, [n]);
+	}, []);
 	if (products && products.length > 0) {
 		return (
 			<>

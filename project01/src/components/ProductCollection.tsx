@@ -28,7 +28,7 @@ export function ProductCollection({
 				console.log(err);
 				return;
 			});
-	}, [n, category]);
+	}, []);
 
 	if (data && data.length > 0) {
 		return <ClothingSlotsList data={data} />;
