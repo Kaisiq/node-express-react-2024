@@ -57,10 +57,12 @@ export class ProductService {
 		);
 		return { message: result ? "success" : "error" };
 	}
+
 	async createProduct(input: ProductInterface) {
 		const result = await (Product as ProductModel).create(input);
 		return { message: result ? "success" : "error" };
 	}
+
 	async deleteProduct(input: string | string[]) {
 		if (Array.isArray(input)) {
 			for await (const el of input) {
@@ -75,6 +77,7 @@ export class ProductService {
 			return { message: res ? "success" : "error" };
 		}
 	}
+
 	async getProduct(input: string | string[]) {
 		if (Array.isArray(input)) {
 			const result = (await (Product as ProductModel).find({
@@ -88,16 +91,36 @@ export class ProductService {
 			return result[0];
 		}
 	}
+
 	async getAllProducts() {
 		const results = (await (Product as ProductModel)
 			.find()
 			.limit(50)) as ProductInterface[];
 		return results;
 	}
+
 	async getNewestProducts(n: number) {
 		const results = (await (Product as ProductModel)
 			.find({}, null, {
 				sort: { updatedAt: -1 },
+			})
+			.limit(n)) as ProductInterface[];
+		return results;
+	}
+
+	async getCategory(category: string) {
+		const results = (await (Product as ProductModel)
+			.find({
+				category: category,
+			})
+			.limit(50)) as ProductInterface[];
+		return results;
+	}
+
+	async getCategoryN(category: string, n: number) {
+		const results = (await (Product as ProductModel)
+			.find({
+				category: category,
 			})
 			.limit(n)) as ProductInterface[];
 		return results;

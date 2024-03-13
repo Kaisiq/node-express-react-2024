@@ -44,7 +44,20 @@ export default async function handle(
 		res.json(data);
 	}
 	if (req.method === "GET") {
-		if (req.query?.id) {
+		if (req.query?.category as string) {
+			if (req.query.number) {
+				const data = await productService.getCategoryN(
+					req.query.category as string,
+					req.query.number as unknown as number,
+				);
+				res.json(data);
+			} else {
+				const data = await productService.getCategory(
+					req.query.category as string,
+				);
+				res.json(data);
+			}
+		} else if (req.query?.id) {
 			const data = await productService.getProduct(req.query.id);
 			res.json(data);
 		} else {
