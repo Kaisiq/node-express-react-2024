@@ -16,7 +16,6 @@ function linksToFileKeys(links: string[] | undefined) {
 	});
 	return fileKeys;
 }
-import { mongooseConnect } from "~/lib/mongoose";
 
 export class ProductService {
 	async deleteProcess(input: string) {
@@ -49,7 +48,6 @@ export class ProductService {
 	}
 
 	async updateProduct(input: ProductInterface) {
-		await mongooseConnect();
 		const { _id, ...rest } = input;
 		const result = await (Product as ProductModel).findOneAndUpdate(
 			{ _id },
@@ -59,12 +57,10 @@ export class ProductService {
 		return { message: result ? "success" : "error" };
 	}
 	async createProduct(input: ProductInterface) {
-		await mongooseConnect();
 		const result = await (Product as ProductModel).create(input);
 		return { message: result ? "success" : "error" };
 	}
 	async deleteProduct(input: string | string[]) {
-		await mongooseConnect();
 		if (Array.isArray(input)) {
 			for await (const el of input) {
 				const result = await this.deleteProcess(el);
@@ -79,12 +75,10 @@ export class ProductService {
 		}
 	}
 	async getProduct(input: string | string[]) {
-		await mongooseConnect();
 		const result = await (Product as ProductModel).find({ _id: input });
 		return result;
 	}
 	async getAllProducts() {
-		await mongooseConnect();
 		const results = (await (Product as ProductModel)
 			.find()
 			.limit(50)) as ProductInterface[];
