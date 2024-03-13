@@ -15,7 +15,7 @@ import { LoginPage } from "../components/LoginPage";
 import { useContext, useEffect, useState } from "react";
 import { CartContext } from "~/components/CartContextProvider";
 import axios from "axios";
-import { ProductInterface } from "./api/products";
+import type { ProductInterface } from "./api/products";
 import { CheckoutSection } from "~/components/CheckoutSection";
 
 export default function Cart() {

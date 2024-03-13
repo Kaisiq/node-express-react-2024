@@ -3,8 +3,8 @@ import {
 	EmptyClothingSlotsList,
 } from "~/components/ClothingSlotsList";
 import { useEffect, useState } from "react";
-import { ProductInterface } from "~/pages/api/products";
-import axios, { AxiosResponse } from "axios";
+import type { ProductInterface } from "~/pages/api/products";
+import axios, { type AxiosResponse } from "axios";
 
 function min(a: number, b: number) {
 	return a < b ? a : b;
@@ -23,11 +23,15 @@ export function ProductCollection({
 			.get(`/api/products?category=${category}&number=${n}`)
 			.then((result: AxiosResponse<ProductInterface[]>) => {
 				setData(result.data);
+			})
+			.catch((err) => {
+				console.log(err);
+				return;
 			});
-	}, []);
+	}, [n, category]);
 
 	if (data && data.length > 0) {
-		return <ClothingSlotsList data={data} n={n} />;
+		return <ClothingSlotsList data={data} />;
 	} else {
 		return <EmptyClothingSlotsList n={min(3, n)} />;
 	}

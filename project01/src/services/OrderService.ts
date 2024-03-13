@@ -1,6 +1,6 @@
-import { Order, OrderModel } from "~/models/Order";
-import { Product, ProductModel } from "~/models/Product";
-import { OrderInterface } from "~/pages/api/orders";
+import { Order, type OrderModel } from "~/models/Order";
+import { Product, type ProductModel } from "~/models/Product";
+import type { OrderInterface } from "~/pages/api/orders";
 
 export class OrderService {
 	async createOrder(input: OrderInterface) {
@@ -9,12 +9,12 @@ export class OrderService {
 	}
 	async getOrder(input: string | string[]) {
 		if (Array.isArray(input)) {
-			const result = (await (Order as OrderModel).find({
+			const result = (await Order.find({
 				_id: input,
 			})) as OrderInterface[];
 			return result;
 		} else {
-			const result = (await (Order as OrderModel).find({
+			const result = (await Order.find({
 				_id: input,
 			})) as OrderInterface[];
 			return result[0];

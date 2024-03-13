@@ -9,7 +9,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { UploadDropzone } from "~/utils/uploadthing";
 import { SwappableImageList } from "./SwappableImageList";
-import { ProductInterface } from "~/pages/api/products";
+import type { ProductInterface } from "~/pages/api/products";
 
 export function AddProduct({
 	_id = "",

@@ -7,7 +7,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "~/components/ui/select";
-import { OrderInterface } from "~/pages/api/orders";
+import type { OrderInterface } from "~/pages/api/orders";
 import axios from "axios";
 import { Trash2Icon } from "lucide-react";
 
@@ -25,7 +25,9 @@ export function OrdersTableRow({ order }: { order: OrderInterface }) {
 				<Select
 					onValueChange={(value) => {
 						const updatedOrder = { ...order, status: value };
-						axios.put("/api/orders", updatedOrder);
+						axios.put("/api/orders", updatedOrder).catch((err) => {
+							console.log(err);
+						});
 					}}
 				>
 					<SelectTrigger className="w-[180px]">

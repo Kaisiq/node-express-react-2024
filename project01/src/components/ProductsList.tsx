@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { AxiosResponse } from "axios";
 import axios from "axios";
 import { ProductCardAdmin } from "./ProductCardAdmin";
-import { ProductInterface } from "~/pages/api/products";
+import type { ProductInterface } from "~/pages/api/products";
 
 export function ProductsList() {
 	const [products, setProducts] = useState<ProductInterface[]>([]);

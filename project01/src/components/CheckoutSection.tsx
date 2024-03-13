@@ -26,8 +26,8 @@ import { toast } from "~/components/ui/use-toast";
 import { useSession } from "next-auth/react";
 import { useContext, useEffect, useState } from "react";
 import { CartContext } from "./CartContextProvider";
-import axios, { AxiosResponse } from "axios";
-import { ProductInterface } from "~/pages/api/products";
+import axios, { type AxiosResponse } from "axios";
+import type { ProductInterface } from "~/pages/api/products";
 import { useRouter } from "next/router";
 
 const FormSchema = z.object({

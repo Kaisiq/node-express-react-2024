@@ -4,7 +4,7 @@ import { LatestProducts } from "~/components/LatestProducts";
 import { Separator } from "~/components/ui/separator";
 import { HeroSection } from "~/components/HeroSection";
 import { IndexAbout } from "~/components/IndexAbout";
-import { ProductInterface } from "./api/products";
+import type { ProductInterface } from "./api/products";
 import { ProductService } from "~/services/ProductService";
 
 export default function Home({

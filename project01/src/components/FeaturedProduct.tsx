@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { useContext } from "react";
-import { ProductInterface } from "~/pages/api/products";
+import type { ProductInterface } from "~/pages/api/products";
 import { CartContext } from "./CartContextProvider";
 import { Skeleton } from "~/components/ui/skeleton";
 

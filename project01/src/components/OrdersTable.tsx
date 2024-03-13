@@ -1,9 +1,9 @@
 import { Input } from "./ui/input";
 import { SearchIcon } from "~/components/Icons";
 import { TableHead, TableRow, TableHeader, TableBody, Table } from "./ui/table";
-import { OrderInterface } from "~/pages/api/orders";
+import type { OrderInterface } from "~/pages/api/orders";
 import { useEffect, useState } from "react";
-import axios, { AxiosResponse } from "axios";
+import axios, { type AxiosResponse } from "axios";
 import { OrdersTableRow } from "./OrdersTableRow";
 
 export function OrdersTable() {
@@ -56,7 +56,7 @@ export function OrdersTable() {
 						</TableHeader>
 						<TableBody>
 							{orders?.map((order) => {
-								return <OrdersTableRow order={order} />;
+								return <OrdersTableRow key={order._id} order={order} />;
 							})}
 						</TableBody>
 					</Table>

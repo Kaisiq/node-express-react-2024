@@ -1,14 +1,8 @@
-import { ProductInterface } from "~/pages/api/products";
+import type { ProductInterface } from "~/pages/api/products";
 import { ProductCard, SkeletonProductCard } from "./ProductCard";
 
 // TODO: fetch data from DB and add it
-export function ClothingSlotsList({
-	data,
-	n,
-}: {
-	data: ProductInterface[];
-	n: number;
-}) {
+export function ClothingSlotsList({ data }: { data: ProductInterface[] }) {
 	const clothingSlotList = [];
 	for (const el of data) {
 		clothingSlotList.push(<ProductCard key={el._id} product={el} />);

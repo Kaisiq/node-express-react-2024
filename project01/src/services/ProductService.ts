@@ -1,6 +1,6 @@
 import axios from "axios";
-import { Product, ProductModel } from "~/models/Product";
-import { ProductInterface } from "~/pages/api/products";
+import { Product, type ProductModel } from "~/models/Product";
+import type { ProductInterface } from "~/pages/api/products";
 
 function linksToFileKeys(links: string[] | undefined) {
 	if (!links) return "";
@@ -80,12 +80,12 @@ export class ProductService {
 
 	async getProduct(input: string | string[]) {
 		if (Array.isArray(input)) {
-			const result = (await (Product as ProductModel).find({
+			const result = (await Product.find({
 				_id: input,
 			})) as ProductInterface[];
 			return result;
 		} else {
-			const result = (await (Product as ProductModel).find({
+			const result = (await Product.find({
 				_id: input,
 			})) as ProductInterface[];
 			return result[0];
