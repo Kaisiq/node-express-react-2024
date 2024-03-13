@@ -11,7 +11,7 @@ export function ClothingSlotsList({ data }: { data: ProductInterface[] }) {
 		clothingSlotList.push(<SkeletonProductCard key={i} />);
 	}
 	return (
-		<section className="mx-20 grid grid-cols-1 gap-10 p-10 md:grid-cols-2 md:p-6 lg:grid-cols-3">
+		<section className="mx-5 grid grid-cols-1 gap-5 md:mx-10 md:grid-cols-2 md:p-6 lg:grid-cols-3">
 			{clothingSlotList}
 		</section>
 	);
@@ -23,7 +23,7 @@ export function EmptyClothingSlotsList({ n }: { n: number }) {
 		clothingslotlist.push(<SkeletonProductCard key={i} />);
 	}
 	return (
-		<section className="mx-20 grid grid-cols-1 gap-10 p-10 md:grid-cols-2 md:p-6 lg:grid-cols-3">
+		<section className="mx-5 grid grid-cols-1 gap-5 md:mx-10 md:grid-cols-2 md:p-6 lg:grid-cols-3">
 			{clothingslotlist}
 		</section>
 	);
