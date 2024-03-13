@@ -3,6 +3,7 @@ import { Product, type ProductModel } from "~/models/Product";
 import { isAdminRequest } from "~/server/auth";
 import { z } from "zod";
 import { ProductService } from "~/services/ProductService";
+import { mongooseConnect } from "~/lib/mongoose";
 
 const ProductSchema = z.object({
 	name: z.string(),
@@ -23,6 +24,7 @@ export default async function handle(
 	req: NextApiRequest,
 	res: NextApiResponse,
 ) {
+	await mongooseConnect();
 	if (req.method === "POST") {
 		interface RB {
 			ids: string[];

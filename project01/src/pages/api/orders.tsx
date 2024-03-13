@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
+import { mongooseConnect } from "~/lib/mongoose";
 import { OrderService } from "~/services/OrderService";
 
 export const OrderFormSchema = z.object({
@@ -38,6 +39,7 @@ export default async function handle(
 	req: NextApiRequest,
 	res: NextApiResponse,
 ) {
+	await mongooseConnect();
 	if (req.method === "POST") {
 		const order = OrderFormSchema.parse(req.body);
 		const data = await orderService.createOrder(order);
