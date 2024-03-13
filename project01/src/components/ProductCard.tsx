@@ -55,8 +55,9 @@ export function ProductCard({ product }: { product: ProductInterface }) {
 							{product.price}лв
 						</h4>
 					</div>
-					<div className="flex flex-col gap-3 pt-4">
+					<div className="mr-5 flex flex-col gap-3 pt-4">
 						<Button
+							variant="outline"
 							onClick={async () => {
 								await router.push("product/" + product._id);
 							}}
@@ -86,14 +87,15 @@ export function SkeletonProductCard() {
 				</div>
 				<div className="justify-space-between flex">
 					<div className="flex flex-1 flex-col justify-between bg-white p-4 dark:bg-gray-950">
-						<div className="grid gap-1">
-							<Skeleton className="h-4 w-[100px]" />
-							<Skeleton className="h-3 w-[100px]" />
-							<Skeleton className="h-3 w-[100px]" />
+						<div className="mb-1 grid gap-1">
+							<Skeleton className="h-5 w-[200px]" />
+							<Skeleton className="h-3 w-[300px]" />
+							<Skeleton className="h-3 w-[350px]" />
+							<Skeleton className="h-3 w-[350px]" />
 						</div>
-						<Skeleton className="h-4 w-[20px]" />
+						<Skeleton className="h-4 w-[50px]" />
 					</div>
-					<div className="flex flex-col gap-3 pt-4">
+					<div className="mr-5 flex flex-col gap-3 pt-4">
 						<Skeleton>
 							<Button className="w-[100px]" variant="link" />
 						</Skeleton>

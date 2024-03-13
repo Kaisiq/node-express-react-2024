@@ -60,6 +60,11 @@ export default async function handle(
 		} else if (req.query?.id) {
 			const data = await productService.getProduct(req.query.id);
 			res.json(data);
+		} else if (req.query?.newest) {
+			const data = await productService.getNewestProducts(
+				req.query.newest as unknown as number,
+			);
+			res.json(data);
 		} else {
 			const data = await productService.getAllProducts();
 			res.json(data);
