@@ -1,5 +1,6 @@
 import axios from "axios";
-import { Product, ProductInterface, ProductModel } from "~/models/Product";
+import { Product, ProductModel } from "~/models/Product";
+import { ProductInterface } from "~/pages/api/products";
 
 function linksToFileKeys(links: string[] | undefined) {
 	if (!links) return "";

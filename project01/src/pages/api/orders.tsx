@@ -1,9 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Order, type OrderModel } from "~/models/Order";
 import { z } from "zod";
 import { OrderService } from "~/services/OrderService";
 
-const FormSchema = z.object({
+export const OrderFormSchema = z.object({
 	flname: z.string().min(2, {
 		message: "Моля не оставяйте полето празно",
 	}),
@@ -31,7 +30,7 @@ const FormSchema = z.object({
 	createdAt: z.string(),
 });
 
-export type OrderInterface = z.infer<typeof FormSchema>;
+export type OrderInterface = z.infer<typeof OrderFormSchema>;
 
 const orderService = new OrderService();
 
@@ -40,24 +39,21 @@ export default async function handle(
 	res: NextApiResponse,
 ) {
 	if (req.method === "POST") {
-		const order = FormSchema.parse(req.body);
-		const data = await (Order as OrderModel).create(order);
+		const order = OrderFormSchema.parse(req.body);
+		const data = await orderService.createOrder(order);
 		res.json(data);
 	}
 	if (req.method === "GET") {
 		if (req?.query?.id) {
-			const data = await (Order as OrderModel).findById(req.query.id);
+			const data = await orderService.getOrder(req.query.id);
 			res.json(data);
 		} else {
-			const data = await (Order as OrderModel)
-				.find()
-				.sort({ createdAt: -1 })
-				.limit(50);
+			const data = await orderService.getAllOrders();
 			res.json(data);
 		}
 	}
 	if (req.method === "PUT") {
-		const data = FormSchema.parse(req.body);
+		const data = OrderFormSchema.parse(req.body);
 		const result = await orderService.updateOrder(data);
 		res.json(result);
 	}
