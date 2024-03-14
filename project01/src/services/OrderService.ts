@@ -38,6 +38,13 @@ export class OrderService {
 		);
 		if (!result) return { message: "error" };
 		for await (const _id of rest.productIDs) {
+			if (["new", "shipped", "completed"]) {
+				const res = await (Product as ProductModel).updateOne(
+					{ _id },
+					{ status: "sold" },
+				);
+				if (!res) return { message: "error" };
+			}
 			if (rest.status === "canceled") {
 				const res = await (Product as ProductModel).updateOne(
 					{ _id },

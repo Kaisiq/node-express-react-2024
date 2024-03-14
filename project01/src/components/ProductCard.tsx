@@ -32,8 +32,10 @@ export function ProductCard({ product }: { product: ProductInterface }) {
 							<Skeleton className="h-[300px] w-full" />
 						)}
 						{product.status === "sold" && (
-							<div className="absolute inset-0 flex items-center justify-center bg-black opacity-50">
-								<span className="text-lg font-semibold text-white">Sold</span>
+							<div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-80">
+								<span className="text-lg font-semibold text-white">
+									Изчерпано
+								</span>
 							</div>
 						)}
 					</div>
@@ -64,13 +66,15 @@ export function ProductCard({ product }: { product: ProductInterface }) {
 						>
 							Разгледай
 						</Button>
-						<Button
-							onClick={() => {
-								addProduct(product._id);
-							}}
-						>
-							Добави в количката
-						</Button>
+						{product.status !== "sold" && (
+							<Button
+								onClick={() => {
+									addProduct(product._id);
+								}}
+							>
+								Добави в количката
+							</Button>
+						)}
 					</div>
 				</div>
 			</div>

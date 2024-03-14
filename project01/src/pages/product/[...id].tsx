@@ -73,7 +73,9 @@ export default function Page() {
 								</div>
 							</div>
 							<div className="ml-auto text-4xl font-bold">
-								{productInfo.price}лв
+								{productInfo.status !== "sold"
+									? productInfo.price + "лв"
+									: "Изчерпано"}
 							</div>
 						</div>
 						<form className="grid gap-4 md:gap-10">
@@ -114,15 +116,17 @@ export default function Page() {
 									</Label>
 								</RadioGroup>
 							</div>
-							<Button
-								onClick={(ev) => {
-									ev.preventDefault();
-									addProduct(productID);
-								}}
-								size="lg"
-							>
-								Add to cart
-							</Button>
+							{productInfo.status !== "sold" && (
+								<Button
+									onClick={(ev) => {
+										ev.preventDefault();
+										addProduct(productID);
+									}}
+									size="lg"
+								>
+									Добавяне в количката
+								</Button>
+							)}
 						</form>
 					</div>
 					<div className="order-1 grid items-start gap-3">
@@ -154,7 +158,7 @@ export default function Page() {
 														width={600}
 													/>
 												) : (
-													<Skeleton className="h-[600] w-[600]" />
+													<Skeleton className="h-[600px] w-[600px]" />
 												)}
 											</CarouselItem>
 										);
