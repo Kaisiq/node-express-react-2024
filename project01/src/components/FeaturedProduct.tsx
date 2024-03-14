@@ -7,7 +7,7 @@ import { CartContext } from "./CartContextProvider";
 import { Skeleton } from "~/components/ui/skeleton";
 import axios, { type AxiosResponse } from "axios";
 
-export function FeaturedProduct({ productID }: { productID: string }) {
+export function FeaturedProduct() {
 	const [product, setProduct] = useState<ProductInterface>();
 	const { addProduct } = useContext(CartContext);
 	function addToCart() {
@@ -15,14 +15,16 @@ export function FeaturedProduct({ productID }: { productID: string }) {
 	}
 	useEffect(() => {
 		axios
-			.get("/api/products?id=" + productID)
-			.then((res: AxiosResponse<ProductInterface>) => {
-				setProduct(res.data);
+			.get("/api/products?status=ok&number=3")
+			.then((res: AxiosResponse<ProductInterface[]>) => {
+				const randomNumber = Math.floor(Math.random() * 3);
+				setProduct(res.data[randomNumber]);
 			})
 			.catch((err) => {
 				console.log(err);
 			});
 	}, []);
+
 	if (product) {
 		return (
 			<section className="w-full py-6 md:py-12">

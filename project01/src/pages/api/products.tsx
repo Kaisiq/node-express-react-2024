@@ -46,7 +46,17 @@ export default async function handle(
 		res.json(data);
 	}
 	if (req.method === "GET") {
-		if (req.query?.category as string) {
+		if (req.query?.status as string) {
+			if (req.query.number) {
+				const data = await productService.getNewestStatusProducts(
+					req.query.status as string,
+					req.query.number as unknown as number,
+				);
+				res.json(data);
+			} else {
+				res.json(undefined);
+			}
+		} else if (req.query?.category as string) {
 			if (req.query.number) {
 				const data = await productService.getCategoryN(
 					req.query.category as string,

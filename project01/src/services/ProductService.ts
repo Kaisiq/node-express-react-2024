@@ -110,6 +110,18 @@ export class ProductService {
 		return results;
 	}
 
+	async getNewestStatusProducts(status: string, n: number) {
+		const results = (await (Product as ProductModel)
+			.find({ status: status }, null, {
+				sort: { updatedAt: -1 },
+			})
+			.limit(n)) as ProductInterface[];
+		if (n === 1) {
+			return results[0];
+		}
+		return results;
+	}
+
 	async getCategory(category: string) {
 		const results = (await (Product as ProductModel)
 			.find({
