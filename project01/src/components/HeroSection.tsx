@@ -4,11 +4,11 @@ export function HeroSection() {
 	return (
 		<section className="w-full">
 			<div className="grid gap-6 lg:grid-cols-[1fr_2fr]">
-				<div className="flex items-center justify-center overflow-hidden rounded-t-lg">
+				<div className="flex items-center justify-center overflow-hidden rounded-lg">
 					<Image
 						alt="Hero"
-						className="aspect-video w-full object-cover object-top"
-						height="400"
+						className="aspect-[2/1] w-full object-cover"
+						height="300"
 						src="/cat.jpg"
 						width="1200"
 					/>
@@ -22,8 +22,8 @@ export function HeroSection() {
 							</span>
 						</h1>
 						<p className="max-w-[900px] text-gray-500 dark:text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-							Спестеи време и пари с нашата селекция от най-качествените марки.
-							Превърни пазаруването си в приятно изживяване с нас!
+							Спести време и пари с нашата селекция от едни от най-качествените
+							марки. Превърни пазаруването си в приятно изживяване с нас!
 						</p>
 					</div>
 					<Link
