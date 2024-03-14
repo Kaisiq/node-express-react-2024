@@ -10,8 +10,10 @@ import {
 import type { OrderInterface } from "~/pages/api/orders";
 import axios from "axios";
 import { Trash2Icon } from "lucide-react";
+import { useRouter } from "next/router";
 
 export function OrdersTableRow({ order }: { order: OrderInterface }) {
+	const router = useRouter();
 	return (
 		<TableRow key={order._id}>
 			<TableCell>{order.flname}</TableCell>
@@ -41,10 +43,20 @@ export function OrdersTableRow({ order }: { order: OrderInterface }) {
 					</SelectContent>
 				</Select>
 			</TableCell>
-			<TableCell>{order.createdAt}</TableCell>
-			<TableCell>{order.price}</TableCell>
 			<TableCell>
-				<Button size="icon" variant="ghost">
+				{order.createdAt
+					? order.createdAt.split(".")[0]?.replace("T", " ")
+					: ""}
+			</TableCell>
+			<TableCell>{order.price}лв</TableCell>
+			<TableCell>
+				<Button
+					size="icon"
+					variant="ghost"
+					onClick={async () => {
+						await router.push("/admin/orders/delete/" + order._id);
+					}}
+				>
 					<Trash2Icon className="h-4 w-4" />
 					<span className="sr-only">Delete Order</span>
 				</Button>

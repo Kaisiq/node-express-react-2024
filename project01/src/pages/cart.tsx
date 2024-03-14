@@ -67,13 +67,15 @@ export default function Cart() {
 							</div>
 						</div>
 						<div className="divide-y">
-							{data
-								? data.map((el, index) => {
-										return <CartItem key={index} data={el} />;
-									})
-								: cartProducts.map((el) => {
-										return <CartItemSkeleton key={el} />;
-									})}
+							{data.length > 0 ? (
+								data.map((el, index) => {
+									return <CartItem key={index} data={el} />;
+								})
+							) : (
+								<div className="flex justify-center p-10 text-2xl font-bold">
+									Вашата количка е празна
+								</div>
+							)}
 						</div>
 						<div className="flex flex-col gap-2 px-4 py-2 md:grid md:grid-cols-4 md:items-start lg:gap-6">
 							<Link
@@ -91,7 +93,12 @@ export default function Cart() {
 					</div>
 				</CardContent>
 				<CardFooter className="flex flex-col gap-2">
-					<Button onClick={updateCart} className="w-full" size="lg">
+					<Button
+						onClick={updateCart}
+						className="w-full"
+						size="lg"
+						variant="outline"
+					>
 						Обновяване на Количката
 					</Button>
 				</CardFooter>

@@ -53,7 +53,20 @@ export class OrderService {
 				if (!res) return { message: "error" };
 			}
 		}
-
+		return { message: "success" };
+	}
+	async deleteOrder(input: string) {
+		const result = (await (Order as OrderModel).findOneAndDelete({
+			_id: input,
+		})) as OrderInterface;
+		if (!result) return { message: "error" };
+		for await (const _id of result.productIDs) {
+			const res = await (Product as ProductModel).updateOne(
+				{ _id },
+				{ status: "ok" },
+			);
+			if (!res) return { message: "error" };
+		}
 		return { message: "success" };
 	}
 }

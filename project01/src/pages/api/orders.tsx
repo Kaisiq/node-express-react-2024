@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
 import { mongooseConnect } from "~/lib/mongoose";
 import { OrderService } from "~/services/OrderService";
+import { isAdminRequest } from "~/server/auth";
 
 export const OrderFormSchema = z.object({
 	flname: z.string().min(2, {
@@ -27,8 +28,8 @@ export const OrderFormSchema = z.object({
 	status: z.string(),
 	productIDs: z.array(z.string()),
 	productNames: z.array(z.string()),
-	_id: z.string(),
-	createdAt: z.string(),
+	_id: z.string().min(4).optional().or(z.literal("")),
+	createdAt: z.string().min(4).optional().or(z.literal("")),
 });
 
 export type OrderInterface = z.infer<typeof OrderFormSchema>;
@@ -55,8 +56,16 @@ export default async function handle(
 		}
 	}
 	if (req.method === "PUT") {
+		await isAdminRequest(req, res);
 		const data = OrderFormSchema.parse(req.body);
 		const result = await orderService.updateOrder(data);
 		res.json(result);
+	}
+	if (req.method === "DELETE") {
+		await isAdminRequest(req, res);
+		if (req.query?.id) {
+			const data = await orderService.deleteOrder(req.query.id as string);
+			res.json(data);
+		}
 	}
 }

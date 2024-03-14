@@ -52,7 +52,7 @@ const FormSchema = z.object({
 });
 
 export function CheckoutSection() {
-	const { cartProducts } = useContext(CartContext);
+	const { cartProducts, setCartProducts } = useContext(CartContext);
 	const { data: session } = useSession();
 	const [reserveProducts, setReserveProducts] = useState(false);
 	const router = useRouter();
@@ -141,6 +141,7 @@ export function CheckoutSection() {
 			title: "Покупката беше завършена!",
 			description,
 		});
+		setCartProducts([]);
 	}
 	return (
 		<Sheet
