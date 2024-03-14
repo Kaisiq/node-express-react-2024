@@ -8,7 +8,7 @@ import {
 import { Button } from "~/components/ui/button";
 import Link from "next/link";
 import { ChevronLeftIcon } from "~/components/Icons";
-import { CartItem, CartItemSkeleton } from "~/components/CartItem";
+import { CartItem } from "~/components/CartItem";
 import { Layout } from "~/components/Layout";
 import { useSession } from "next-auth/react";
 import { LoginPage } from "../components/LoginPage";

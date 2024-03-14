@@ -1,5 +1,4 @@
 import type { ProductInterface } from "~/pages/api/products";
-import { ProductCard, SkeletonProductCard } from "./ProductCard";
 import { ClothingSlotsList, EmptyClothingSlotsList } from "./ClothingSlotsList";
 import { useEffect, useState } from "react";
 import axios, { type AxiosResponse } from "axios";

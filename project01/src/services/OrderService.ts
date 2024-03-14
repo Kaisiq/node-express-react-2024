@@ -56,9 +56,11 @@ export class OrderService {
 		return { message: "success" };
 	}
 	async deleteOrder(input: string) {
-		const result = (await (Order as OrderModel).findOneAndDelete({
+		const result: OrderInterface = (await (
+			Order as OrderModel
+		).findOneAndDelete({
 			_id: input,
-		})) as OrderInterface;
+		}))!;
 		if (!result) return { message: "error" };
 		for await (const _id of result.productIDs) {
 			const res = await (Product as ProductModel).updateOne(
