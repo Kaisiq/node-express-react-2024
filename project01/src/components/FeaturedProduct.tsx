@@ -31,13 +31,13 @@ export function FeaturedProduct({ productID }: { productID: string }) {
 						{product?.images?.[0] ? (
 							<Image
 								alt="FeaturedProduct"
-								className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full"
+								className="mx-auto aspect-video w-full overflow-hidden rounded-xl object-cover object-center sm:w-full"
 								height="300"
 								src={product.images[0]}
 								width="500"
 							/>
 						) : (
-							<Skeleton className="h-[330px] w-full" />
+							<Skeleton className="mx-auto aspect-video w-full object-center" />
 						)}
 						<div className="space-y-4 text-center lg:text-left">
 							<div className="space-y-2">
@@ -80,17 +80,17 @@ export function FeaturedProduct({ productID }: { productID: string }) {
 			<section className="w-full py-6 md:py-12">
 				<div className="container px-4 md:px-6">
 					<div className="grid items-center gap-6 lg:grid-cols-[1fr_500px] lg:gap-12 xl:grid-cols-[1fr_700px] xl:gap-16">
-						<Skeleton className="h-[330px] w-full" />
+						<Skeleton className="mx-auto aspect-video w-full object-center" />
 						<div className="space-y-4 text-center lg:text-left">
 							<div className="space-y-2">
 								<div className="inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800">
 									Featured
 								</div>
-								<Skeleton className="h-12 w-[250px]" />
-								<Skeleton className="h-3 w-[400px]" />
-								<Skeleton className="h-3 w-[500px]" />
-								<Skeleton className="h-3 w-[400px]" />
-								<Skeleton className="h-5 w-[50px]" />
+								<Skeleton className="h-12 w-[65%] md:w-[250px]" />
+								<Skeleton className="h-3 w-[70%] md:w-[400px]" />
+								<Skeleton className="h-3 w-[80%] md:w-[500px]" />
+								<Skeleton className="h-3 w-[80%] md:w-[400px]" />
+								<Skeleton className="h-5 w-[20%] md:w-[50px]" />
 							</div>
 							<Skeleton className="inline-flex h-10">
 								<Button variant="link" className="px-16" />
