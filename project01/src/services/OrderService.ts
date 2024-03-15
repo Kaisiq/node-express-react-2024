@@ -21,6 +21,12 @@ export class OrderService {
 			return result[0];
 		}
 	}
+	async getOrdersOf(input: string) {
+		const result = (await (Order as OrderModel).find({
+			email: input,
+		})) as OrderInterface[];
+		return result;
+	}
 	/* eslint-enable */
 	async getAllOrders() {
 		const result = (await (Order as OrderModel)

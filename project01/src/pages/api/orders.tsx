@@ -50,7 +50,11 @@ export default async function handle(
 		if (req?.query?.id) {
 			const data = await orderService.getOrder(req.query.id);
 			res.json(data);
+		} else if (req?.query?.email) {
+			const data = await orderService.getOrdersOf(req.query.email as string);
+			res.json(data);
 		} else {
+			isAdminRequest(req, res);
 			const data = await orderService.getAllOrders();
 			res.json(data);
 		}

@@ -10,8 +10,6 @@ import Link from "next/link";
 import { ChevronLeftIcon } from "~/components/Icons";
 import { CartItem } from "~/components/CartItem";
 import { Layout } from "~/components/Layout";
-import { useSession } from "next-auth/react";
-import { LoginPage } from "../components/LoginPage";
 import { useContext, useEffect, useState } from "react";
 import { CartContext } from "~/components/CartContextProvider";
 import axios from "axios";
@@ -43,11 +41,6 @@ export default function Cart() {
 	data.forEach((el) => {
 		totalPrice += el.price;
 	});
-
-	const { data: session } = useSession();
-	if (!session) {
-		return <LoginPage />;
-	}
 
 	return (
 		<Layout>
