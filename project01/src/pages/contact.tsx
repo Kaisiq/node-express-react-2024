@@ -8,7 +8,7 @@ import { Layout } from "~/components/Layout";
 export default function Component() {
 	return (
 		<Layout>
-			<main className="flex w-full flex-col items-center justify-center bg-white py-16 dark:bg-slate-900">
+			<main className="m-auto flex w-[90%] flex-col items-center justify-center bg-white py-16 dark:bg-slate-900 md:w-full">
 				<section className="w-full max-w-4xl">
 					<h1 className="mb-8 text-center text-4xl font-bold text-slate-900 dark:text-white">
 						Свържете се с нас

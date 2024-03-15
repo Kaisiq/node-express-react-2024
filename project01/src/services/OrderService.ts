@@ -22,9 +22,11 @@ export class OrderService {
 		}
 	}
 	async getOrdersOf(input: string) {
-		const result = (await (Order as OrderModel).find({
-			email: input,
-		})) as OrderInterface[];
+		const result = (await (Order as OrderModel)
+			.find({
+				email: input,
+			})
+			.sort({ createdAt: -1 })) as OrderInterface[];
 		return result;
 	}
 	/* eslint-enable */
