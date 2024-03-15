@@ -1,39 +1,27 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "./ui/button";
 export function HeroSection() {
 	return (
-		<section className="w-full">
-			<div className="grid gap-6 lg:grid-cols-[1fr_2fr]">
-				<div className="flex items-center justify-center overflow-hidden rounded-lg">
-					<Image
-						alt="Hero"
-						className="aspect-[2/1] w-full object-cover"
-						height="300"
-						src="/cat.jpg"
-						width="1200"
-					/>
-				</div>
-				<div className="grid gap-4 px-4 md:px-6">
-					<div className="space-y-2">
-						<h1 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-							По-добри от{" "}
-							<span className="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
-								втора употреба
-							</span>
-						</h1>
-						<p className="max-w-[900px] text-gray-500 dark:text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-							Спести време и пари с нашата селекция от едни от най-качествените
-							марки. Превърни пазаруването си в приятно изживяване с нас!
-						</p>
-					</div>
-					<Link
-						className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-8 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
-						href="/collection"
-					>
-						Разгледай колекцията от дрехи
-					</Link>
+		<section className="relative flex h-[50vh] flex-col items-center justify-center bg-[url('/cat.jpg?height=800&width=1600')] bg-cover bg-center">
+			<div className="z-10 max-w-[800px] px-4 text-center">
+				<h1 className="mb-4 text-5xl font-bold leading-tight text-white md:text-7xl">
+					По-добри от{" "}
+					<span className="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
+						втора употреба
+					</span>
+				</h1>
+				<p className="mb-8 text-xl text-gray-200 md:text-2xl">
+					Спести време и пари с нашата селекция от едни от най-качествените
+					марки. Превърни пазаруването си в приятно изживяване с нас!
+				</p>
+				<div className="flex justify-center gap-4">
+					<Button variant="secondary">
+						<Link href="/collection">Разгледай колекцията от дрехи</Link>
+					</Button>
 				</div>
 			</div>
+			<div className="absolute inset-0 z-0 bg-gradient-to-t from-[rgba(0,0,0,0.8)] to-[rgba(0,0,0,0.4)]" />
 		</section>
 	);
 }
