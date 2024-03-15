@@ -61,7 +61,7 @@ export function ProductCard({ product }: { product: ProductInterface }) {
 						<Button
 							variant="outline"
 							onClick={async () => {
-								await router.push("product/" + product._id);
+								await router.push("/product/" + product._id);
 							}}
 						>
 							Разгледай
