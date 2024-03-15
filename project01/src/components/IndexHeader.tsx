@@ -21,7 +21,7 @@ export function IndexHeader() {
 					<div className="flex items-center space-x-2">
 						<div className="flex-col text-xl font-bold leading-[0.5rem] tracking-tighter md:text-2xl md:leading-4 lg:text-3xl lg:leading-3">
 							<span>Две</span>
-							<hr className="relative left-[15%] w-[50%] rotate-[135deg]" />
+							<hr className="relative left-[16%] h-[0.5px] w-[50%] rotate-[135deg] border-0 bg-black" />
 							<span className="ml-[40px] lg:ml-[60px]">Трети</span>
 						</div>
 					</div>
