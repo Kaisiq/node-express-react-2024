@@ -1,5 +1,9 @@
 import type { ProductInterface } from "~/pages/api/products";
-import { ProductCard, SkeletonProductCard } from "./ProductCard";
+import {
+	EmptyProductCard,
+	ProductCard,
+	SkeletonProductCard,
+} from "./ProductCard";
 
 // TODO: fetch data from DB and add it
 export function ClothingSlotsList({ data }: { data: ProductInterface[] }) {
@@ -8,7 +12,7 @@ export function ClothingSlotsList({ data }: { data: ProductInterface[] }) {
 		clothingSlotList.push(<ProductCard key={el._id} product={el} />);
 	}
 	for (let i = clothingSlotList.length; i % 3 != 0; i++) {
-		clothingSlotList.push(<SkeletonProductCard key={i} />);
+		clothingSlotList.push(<EmptyProductCard key={i} />);
 	}
 	return (
 		<section className="mx-5 grid grid-cols-1 gap-5 md:mx-10 md:grid-cols-2 md:p-6 lg:grid-cols-3">

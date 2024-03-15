@@ -12,4 +12,8 @@ function Skeleton({
 	);
 }
 
-export { Skeleton };
+function Empty({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+	return <div className={cn("rounded-md bg-gray-100", className)} {...props} />;
+}
+
+export { Skeleton, Empty };

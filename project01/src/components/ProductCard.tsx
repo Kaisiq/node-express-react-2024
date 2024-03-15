@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Button } from "./ui/button";
 import { useContext } from "react";
 import { CartContext } from "./CartContextProvider";
-import { Skeleton } from "./ui/skeleton";
+import { Empty, Skeleton } from "./ui/skeleton";
 import { useRouter } from "next/router";
 import { Card } from "./ui/card";
 
@@ -106,6 +106,37 @@ export function SkeletonProductCard() {
 						<Skeleton>
 							<Button className="w-[100px]" variant="link" />
 						</Skeleton>
+					</div>
+				</div>
+			</div>
+		</Card>
+	);
+}
+
+export function EmptyProductCard() {
+	return (
+		<Card className="self-stretch">
+			<div className="group relative overflow-hidden rounded-lg">
+				<div className="relative">
+					<Empty className="h-[300px] w-full" />
+				</div>
+				<div className="justify-space-between flex">
+					<div className="flex flex-1 flex-col justify-between bg-white p-4 dark:bg-gray-950">
+						<div className="mb-1 grid gap-1">
+							<Empty className="h-5 w-[200px]" />
+							<Empty className="h-3 w-[300px]" />
+							<Empty className="h-3 w-[350px]" />
+							<Empty className="h-3 w-[350px]" />
+						</div>
+						<Empty className="h-4 w-[50px]" />
+					</div>
+					<div className="mr-5 flex flex-col gap-3 pt-4">
+						<Empty>
+							<Button className="w-[100px]" variant="link" />
+						</Empty>
+						<Empty>
+							<Button className="w-[100px]" variant="link" />
+						</Empty>
 					</div>
 				</div>
 			</div>
