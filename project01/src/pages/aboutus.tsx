@@ -24,7 +24,7 @@ export default function AboutUs() {
 					<div className="flex flex-col items-center space-y-6">
 						<h1 className="text-3xl font-bold tracking-tight">За нас</h1>
 						<p className="text-center text-gray-500 dark:text-gray-400">
-							We're a passionate team dedicated to creating the tools that
+							We are a passionate team dedicated to creating the tools that
 							empower you to build the web.
 						</p>
 					</div>
@@ -69,8 +69,8 @@ export default function AboutUs() {
 								Meet the Team
 							</h2>
 							<p className="text-gray-500 dark:text-gray-400">
-								We're a diverse team of designers, developers, and dreamers who
-								share a common goal: to push the boundaries of what's possible
+								We are a diverse team of designers, developers, and dreamers who
+								share a common goal: to push the boundaries of what is possible
 								on the web.
 							</p>
 						</div>

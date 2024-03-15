@@ -54,7 +54,7 @@ export default async function handle(
 			const data = await orderService.getOrdersOf(req.query.email as string);
 			res.json(data);
 		} else {
-			isAdminRequest(req, res);
+			await isAdminRequest(req, res);
 			const data = await orderService.getAllOrders();
 			res.json(data);
 		}

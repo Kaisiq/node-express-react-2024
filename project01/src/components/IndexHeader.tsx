@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { ShoppingCartIcon } from "./Icons";
 import { MenuIcon } from "lucide-react";
 import { useState, useContext } from "react";

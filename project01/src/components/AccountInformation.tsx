@@ -1,8 +1,9 @@
 import { useSession } from "next-auth/react";
 import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios, { type AxiosResponse } from "axios";
 import { UserInterface } from "~/pages/api/users";
+
 export function AccountInformation() {
 	const [userData, setUserData] = useState<UserInterface>();
 	const { data: session, status } = useSession();
@@ -13,7 +14,7 @@ export function AccountInformation() {
 		const input = session.user.email;
 		axios
 			.get(`/api/users?email=${input}`)
-			.then((res) => {
+			.then((res: AxiosResponse<UserInterface>) => {
 				setUserData(res.data);
 			})
 			.catch((err) => {
