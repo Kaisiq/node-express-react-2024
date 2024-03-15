@@ -48,7 +48,9 @@ export function OrdersInformation() {
 										</p>
 									)}
 								</div>
-								<Button variant="destructive">Cancel Order</Button>
+								{order.status === "new" && (
+									<Button variant="destructive">Cancel Order</Button>
+								)}
 							</div>
 						);
 					})}

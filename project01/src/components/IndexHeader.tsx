@@ -4,6 +4,7 @@ import { ShoppingCartIcon } from "./Icons";
 import { MenuIcon } from "lucide-react";
 import { useState, useContext } from "react";
 import { CartContext } from "./CartContextProvider";
+import { useSession } from "next-auth/react";
 
 export function IndexHeader() {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,6 +13,7 @@ export function IndexHeader() {
 	const toggleMenu = () => {
 		setIsMenuOpen(!isMenuOpen);
 	};
+	const { data: session } = useSession();
 
 	return (
 		<header className="flex flex-col items-center px-4 py-4 lg:flex-row lg:justify-between lg:px-6 lg:py-6">
@@ -65,12 +67,14 @@ export function IndexHeader() {
 				>
 					Обувки
 				</Link>
+
 				<Link
 					className="underline-offset-4 hover:underline sm:block lg:mt-0"
 					href="/account"
 				>
-					Акаунт
+					{session ? "Акаунт" : "Влизане"}
 				</Link>
+
 				<Link
 					className="underline-offset-4 hover:underline sm:block lg:mt-0"
 					href="/cart"
