@@ -23,6 +23,13 @@ export function OrdersInformation() {
 			<h2 className="mb-4 text-xl font-semibold">Order History</h2>
 			<div className="grid gap-4">
 				{orders?.map((order) => {
+					const date = new Date(order.createdAt as string);
+					const options = {
+						weekday: "long",
+						year: "numeric",
+						month: "long",
+						day: "numeric",
+					};
 					return (
 						<div
 							key={order._id}
@@ -30,7 +37,7 @@ export function OrdersInformation() {
 						>
 							<div>
 								<p className="text-sm text-gray-500 dark:text-gray-400">
-									March 15, 2024
+									{date.toLocaleDateString("bg-BG", options)}
 								</p>
 								<p className="text-gray-700 dark:text-gray-300">
 									Артикули: {order.productNames.join(", ")}
