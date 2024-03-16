@@ -30,20 +30,15 @@ export function OrdersInformation() {
 						>
 							<div>
 								<p className="text-sm text-gray-500 dark:text-gray-400">
-									Order #12345
-								</p>
-								<p className="text-gray-700 dark:text-gray-300">
 									March 15, 2024
 								</p>
-								{order.status === "canceled" && (
-									<p className="font-medium text-red-500">{order.status}</p>
-								)}
-								{(order.status === "new" || order.status === "completed") && (
-									<p className="font-medium text-green-500">{order.status}</p>
-								)}
-								{order.status === "shipped" && (
-									<p className="font-medium text-yellow-500">{order.status}</p>
-								)}
+								<p className="text-gray-700 dark:text-gray-300">
+									Артикули: {order.productNames.join(", ")}
+								</p>
+								<p className="text-gray-700 dark:text-gray-300">
+									Цена: {order.price}лв
+								</p>
+								<ColoredOrderStatus status={order.status} />
 							</div>
 							{order.status === "new" && (
 								<Button variant="destructive">Cancel Order</Button>
@@ -54,4 +49,16 @@ export function OrdersInformation() {
 			</div>
 		</section>
 	);
+}
+
+function ColoredOrderStatus({ status }: { status: string }) {
+	if (status === "canceled") {
+		return <p className="font-medium text-red-500">{status}</p>;
+	} else if (status === "new" || status === "completed") {
+		return <p className="font-medium text-green-500">{status}</p>;
+	} else if (status === "shipped") {
+		return <p className="font-medium text-yellow-500">{status}</p>;
+	} else {
+		return <p className="font-medium text-red-500">{status}</p>;
+	}
 }
