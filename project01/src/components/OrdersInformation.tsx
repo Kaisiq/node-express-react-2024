@@ -23,7 +23,7 @@ export function OrdersInformation() {
 			<h2 className="mb-4 text-xl font-semibold">Order History</h2>
 			<div className="grid gap-4">
 				{orders?.map((order) => {
-					const date = new Date(order.createdAt as string);
+					const date = new Date(order.createdAt!);
 					const options = {
 						weekday: "long",
 						year: "numeric",
