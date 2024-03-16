@@ -1,6 +1,7 @@
 import { Order, type OrderModel } from "~/models/Order";
 import { Product, type ProductModel } from "~/models/Product";
 import type { OrderInterface } from "~/pages/api/orders";
+import { isUserRequest } from "~/server/auth";
 
 export class OrderService {
 	async createOrder(input: OrderInterface) {

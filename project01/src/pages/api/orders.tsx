@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
 import { mongooseConnect } from "~/lib/mongoose";
 import { OrderService } from "~/services/OrderService";
-import { isAdminRequest } from "~/server/auth";
+import { isAdminRequest, isUserRequest } from "~/server/auth";
 
 export const OrderFormSchema = z.object({
 	flname: z.string().min(2, {
@@ -48,9 +48,11 @@ export default async function handle(
 	}
 	if (req.method === "GET") {
 		if (req?.query?.id) {
+			await isAdminRequest(req, res);
 			const data = await orderService.getOrder(req.query.id);
 			res.json(data);
 		} else if (req?.query?.email) {
+			await isUserRequest(req, res, req.query.email as string);
 			const data = await orderService.getOrdersOf(req.query.email as string);
 			res.json(data);
 		} else {
