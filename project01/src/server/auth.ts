@@ -103,7 +103,7 @@ export async function isAdminRequest(
 		!session.user.email ||
 		!adminEmails.includes(session.user.email)
 	) {
-		throw "not admin";
+		return false;
 	}
 	return true;
 }
@@ -115,7 +115,7 @@ export async function isUserRequest(
 ) {
 	const session = await getServerSession(req, res, authOptions);
 	if (!session?.user?.email || email != session.user.email) {
-		throw "not authenticated";
+		return false;
 	}
 	return true;
 }

@@ -48,27 +48,33 @@ export default async function handle(
 	}
 	if (req.method === "GET") {
 		if (req?.query?.id) {
-			await isAdminRequest(req, res);
+			const isAdmin = await isAdminRequest(req, res);
+			if (!isAdmin) throw "not admin";
 			const data = await orderService.getOrder(req.query.id);
 			res.json(data);
 		} else if (req?.query?.email) {
-			await isUserRequest(req, res, req.query.email as string);
+			const isUser = await isUserRequest(req, res, req.query.email as string);
+			if (!isUser) throw "not authenticated user";
 			const data = await orderService.getOrdersOf(req.query.email as string);
 			res.json(data);
 		} else {
-			await isAdminRequest(req, res);
+			const isAdmin = await isAdminRequest(req, res);
+			if (!isAdmin) throw "not admin";
 			const data = await orderService.getAllOrders();
 			res.json(data);
 		}
 	}
 	if (req.method === "PUT") {
-		await isAdminRequest(req, res);
 		const data = OrderFormSchema.parse(req.body);
+		const isAdmin = await isAdminRequest(req, res);
+		const isUser = await isUserRequest(req, res, data.email);
+		if (!isAdmin || !isUser) throw "Cannot do that operation. Please log in";
 		const result = await orderService.updateOrder(data);
 		res.json(result);
 	}
 	if (req.method === "DELETE") {
-		await isAdminRequest(req, res);
+		const isAdmin = await isAdminRequest(req, res);
+		if (!isAdmin) throw "not admin";
 		if (req.query?.id) {
 			const data = await orderService.deleteOrder(req.query.id as string);
 			res.json(data);

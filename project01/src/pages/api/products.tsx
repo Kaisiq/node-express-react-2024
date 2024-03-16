@@ -40,7 +40,8 @@ export default async function handle(
 			return;
 		}
 
-		await isAdminRequest(req, res);
+		const isAdmin = await isAdminRequest(req, res);
+		if (!isAdmin) throw "not admin";
 		const input = ProductSchema.parse(req.body);
 		const data = await productService.createProduct(input);
 		res.json(data);
@@ -83,13 +84,15 @@ export default async function handle(
 		}
 	}
 	if (req.method === "PUT") {
-		await isAdminRequest(req, res);
+		const isAdmin = await isAdminRequest(req, res);
+		if (!isAdmin) throw "not admin";
 		const input = ProductSchema.parse(req.body);
 		const data = await productService.updateProduct(input);
 		res.json(data);
 	}
 	if (req.method === "DELETE") {
-		await isAdminRequest(req, res);
+		const isAdmin = await isAdminRequest(req, res);
+		if (!isAdmin) throw "not admin";
 		if (req.query?.id) {
 			const data = await productService.deleteProduct(req.query.id);
 			res.json(data);
