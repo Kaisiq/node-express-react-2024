@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Dirt&family=Sofia&family=Sofia+Sans:ital,wght@0,1..1000;1,1..1000&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -69,6 +71,9 @@
 @layer base {
   * {
     @apply border-border;
+  }
+  h1,h2,h3,h4,h5,h6,p, Link, Button,a{
+    @apply font-Sofia;
   }
   body {
     @apply bg-background text-foreground;

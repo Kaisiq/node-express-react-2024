@@ -19,10 +19,10 @@ export function IndexHeader() {
 			<div className="flex w-full items-center justify-between lg:w-auto">
 				<Link href="/">
 					<div className="flex items-center space-x-2">
-						<div className="flex-col text-xl font-bold leading-[0.5rem] tracking-tighter md:text-2xl md:leading-4 lg:text-3xl lg:leading-3">
-							<span>Две</span>
+						<div className="font-Rubik flex-col text-xl leading-[0.5rem] tracking-tighter md:text-2xl md:leading-4 lg:text-3xl lg:leading-3">
+							<span>две</span>
 							<hr className="relative left-[16%] h-[0.5px] w-[50%] rotate-[135deg] border-0 bg-black" />
-							<span className="ml-[40px] lg:ml-[60px]">Трети</span>
+							<span className="ml-[40px] lg:ml-[60px]">трети</span>
 						</div>
 					</div>
 				</Link>
