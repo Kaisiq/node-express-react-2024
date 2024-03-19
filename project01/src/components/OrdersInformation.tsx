@@ -24,7 +24,7 @@ export function OrdersInformation() {
 			<div className="grid gap-4">
 				{orders?.map((order) => {
 					const date = new Date(order.createdAt!);
-					const options = {
+					const options: Intl.DateTimeFormatOptions = {
 						weekday: "long",
 						year: "numeric",
 						month: "long",
