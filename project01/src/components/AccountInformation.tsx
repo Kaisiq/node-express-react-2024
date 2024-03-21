@@ -38,7 +38,7 @@ export function AccountInformation() {
 
 	useEffect(() => {
 		getUserInformation().catch((err) => console.log(err));
-	}, []);
+	}, [!userData]);
 	return (
 		<section>
 			<h2 className="mb-4 text-xl font-semibold">

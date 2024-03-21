@@ -17,7 +17,7 @@ export function IndexHeader() {
 	return (
 		<header className="flex flex-col items-center px-4 py-4 lg:flex-row lg:justify-between lg:px-6 lg:py-6">
 			<div className="flex w-full items-center justify-between">
-				<Link href="/" className="shrink-0">
+				<Link href="/">
 					<div className="flex items-center space-x-2">
 						<div className="flex-col font-Rubik text-xl leading-[0.5rem] tracking-tighter md:text-2xl md:leading-4 lg:text-[2rem] lg:leading-3">
 							<span>две</span>
@@ -28,7 +28,7 @@ export function IndexHeader() {
 				</Link>
 				{/* Hamburger menu button for mobile */}
 				<button
-					className="block lg:hidden xl:hidden"
+					className="hidden sm:block md:block lg:hidden xl:hidden"
 					onClick={toggleMenu}
 					aria-label="Toggle Menu"
 				>
