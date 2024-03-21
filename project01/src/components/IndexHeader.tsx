@@ -8,18 +8,18 @@ import { useSession } from "next-auth/react";
 export function IndexHeader() {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const { cartProducts }: { cartProducts: string[] } = useContext(CartContext);
+	const { data: session } = useSession();
 
 	const toggleMenu = () => {
 		setIsMenuOpen(!isMenuOpen);
 	};
-	const { data: session } = useSession();
 
 	return (
 		<header className="flex flex-col items-center px-4 py-4 lg:flex-row lg:justify-between lg:px-6 lg:py-6">
 			<div className="flex w-full items-center justify-between lg:w-auto">
-				<Link href="/">
+				<Link href="/" className="shrink-0">
 					<div className="flex items-center space-x-2">
-						<div className="font-Rubik flex-col text-xl leading-[0.5rem] tracking-tighter md:text-2xl md:leading-4 lg:text-3xl lg:leading-3">
+						<div className="flex-col font-Rubik text-xl leading-[0.5rem] tracking-tighter md:text-2xl md:leading-4 lg:text-[2rem] lg:leading-3">
 							<span>две</span>
 							<hr className="relative left-[16%] h-[0.5px] w-[50%] rotate-[135deg] border-0 bg-black" />
 							<span className="ml-[40px] lg:ml-[60px]">трети</span>
@@ -28,7 +28,7 @@ export function IndexHeader() {
 				</Link>
 				{/* Hamburger menu button for mobile */}
 				<button
-					className="block lg:hidden"
+					className="block lg:hidden xl:hidden"
 					onClick={toggleMenu}
 					aria-label="Toggle Menu"
 				>
@@ -39,8 +39,8 @@ export function IndexHeader() {
 			{/* Navigation menu */}
 			<nav
 				className={`${
-					isMenuOpen ? "mt-4 flex flex-col items-center" : "hidden"
-				} lg:flex lg:flex-row lg:gap-4 xl:gap-6`}
+					isMenuOpen ? "mt-4 grid grid-cols-3 items-center gap-5" : "hidden"
+				} lg:flex lg:flex-row lg:gap-4 lg:gap-6`}
 			>
 				<Link
 					className="underline-offset-4 hover:underline sm:block lg:mt-0"
@@ -79,7 +79,7 @@ export function IndexHeader() {
 					href="/cart"
 				>
 					<div className="flex">
-						<ShoppingCartIcon /> {cartProducts.length}
+						<ShoppingCartIcon /> {"(" + cartProducts.length + ")"}
 					</div>
 				</Link>
 			</nav>

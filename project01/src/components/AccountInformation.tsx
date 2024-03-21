@@ -16,12 +16,12 @@ export function AccountInformation() {
 	const [city, setCity] = useState("");
 	const { data: session, status } = useSession();
 
-	function getUserInformation() {
+	async function getUserInformation() {
 		if (!session || status !== "authenticated") {
 			return;
 		}
 		const input = session.user.email;
-		axios
+		await axios
 			.get(`/api/users?email=${input}`)
 			.then((res: AxiosResponse<UserInterface>) => {
 				setUserData(res.data);
