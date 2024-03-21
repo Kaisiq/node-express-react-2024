@@ -28,8 +28,8 @@ export const OrderFormSchema = z.object({
 	status: z.string(),
 	productIDs: z.array(z.string()),
 	productNames: z.array(z.string()),
-	_id: z.string().min(4).optional(),
-	createdAt: z.string().min(4).optional(),
+	_id: z.string().min(4).or(z.literal("")),
+	createdAt: z.string().min(4).optional().or(z.literal("")),
 });
 
 const OrderPatchSchema = z.object({
@@ -46,9 +46,6 @@ const OrderPatchSchema = z.object({
 	createdAt: z.string().optional(),
 });
 
-export type OrderInterface = z.infer<typeof OrderFormSchema>;
-export type OrderPatchInterface = z.infer<typeof OrderPatchSchema>;
-
 const orderService = new OrderService();
 
 export default async function handle(
@@ -56,43 +53,19 @@ export default async function handle(
 	res: NextApiResponse,
 ) {
 	await mongooseConnect();
-	if (req.method === "POST") {
-		const order = OrderFormSchema.parse(req.body);
-		const data = await orderService.createOrder(order);
-		res.json(data);
-	}
-	if (req.method === "GET") {
-		if (req?.query?.id) {
-			const isAdmin = await isAdminRequest(req, res);
-			if (!isAdmin) throw "not admin";
-			const data = await orderService.getOrder(req.query.id);
-			res.json(data);
-		} else if (req?.query?.email) {
-			const isUser = await isUserRequest(req, res, req.query.email as string);
-			if (!isUser) throw "not authenticated user";
-			const data = await orderService.getOrdersOf(req.query.email as string);
-			res.json(data);
-		} else {
-			const isAdmin = await isAdminRequest(req, res);
-			if (!isAdmin) throw "not admin";
-			const data = await orderService.getAllOrders();
-			res.json(data);
-		}
-	}
-	if (req.method === "PUT") {
-		const data = OrderFormSchema.parse(req.body);
+	if (req.method === "PATCH") {
+		if (!req?.query?.id) throw "Give id";
+		const _id = req.query.id as string;
+		const { email, ...rest } = OrderPatchSchema.parse(req.body);
+		Object.keys(rest).forEach((key) => {
+			if (rest[key as keyof typeof rest] === undefined) {
+				delete rest[key as keyof typeof rest];
+			}
+		});
 		const isAdmin = await isAdminRequest(req, res);
-		const isUser = await isUserRequest(req, res, data.email);
+		const isUser = await isUserRequest(req, res, email);
 		if (!isAdmin || !isUser) throw "Cannot do that operation. Please log in";
-		const result = await orderService.updateOrder(data);
+		const result = await orderService.patchOrder(_id, rest);
 		res.json(result);
-	}
-	if (req.method === "DELETE") {
-		const isAdmin = await isAdminRequest(req, res);
-		if (!isAdmin) throw "not admin";
-		if (req.query?.id) {
-			const data = await orderService.deleteOrder(req.query.id as string);
-			res.json(data);
-		}
 	}
 }

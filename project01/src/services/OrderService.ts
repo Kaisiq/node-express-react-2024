@@ -38,6 +38,30 @@ export class OrderService {
 			.limit(50)) as unknown as OrderInterface[];
 		return result;
 	}
+	async patchOrder(_id: string, input: Object) {
+		const result = (await (Order as OrderModel).findOneAndUpdate(
+			{ _id },
+			input,
+			{ new: true },
+		)) as OrderInterface;
+		if (!result) return { message: "error" };
+		for await (const id of result.productIDs) {
+			if (["new", "shipped", "completed"].includes(result.status)) {
+				const res = await (Product as ProductModel).updateOne(
+					{ _id: id },
+					{ status: "sold" },
+				);
+				if (!res) return { message: "error" };
+			} else if (result.status === "canceled") {
+				const res = await (Product as ProductModel).updateOne(
+					{ _id: id },
+					{ status: "ok" },
+				);
+				if (!res) return { message: "error" };
+			}
+		}
+		return { message: "success" };
+	}
 	async updateOrder(input: OrderInterface) {
 		const { _id, ...rest } = input;
 		const result = await (Order as OrderModel).findOneAndUpdate(
@@ -47,7 +71,7 @@ export class OrderService {
 		);
 		if (!result) return { message: "error" };
 		for await (const _id of rest.productIDs) {
-			if (["new", "shipped", "completed"]) {
+			if (["new", "shipped", "completed"].includes(rest.status)) {
 				const res = await (Product as ProductModel).updateOne(
 					{ _id },
 					{ status: "sold" },

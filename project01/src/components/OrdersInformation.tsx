@@ -1,12 +1,23 @@
 import { useEffect, useState } from "react";
-import { Button } from "./ui/button";
 import axios, { type AxiosResponse } from "axios";
 import { useSession } from "next-auth/react";
 import type { OrderInterface } from "~/pages/api/orders";
+import { AlertDialogOnAction } from "./AlertDialogOnAction";
+
+function isLessThan24HoursFromOrder(orderCreation: string | undefined) {
+	if (!orderCreation) return false;
+	const createdAt = new Date(orderCreation);
+	const now = new Date();
+	const diff = now.getTime() - createdAt.getTime();
+	const hours = diff / 3600000;
+	return hours < 24;
+}
+
 export function OrdersInformation() {
 	const [orders, setOrders] = useState<OrderInterface[]>();
 	const { data: session } = useSession();
-	useEffect(() => {
+
+	function updateOrders() {
 		if (!session?.user.email) return;
 		axios
 			.get(`/api/orders?email=${session.user.email}`)
@@ -17,7 +28,23 @@ export function OrdersInformation() {
 				console.log(err);
 				return;
 			});
+	}
+
+	useEffect(() => {
+		updateOrders();
 	}, []);
+
+	async function cancelOrder(_id: string | undefined, email: string) {
+		try {
+			await axios.patch(`/api/orders/${_id}`, {
+				status: "canceled",
+				email,
+			});
+			updateOrders();
+		} catch (err) {
+			console.log(err);
+		}
+	}
 	return (
 		<section>
 			<h2 className="mb-4 text-xl font-semibold">Order History</h2>
@@ -47,9 +74,22 @@ export function OrdersInformation() {
 								</p>
 								<ColoredOrderStatus status={order.status} />
 							</div>
-							{order.status === "new" && (
-								<Button variant="destructive">Cancel Order</Button>
-							)}
+							{order._id !== undefined &&
+								order.status === "new" &&
+								isLessThan24HoursFromOrder(order.createdAt) && (
+									<AlertDialogOnAction
+										buttonText={"Откажи поръчката"}
+										title={"Сигурни ли сте?"}
+										description="Ако откажете поръчката, тя ще бъде изтрита и няма да получите
+						артикула!"
+										continueText="Продължаване"
+										cancelText="Назад"
+										fn={async () => {
+											console.log("here1");
+											await cancelOrder(order._id, order.email);
+										}}
+									/>
+								)}
 						</div>
 					);
 				})}
