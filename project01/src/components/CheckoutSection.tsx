@@ -8,7 +8,6 @@ import {
 } from "~/components/ui/sheet";
 import { Input } from "~/components/ui/input";
 import { Button } from "./ui/button";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -29,6 +28,7 @@ import { CartContext } from "./CartContextProvider";
 import axios, { type AxiosResponse } from "axios";
 import type { ProductInterface } from "~/pages/api/products";
 import { useRouter } from "next/router";
+import { UserInterface } from "~/pages/api/users";
 
 const FormSchema = z.object({
 	flname: z.string().min(2, {
@@ -53,12 +53,13 @@ const FormSchema = z.object({
 
 export function CheckoutSection() {
 	const { cartProducts, setCartProducts } = useContext(CartContext);
-	const { data: session } = useSession();
+	const { data: session, status } = useSession();
 	const [reserveProducts, setReserveProducts] = useState(false);
 	const router = useRouter();
 
 	useEffect(() => {
 		if (reserveProducts) {
+			getUserInformation();
 			setProductStatus("selling").catch((err) => {
 				console.log(err);
 			});
@@ -79,10 +80,10 @@ export function CheckoutSection() {
 		resolver: zodResolver(FormSchema),
 		defaultValues: {
 			flname: "",
-			tel: "",
-			address: "",
-			info: "",
 			city: "",
+			address: "",
+			tel: "",
+			info: "",
 		},
 	});
 
@@ -95,6 +96,23 @@ export function CheckoutSection() {
 				result.data.status = status;
 			}
 			await axios.put("/api/products", result.data);
+		}
+	}
+
+	async function getUserInformation() {
+		if (session && status === "authenticated") {
+			const input = session.user.email;
+			try {
+				const res: AxiosResponse<UserInterface> = await axios.get(
+					`/api/users?email=${input}`,
+				);
+				form.setValue("flname", res.data.name);
+				form.setValue("city", res.data.city);
+				form.setValue("address", res.data.address);
+				form.setValue("tel", res.data.tel);
+			} catch (err) {
+				console.log(err);
+			}
 		}
 	}
 
@@ -149,10 +167,8 @@ export function CheckoutSection() {
 				setReserveProducts(open);
 			}}
 		>
-			<SheetTrigger>
-				<Button className="w-full md:col-span-1 md:w-auto">
-					Продължаване към Плащане
-				</Button>
+			<SheetTrigger className="h-10 w-[100%] rounded-md bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90">
+				Продължаване към Плащане
 			</SheetTrigger>
 			<SheetContent>
 				<SheetHeader>

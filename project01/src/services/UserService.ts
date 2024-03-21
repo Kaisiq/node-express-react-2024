@@ -17,4 +17,32 @@ export class UserService {
 		}
 	}
 	/* eslint-enable */
+	async updateUser(input: UserInterface) {
+		const { email, ...rest } = input;
+		try {
+			const res = await (User as UserModel).findOneAndUpdate({ email }, rest, {
+				new: true,
+			});
+			if (!res) {
+				return { message: "error" };
+			}
+			return { message: "success" };
+		} catch (err) {
+			console.log(err);
+		}
+	}
+
+	async patchUser(email: string, input: object) {
+		try {
+			const res = await (User as UserModel).findOneAndUpdate({ email }, input, {
+				new: true,
+			});
+			if (!res) {
+				return { message: "error" };
+			}
+			return { message: "success" };
+		} catch (err) {
+			console.log(err);
+		}
+	}
 }
