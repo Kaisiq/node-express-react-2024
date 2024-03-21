@@ -20,9 +20,10 @@ export function ProductCard({ product }: { product: ProductInterface }) {
 						{product?.images?.[0] ? (
 							<Image
 								alt="Product 1"
+								priority
 								className="h-[300px] w-full object-cover"
-								width={500}
-								height={300}
+								width="500"
+								height="300"
 								src={product.images[0]}
 								style={{
 									objectFit: "cover",

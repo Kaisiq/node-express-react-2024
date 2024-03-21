@@ -33,6 +33,7 @@ export function FeaturedProduct() {
 						{product?.images?.[0] ? (
 							<Image
 								alt="FeaturedProduct"
+								priority
 								className="mx-auto aspect-video w-full overflow-hidden rounded-xl object-cover object-center sm:w-full"
 								height="300"
 								src={product.images[0]}

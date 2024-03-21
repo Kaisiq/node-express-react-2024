@@ -59,7 +59,9 @@ export function CheckoutSection() {
 
 	useEffect(() => {
 		if (reserveProducts) {
-			getUserInformation();
+			getUserInformation().catch((err) => {
+				console.log(err);
+			});
 			setProductStatus("selling").catch((err) => {
 				console.log(err);
 			});

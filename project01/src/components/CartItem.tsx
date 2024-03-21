@@ -38,6 +38,7 @@ export function CartItem({ data }: { data: ProductInterface }) {
 			<div className="flex items-start gap-4 text-sm md:col-span-2">
 				<Image
 					alt="Thumbnail"
+					priority
 					className="aspect-video rounded-md border object-cover"
 					height="200"
 					src={data?.images?.[0] ? data.images[0] : ""}

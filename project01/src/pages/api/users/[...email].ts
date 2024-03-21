@@ -14,7 +14,7 @@ export default async function handle(
 	if (req.method === "PATCH") {
 		if (!req?.query?.email) throw "Give Email";
 		const email = req.query.email as string;
-		const input: object = req.body;
+		const input: object = req.body as object;
 		const isAdmin = await isAdminRequest(req, res);
 		const isUser = await isUserRequest(req, res, email);
 		if (!isAdmin || !isUser) throw "Cannot do that operation. Please log in";
