@@ -1,7 +1,6 @@
 import { Order, type OrderModel } from "~/models/Order";
 import { Product, type ProductModel } from "~/models/Product";
 import type { OrderInterface } from "~/pages/api/orders";
-import { isUserRequest } from "~/server/auth";
 
 export class OrderService {
 	async createOrder(input: OrderInterface) {
@@ -38,12 +37,12 @@ export class OrderService {
 			.limit(50)) as unknown as OrderInterface[];
 		return result;
 	}
-	async patchOrder(_id: string, input: Object) {
+	async patchOrder(_id: string, input: object) {
 		const result = (await (Order as OrderModel).findOneAndUpdate(
 			{ _id },
 			input,
 			{ new: true },
-		)) as OrderInterface;
+		)) as OrderInterface | undefined;
 		if (!result) return { message: "error" };
 		for await (const id of result.productIDs) {
 			if (["new", "shipped", "completed"].includes(result.status)) {
