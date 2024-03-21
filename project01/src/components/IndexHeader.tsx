@@ -16,7 +16,7 @@ export function IndexHeader() {
 
 	return (
 		<header className="flex flex-col items-center px-4 py-4 lg:flex-row lg:justify-between lg:px-6 lg:py-6">
-			<div className="flex w-full items-center justify-between lg:w-auto">
+			<div className="flex w-full items-center justify-between">
 				<Link href="/" className="shrink-0">
 					<div className="flex items-center space-x-2">
 						<div className="flex-col font-Rubik text-xl leading-[0.5rem] tracking-tighter md:text-2xl md:leading-4 lg:text-[2rem] lg:leading-3">

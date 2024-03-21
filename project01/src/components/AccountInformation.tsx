@@ -37,7 +37,7 @@ export function AccountInformation() {
 	}
 
 	useEffect(() => {
-		getUserInformation();
+		getUserInformation().catch((err) => console.log(err));
 	}, []);
 	return (
 		<section>
@@ -69,7 +69,9 @@ export function AccountInformation() {
 								axios
 									.patch(`/api/users/${userData?.email}`, { name })
 									.then(() => {
-										getUserInformation();
+										getUserInformation().catch((err) => {
+											console.log(err);
+										});
 									})
 									.catch((err) => {
 										console.log(err);
@@ -106,7 +108,9 @@ export function AccountInformation() {
 								axios
 									.patch(`/api/users/${userData?.email}`, { tel })
 									.then(() => {
-										getUserInformation();
+										getUserInformation().catch((err) => {
+											console.log(err);
+										});
 									})
 									.catch((err) => {
 										console.log(err);
@@ -161,7 +165,9 @@ export function AccountInformation() {
 								axios
 									.patch(`/api/users/${userData?.email}`, { city, address })
 									.then(() => {
-										getUserInformation();
+										getUserInformation().catch((err) => {
+											console.log(err);
+										});
 									})
 									.catch((err) => {
 										console.log(err);
