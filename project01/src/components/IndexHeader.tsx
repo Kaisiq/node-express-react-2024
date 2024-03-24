@@ -28,7 +28,7 @@ export function IndexHeader() {
 				</Link>
 				{/* Hamburger menu button for mobile */}
 				<button
-					className="hidden sm:block md:block lg:hidden xl:hidden"
+					className="block lg:hidden xl:hidden"
 					onClick={toggleMenu}
 					aria-label="Toggle Menu"
 				>

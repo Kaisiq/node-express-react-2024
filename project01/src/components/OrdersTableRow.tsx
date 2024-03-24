@@ -11,9 +11,11 @@ import type { OrderInterface } from "~/pages/api/orders";
 import axios from "axios";
 import { Trash2Icon } from "lucide-react";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 export function OrdersTableRow({ order }: { order: OrderInterface }) {
 	const router = useRouter();
+	const [status, setStatus] = useState(order.status);
 	return (
 		<TableRow key={order._id}>
 			<TableCell>{order.flname}</TableCell>
@@ -26,6 +28,7 @@ export function OrdersTableRow({ order }: { order: OrderInterface }) {
 			<TableCell>
 				<Select
 					onValueChange={(value) => {
+						setStatus(value);
 						const updatedOrder = { ...order, status: value };
 						axios.put("/api/orders", updatedOrder).catch((err) => {
 							console.log(err);
@@ -49,17 +52,19 @@ export function OrdersTableRow({ order }: { order: OrderInterface }) {
 					: ""}
 			</TableCell>
 			<TableCell>{order.price}лв</TableCell>
-			<TableCell>
-				<Button
-					size="icon"
-					variant="ghost"
-					onClick={async () => {
-						await router.push("/admin/orders/delete/" + order._id);
-					}}
-				>
-					<Trash2Icon className="h-4 w-4" />
-					<span className="sr-only">Delete Order</span>
-				</Button>
+			<TableCell key={status}>
+				{status === "canceled" && (
+					<Button
+						size="icon"
+						variant="ghost"
+						onClick={async () => {
+							await router.push("/admin/orders/delete/" + order._id);
+						}}
+					>
+						<Trash2Icon className="h-4 w-4" />
+						<span className="sr-only">Delete Order</span>
+					</Button>
+				)}
 			</TableCell>
 		</TableRow>
 	);
