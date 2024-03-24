@@ -19,15 +19,8 @@ function linksToFileKeys(links: string[] | undefined) {
 }
 
 export class ProductService {
-	async deleteProcess(input: string) {
-		const data = await (Product as ProductModel).findOne({
-			_id: input,
-		});
-		if (!data) {
-			return;
-		}
-		const links = data.images;
-		const fileKeys = linksToFileKeys(links);
+	async deleteImages(imagesArr: string[] | undefined) {
+		const fileKeys = linksToFileKeys(imagesArr);
 		const bearer = process.env.UPLOADTHING_SECRET;
 		const options = {
 			method: "POST",
@@ -38,8 +31,23 @@ export class ProductService {
 			},
 			data: { fileKeys: fileKeys },
 		};
+		await axios.request(options);
+	}
+
+	async getImages(productID: string) {
+		const data = await (Product as ProductModel).findOne({
+			_id: productID,
+		});
+		if (!data) {
+			return undefined;
+		}
+		return data.images;
+	}
+
+	async deleteProcess(input: string) {
 		try {
-			await axios.request(options);
+			const images = await this.getImages(input);
+			await this.deleteImages(images);
 			await (Product as ProductModel).deleteOne({ _id: input });
 			return { message: "success" };
 		} catch (error) {

@@ -1,6 +1,10 @@
 import { Order, type OrderModel } from "~/models/Order";
 import { Product, type ProductModel } from "~/models/Product";
 import type { OrderInterface } from "~/pages/api/orders";
+import { ProductService } from "./ProductService";
+
+const timeToImageDeletion = 50400000; // 14h
+const productService = new ProductService();
 
 export class OrderService {
 	async createOrder(input: OrderInterface) {
@@ -37,6 +41,19 @@ export class OrderService {
 			.limit(50)) as unknown as OrderInterface[];
 		return result;
 	}
+
+	async removePicturesFromOrderProducts(order: OrderInterface) {
+		if (order.status !== "complete") return;
+		try {
+			for await (const productId of order.productIDs) {
+				const images = await productService.getImages(productId);
+				await productService.deleteImages(images);
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	}
+
 	async patchOrder(_id: string, input: object) {
 		const result = (await (Order as OrderModel).findOneAndUpdate(
 			{ _id },
@@ -46,6 +63,13 @@ export class OrderService {
 		if (!result) return { message: "error" };
 		for await (const id of result.productIDs) {
 			if (["new", "shipped", "completed"].includes(result.status)) {
+				if (result.status === "completed") {
+					setTimeout(
+						this.removePicturesFromOrderProducts,
+						timeToImageDeletion,
+						result,
+					);
+				}
 				const res = await (Product as ProductModel).updateOne(
 					{ _id: id },
 					{ status: "sold" },
