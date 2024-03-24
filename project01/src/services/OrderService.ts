@@ -3,7 +3,7 @@ import { Product, type ProductModel } from "~/models/Product";
 import type { OrderInterface } from "~/pages/api/orders";
 import { ProductService } from "./ProductService";
 
-const timeToImageDeletion = 50400000; // 14h
+const timeToDeletion = 50400000; // 14h
 const productService = new ProductService();
 
 export class OrderService {
@@ -66,7 +66,7 @@ export class OrderService {
 				if (result.status === "completed") {
 					setTimeout(
 						this.removePicturesFromOrderProducts,
-						timeToImageDeletion,
+						timeToDeletion,
 						result,
 					);
 				}
@@ -76,6 +76,7 @@ export class OrderService {
 				);
 				if (!res) return { message: "error" };
 			} else if (result.status === "canceled") {
+				setTimeout(this.deleteOrder, timeToDeletion, _id);
 				const res = await (Product as ProductModel).updateOne(
 					{ _id: id },
 					{ status: "ok" },
@@ -95,6 +96,13 @@ export class OrderService {
 		if (!result) return { message: "error" };
 		for await (const _id of rest.productIDs) {
 			if (["new", "shipped", "completed"].includes(rest.status)) {
+				if (result.status === "completed") {
+					setTimeout(
+						this.removePicturesFromOrderProducts,
+						timeToDeletion,
+						result,
+					);
+				}
 				const res = await (Product as ProductModel).updateOne(
 					{ _id },
 					{ status: "sold" },
@@ -102,6 +110,7 @@ export class OrderService {
 				if (!res) return { message: "error" };
 			}
 			if (rest.status === "canceled") {
+				setTimeout(this.deleteOrder, timeToDeletion, _id);
 				const res = await (Product as ProductModel).updateOne(
 					{ _id },
 					{ status: "ok" },
@@ -112,13 +121,15 @@ export class OrderService {
 		return { message: "success" };
 	}
 	async deleteOrder(input: string) {
-		const result: OrderInterface = (await (
-			Order as OrderModel
-		).findOneAndDelete({
+		const orderToDelete = (await this.getOrder(input)) as
+			| OrderInterface
+			| undefined;
+		if (!orderToDelete || orderToDelete.status !== "canceled") return;
+		await (Order as OrderModel).deleteOne({
 			_id: input,
-		}))!;
-		if (!result) return { message: "error" };
-		for await (const _id of result.productIDs) {
+		});
+		if (!orderToDelete) return { message: "error" };
+		for await (const _id of orderToDelete.productIDs) {
 			const res = await (Product as ProductModel).updateOne(
 				{ _id },
 				{ status: "ok" },
