@@ -3,7 +3,8 @@ import { Product, type ProductModel } from "~/models/Product";
 import type { OrderInterface } from "~/pages/api/orders";
 import { ProductService } from "./ProductService";
 
-const timeToDeletion = 50400000; // 14h
+// const timeToDeletion = 50400000; // 14h
+const timeToDeletion = 600000;
 const productService = new ProductService();
 
 export class OrderService {
@@ -66,8 +67,11 @@ export class OrderService {
 		for await (const id of result.productIDs) {
 			if (["new", "shipped", "completed"].includes(result.status)) {
 				if (result.status === "completed") {
-					await new Promise((resolve) => setTimeout(resolve, timeToDeletion));
-					await this.removePicturesFromOrderProducts(result);
+					setTimeout(() => {
+						this.removePicturesFromOrderProducts(result).catch((err) => {
+							console.log(err);
+						});
+					}, timeToDeletion);
 				}
 				const res = await (Product as ProductModel).updateOne(
 					{ _id: id },
@@ -79,8 +83,11 @@ export class OrderService {
 					{ _id: id },
 					{ status: "ok" },
 				);
-				await new Promise((resolve) => setTimeout(resolve, timeToDeletion));
-				await this.deleteOrder(_id);
+				setTimeout(() => {
+					this.deleteOrder(_id).catch((err) => {
+						console.log(err);
+					});
+				}, timeToDeletion);
 				if (!res) return { message: "error" };
 			}
 		}
@@ -97,8 +104,11 @@ export class OrderService {
 		for await (const _id of rest.productIDs) {
 			if (["new", "shipped", "completed"].includes(rest.status)) {
 				if (result.status === "completed") {
-					await new Promise((resolve) => setTimeout(resolve, timeToDeletion));
-					await this.removePicturesFromOrderProducts(result);
+					setTimeout(() => {
+						this.removePicturesFromOrderProducts(result).catch((err) => {
+							console.log(err);
+						});
+					}, timeToDeletion);
 				}
 				const res = await (Product as ProductModel).updateOne(
 					{ _id },
@@ -111,8 +121,11 @@ export class OrderService {
 					{ _id },
 					{ status: "ok" },
 				);
-				await new Promise((resolve) => setTimeout(resolve, timeToDeletion));
-				await this.deleteOrder(_id);
+				setTimeout(() => {
+					this.deleteOrder(_id).catch((err) => {
+						console.log(err);
+					});
+				}, timeToDeletion);
 				if (!res) return { message: "error" };
 			}
 		}
