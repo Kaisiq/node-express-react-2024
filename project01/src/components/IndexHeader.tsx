@@ -16,12 +16,12 @@ export function IndexHeader() {
 	};
 
 	function detectIfTabletOrSmaller() {
-		return window.innerWidth <= 780;
+		return window?.innerWidth <= 780;
 	}
 
 	useEffect(() => {
 		setIsMdOrLess(detectIfTabletOrSmaller());
-	}, [window.innerWidth]);
+	}, []);
 
 	return (
 		<header className="flex flex-col items-center px-4 py-4 lg:flex-row lg:justify-between lg:px-6 lg:py-6">
