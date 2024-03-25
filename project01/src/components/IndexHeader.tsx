@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ShoppingCartIcon } from "./Icons";
 import { MenuIcon } from "lucide-react";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { CartContext } from "./CartContextProvider";
 import { useSession } from "next-auth/react";
 
@@ -9,10 +9,19 @@ export function IndexHeader() {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const { cartProducts }: { cartProducts: string[] } = useContext(CartContext);
 	const { data: session } = useSession();
+	const [isMdOrLess, setIsMdOrLess] = useState(false);
 
 	const toggleMenu = () => {
 		setIsMenuOpen(!isMenuOpen);
 	};
+
+	function detectIfTabletOrSmaller() {
+		return window.innerWidth <= 780;
+	}
+
+	useEffect(() => {
+		setIsMdOrLess(detectIfTabletOrSmaller());
+	}, []);
 
 	return (
 		<header className="flex flex-col items-center px-4 py-4 lg:flex-row lg:justify-between lg:px-6 lg:py-6">
@@ -26,15 +35,15 @@ export function IndexHeader() {
 						</div>
 					</div>
 				</Link>
-				{/* Hamburger menu button for mobile */}
-				<button
-					className="block lg:hidden xl:hidden"
-					onClick={toggleMenu}
-					aria-label="Toggle Menu"
-				>
-					<MenuIcon className="h-6 w-6" />
-				</button>
-				{/* End of Hamburger menu button */}
+				{isMdOrLess && (
+					<button
+						className="block lg:hidden xl:hidden"
+						onClick={toggleMenu}
+						aria-label="Toggle Menu"
+					>
+						<MenuIcon className="h-6 w-6" />
+					</button>
+				)}
 			</div>
 			{/* Navigation menu */}
 			<nav
