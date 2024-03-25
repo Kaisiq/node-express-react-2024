@@ -4,7 +4,7 @@ import type { OrderInterface } from "~/pages/api/orders";
 import { ProductService } from "./ProductService";
 
 // const timeToDeletion = 50400000; // 14h
-const timeToDeletion = 600000;
+const timeToDeletion = 60000; // 1min
 const productService = new ProductService();
 
 export class OrderService {
@@ -135,7 +135,11 @@ export class OrderService {
 		const orderToDelete = (await this.getOrder(input)) as
 			| OrderInterface
 			| undefined;
-		if (!orderToDelete || orderToDelete.status !== "canceled") return;
+		if (!orderToDelete || orderToDelete.status !== "canceled") {
+			console.log("Qkoooo");
+			console.log(orderToDelete, orderToDelete?.status);
+			return;
+		}
 		await (Order as OrderModel).deleteOne({
 			_id: input,
 		});
