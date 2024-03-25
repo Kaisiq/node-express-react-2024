@@ -44,55 +44,53 @@ export function IndexHeader() {
 						<MenuIcon className="h-6 w-6" />
 					</button>
 				)}
+				<nav
+					className={`${
+						isMenuOpen ? "mt-4 grid grid-cols-3 items-center gap-5" : "hidden"
+					} lg:flex lg:flex-row lg:gap-4 lg:gap-6`}
+				>
+					<Link
+						className="underline-offset-4 hover:underline sm:block lg:mt-0"
+						href="/"
+					>
+						Начало
+					</Link>
+					<Link
+						className="underline-offset-4 hover:underline sm:block lg:mt-0"
+						href="/collection/clothing"
+					>
+						Дрехи
+					</Link>
+					<Link
+						className="underline-offset-4 hover:underline sm:block lg:mt-0"
+						href="/collection/accessories"
+					>
+						Аксесоари
+					</Link>
+					<Link
+						className="underline-offset-4 hover:underline sm:block lg:mt-0"
+						href="/collection/footwear"
+					>
+						Обувки
+					</Link>
+
+					<Link
+						className="underline-offset-4 hover:underline sm:block lg:mt-0"
+						href="/account"
+					>
+						{session ? "Акаунт" : "Влизане"}
+					</Link>
+
+					<Link
+						className="underline-offset-4 hover:underline sm:block lg:mt-0"
+						href="/cart"
+					>
+						<div className="flex">
+							<ShoppingCartIcon /> {"(" + cartProducts.length + ")"}
+						</div>
+					</Link>
+				</nav>
 			</div>
-			{/* Navigation menu */}
-			<nav
-				className={`${
-					isMenuOpen ? "mt-4 grid grid-cols-3 items-center gap-5" : "hidden"
-				} lg:flex lg:flex-row lg:gap-4 lg:gap-6`}
-			>
-				<Link
-					className="underline-offset-4 hover:underline sm:block lg:mt-0"
-					href="/"
-				>
-					Начало
-				</Link>
-				<Link
-					className="underline-offset-4 hover:underline sm:block lg:mt-0"
-					href="/collection/clothing"
-				>
-					Дрехи
-				</Link>
-				<Link
-					className="underline-offset-4 hover:underline sm:block lg:mt-0"
-					href="/collection/accessories"
-				>
-					Аксесоари
-				</Link>
-				<Link
-					className="underline-offset-4 hover:underline sm:block lg:mt-0"
-					href="/collection/footwear"
-				>
-					Обувки
-				</Link>
-
-				<Link
-					className="underline-offset-4 hover:underline sm:block lg:mt-0"
-					href="/account"
-				>
-					{session ? "Акаунт" : "Влизане"}
-				</Link>
-
-				<Link
-					className="underline-offset-4 hover:underline sm:block lg:mt-0"
-					href="/cart"
-				>
-					<div className="flex">
-						<ShoppingCartIcon /> {"(" + cartProducts.length + ")"}
-					</div>
-				</Link>
-			</nav>
-			{/* End of Navigation menu */}
 		</header>
 	);
 }
