@@ -43,14 +43,16 @@ export class OrderService {
 	}
 
 	async removePicturesFromOrderProducts(order: OrderInterface) {
-		if (order.status !== "complete") return;
+		if (order.status !== "complete") return false;
 		try {
 			for await (const productId of order.productIDs) {
 				const images = await productService.getImages(productId);
 				await productService.deleteImages(images);
+				return true;
 			}
 		} catch (err) {
 			console.log(err);
+			return err;
 		}
 	}
 
@@ -64,11 +66,8 @@ export class OrderService {
 		for await (const id of result.productIDs) {
 			if (["new", "shipped", "completed"].includes(result.status)) {
 				if (result.status === "completed") {
-					setTimeout(
-						this.removePicturesFromOrderProducts,
-						timeToDeletion,
-						result,
-					);
+					await new Promise((resolve) => setTimeout(resolve, timeToDeletion));
+					await this.removePicturesFromOrderProducts(result);
 				}
 				const res = await (Product as ProductModel).updateOne(
 					{ _id: id },
@@ -76,11 +75,12 @@ export class OrderService {
 				);
 				if (!res) return { message: "error" };
 			} else if (result.status === "canceled") {
-				setTimeout(this.deleteOrder, timeToDeletion, _id);
 				const res = await (Product as ProductModel).updateOne(
 					{ _id: id },
 					{ status: "ok" },
 				);
+				await new Promise((resolve) => setTimeout(resolve, timeToDeletion));
+				await this.deleteOrder(_id);
 				if (!res) return { message: "error" };
 			}
 		}
@@ -88,20 +88,17 @@ export class OrderService {
 	}
 	async updateOrder(input: OrderInterface) {
 		const { _id, ...rest } = input;
-		const result = await (Order as OrderModel).findOneAndUpdate(
+		const result = (await (Order as OrderModel).findOneAndUpdate(
 			{ _id },
 			{ ...rest },
 			{ new: true },
-		);
+		)) as OrderInterface | undefined;
 		if (!result) return { message: "error" };
 		for await (const _id of rest.productIDs) {
 			if (["new", "shipped", "completed"].includes(rest.status)) {
 				if (result.status === "completed") {
-					setTimeout(
-						this.removePicturesFromOrderProducts,
-						timeToDeletion,
-						result,
-					);
+					await new Promise((resolve) => setTimeout(resolve, timeToDeletion));
+					await this.removePicturesFromOrderProducts(result);
 				}
 				const res = await (Product as ProductModel).updateOne(
 					{ _id },
@@ -110,11 +107,12 @@ export class OrderService {
 				if (!res) return { message: "error" };
 			}
 			if (rest.status === "canceled") {
-				setTimeout(this.deleteOrder, timeToDeletion, _id);
 				const res = await (Product as ProductModel).updateOne(
 					{ _id },
 					{ status: "ok" },
 				);
+				await new Promise((resolve) => setTimeout(resolve, timeToDeletion));
+				await this.deleteOrder(_id);
 				if (!res) return { message: "error" };
 			}
 		}
