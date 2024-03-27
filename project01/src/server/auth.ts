@@ -33,7 +33,7 @@ declare module "next-auth" {
 	// }
 }
 
-const adminEmails = ["dahudohu@gmail.com"];
+export const adminEmails = ["dahudohu@gmail.com"];
 
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.

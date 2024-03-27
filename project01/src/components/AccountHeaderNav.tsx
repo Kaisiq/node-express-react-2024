@@ -3,10 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { useRouter } from "next/router";
+import { AuthService } from "~/services/AuthService";
 
 export function AccountHeaderNav() {
 	const { data: session } = useSession();
 	const router = useRouter();
+	const authService = new AuthService();
 	return (
 		<>
 			<header className="flex items-center justify-between">
@@ -39,16 +41,24 @@ export function AccountHeaderNav() {
 			<nav className="flex gap-4 border-b border-gray-200 dark:border-gray-700">
 				<Link
 					className="border-b-2 border-transparent pb-2 transition-colors hover:border-gray-500 dark:hover:border-gray-400"
-					href="#"
+					href="#history"
 				>
-					Order History
+					История на Поръчки
 				</Link>
 				<Link
 					className="border-b-2 border-transparent pb-2 transition-colors hover:border-gray-500 dark:hover:border-gray-400"
-					href="#"
+					href="#account"
 				>
-					Account Information
+					Информация за акаунта
 				</Link>
+				{session?.user?.email && authService.isAdmin(session.user.email) && (
+					<Link
+						className="border-b-2 border-transparent pb-2 transition-colors hover:border-gray-500 dark:hover:border-gray-400"
+						href="/admin"
+					>
+						Админски панел
+					</Link>
+				)}
 			</nav>
 		</>
 	);

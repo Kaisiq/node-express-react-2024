@@ -46,7 +46,7 @@ export function OrdersInformation() {
 		}
 	}
 	return (
-		<section>
+		<section id="history">
 			<h2 className="mb-4 text-xl font-semibold">Order History</h2>
 			<div className="grid gap-4">
 				{orders?.map((order) => {

@@ -40,7 +40,7 @@ export function AccountInformation() {
 		getUserInformation().catch((err) => console.log(err));
 	}, [!userData]);
 	return (
-		<section>
+		<section id="account">
 			<h2 className="mb-4 text-xl font-semibold">
 				Информация за вашият акаунт
 			</h2>
