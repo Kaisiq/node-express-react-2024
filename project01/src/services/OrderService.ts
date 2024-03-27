@@ -2,9 +2,9 @@ import { Order, type OrderModel } from "~/models/Order";
 import { Product, type ProductModel } from "~/models/Product";
 import type { OrderInterface } from "~/pages/api/orders";
 import { ProductService } from "./ProductService";
+import mongoose from "mongoose";
 
-// const timeToDeletion = 50400000; // 14h
-const timeToDeletion = 60000; // 1min
+const timeToDeletion = 50400000; // 14h
 const productService = new ProductService();
 
 export class OrderService {
@@ -20,12 +20,29 @@ export class OrderService {
 			})) as OrderInterface[];
 			return result;
 		} else {
-			const result = (await (Order as OrderModel).find({
-				_id: input,
-			})) as OrderInterface[];
-			return result[0];
+			return await this.getSingleOrder(input);
 		}
 	}
+	async getSingleOrder(input: string) {
+		try {
+			const _id = new mongoose.Types.ObjectId(input);
+			const result = await (Order as OrderModel)
+				.findById(_id)
+				.lean() // Use lean query
+				.exec();
+
+			if (!result) {
+				console.log("Order not found");
+				return null;
+			} else {
+				return result;
+			}
+		} catch (err) {
+			console.error("Error retrieving order:", err);
+			return null;
+		}
+	}
+
 	async getOrdersOf(input: string) {
 		const result = (await (Order as OrderModel)
 			.find({
@@ -93,8 +110,10 @@ export class OrderService {
 		}
 		return { message: "success" };
 	}
+
 	async updateOrder(input: OrderInterface) {
 		const { _id, ...rest } = input;
+		if (!input._id) return { message: "error", description: "No order ID" };
 		const result = (await (Order as OrderModel).findOneAndUpdate(
 			{ _id },
 			{ ...rest },
@@ -122,7 +141,7 @@ export class OrderService {
 					{ status: "ok" },
 				);
 				setTimeout(() => {
-					this.deleteOrder(_id).catch((err) => {
+					this.deleteOrder(input._id!).catch((err) => {
 						console.log(err);
 					});
 				}, timeToDeletion);
@@ -131,14 +150,11 @@ export class OrderService {
 		}
 		return { message: "success" };
 	}
+
 	async deleteOrder(input: string) {
-		const orderToDelete = (await this.getOrder(input)) as
-			| OrderInterface
-			| undefined;
-		if (!orderToDelete || orderToDelete.status !== "canceled") {
-			console.log("Qkoooo");
-			console.log(orderToDelete, orderToDelete?.status);
-			return;
+		const orderToDelete = await this.getSingleOrder(input);
+		if (!orderToDelete || orderToDelete?.status !== "canceled") {
+			return { message: "error" };
 		}
 		await (Order as OrderModel).deleteOne({
 			_id: input,
