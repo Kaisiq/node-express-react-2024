@@ -4,7 +4,8 @@ import type { OrderInterface } from "~/pages/api/orders";
 import { ProductService } from "./ProductService";
 import mongoose from "mongoose";
 
-const timeToDeletion = 50400000; // 14h
+// const timeToDeletion = 50400000; // 14h
+const timeToDeletion = 30000; // 30s
 const productService = new ProductService();
 
 export class OrderService {
