@@ -1,0 +1,62 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "apple",
+      "description": "big apple",
+      "price": "123",
+      "category": "sweets",
+      "image": "ADMIN",
+      "tags": [
+        "asd",
+        "asd",
+        ""
+      ]
+    },
+    {
+      "id": "9a03",
+      "name": "asd",
+      "description": "asd",
+      "price": 123,
+      "category": 2,
+      "image": "https://m.media-amazon.com/images/I/61hzuoXwjqL._AC_UF1000,1000_QL80_.jpg",
+      "tags": [
+        "1",
+        "2",
+        "3",
+        ""
+      ]
+    },
+    {
+      "id": "5296",
+      "name": "Test",
+      "description": "Product",
+      "price": 12,
+      "category": 3,
+      "image": "12312",
+      "tags": [
+        "1",
+        "2",
+        "3",
+        "a",
+        "s",
+        "d",
+        "asd",
+        "tag"
+      ]
+    },
+    {
+      "name": "Mouse",
+      "description": "Logitech optical mouse23",
+      "price": 32.7,
+      "category": 3,
+      "image": "https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/peripherals/alienware/peripherals/alienware-320m-mouse/assets/mouse-alienware-aw320m-black-gallery-5.psd?fmt=pjpg&pscan=auto&scl=1&wid=2159&hei=1540&qlt=100,1&resMode=sharp2&size=2159,1540&chrss=full&imwidth=5000",
+      "tags": [
+        "mouse",
+        "optical",
+        "highres"
+      ],
+      "id": "1dfd"
+    }
+  ]
+}
