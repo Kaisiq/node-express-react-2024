@@ -1,10 +1,8 @@
-import { mongooseConnect } from "~/lib/mongoose";
-import { User, type UserModel, type UserInterface } from "~/models/User";
+import { User, type UserModel, UserInterface } from "../models/User";
 
 export class UserService {
   /* eslint-disable */
   async getUser(input: string | string[]) {
-    await mongooseConnect();
     if (Array.isArray(input)) {
       const result = (await (User as UserModel).find({
         email: input,
@@ -18,7 +16,6 @@ export class UserService {
     }
   }
   async getSingleUser(input: string) {
-    await mongooseConnect();
     try {
       const result = await (User as UserModel)
         .findOne({ email: input })
@@ -38,7 +35,6 @@ export class UserService {
   }
   /* eslint-enable */
   async updateUser(input: UserInterface) {
-    await mongooseConnect();
     const { email, ...rest } = input;
     try {
       const res = await (User as UserModel).findOneAndUpdate({ email }, rest, {
@@ -54,7 +50,6 @@ export class UserService {
   }
 
   async patchUser(email: string, input: object) {
-    await mongooseConnect();
     try {
       const res = await (User as UserModel).findOneAndUpdate({ email }, input, {
         new: true,
@@ -69,7 +64,6 @@ export class UserService {
   }
 
   async createUser(input: UserInterface) {
-    await mongooseConnect();
     try {
       const res = await (User as UserModel).create(input);
       return { message: res ? "success" : "error: couldn't create user" };

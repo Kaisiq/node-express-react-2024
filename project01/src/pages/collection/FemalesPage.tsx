@@ -2,10 +2,8 @@
 import { useLocation } from "react-router";
 import ClothingCollectionWithFilter from "~/components/ClothingCollectionWithFilter";
 import CustomHead from "~/components/CustomHead";
-import { mongooseConnect } from "~/lib/mongoose";
-import { ProductService } from "~/services/ProductService";
 
-export default function Collection() {
+export default function FemalesPage() {
   // props: { products: string; page: number; maxPages: number }
   const location = useLocation();
   return (

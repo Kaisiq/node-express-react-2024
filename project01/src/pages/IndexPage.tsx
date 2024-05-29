@@ -3,7 +3,6 @@ import { LatestProducts } from "~/components/LatestProducts";
 import { Separator } from "@/components/ui/separator";
 import { HeroSection } from "@/components/HeroSection";
 import { ProductCollection } from "@/components/ProductCollection";
-import { ProductService } from "@/services/ProductService";
 import type { ProductInterface } from "@/models/Product";
 import { mongooseConnect } from "@/lib/mongoose";
 import CustomHead from "@/components/CustomHead";

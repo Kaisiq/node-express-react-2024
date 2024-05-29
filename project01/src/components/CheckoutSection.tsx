@@ -31,7 +31,6 @@ import type { ProductInterface } from "~/models/Product";
 import type { UserInterface } from "~/models/User";
 // import posthog from "posthog-js";
 import { ToastAction } from "./ui/toast";
-import { UserService } from "~/services/UserService";
 import { getUser } from "~/lib/utils";
 
 const FormSchema = z.object({

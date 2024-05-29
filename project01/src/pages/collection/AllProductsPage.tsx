@@ -1,11 +1,9 @@
-import { mongooseConnect } from "~/lib/mongoose";
-import { ProductService } from "~/services/ProductService";
 import ClothingCollectionWithFilter from "~/components/ClothingCollectionWithFilter";
 // import { type GetServerSidePropsContext } from "next";
 import CustomHead from "~/components/CustomHead";
 import { useLocation } from "react-router";
 
-export default function Collection() {
+export default function AllProductPage() {
   // props: { products: string; page: number; maxPages: number }
   const location = useLocation();
   return (

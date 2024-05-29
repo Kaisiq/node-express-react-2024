@@ -8,6 +8,10 @@ import AboutUsPage from "./pages/AboutUsPage";
 import AccountPage from "./pages/AccountPage";
 import ContactPage from "./pages/ContactPage";
 import FaqPage from "./pages/FaqPage";
+import AllProductPage from "./pages/collection/AllProductsPage";
+import MalesPage from "./pages/collection/MalesPage";
+import FemalesPage from "./pages/collection/FemalesPage";
+import SalePage from "./pages/collection/SalePage";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +34,28 @@ const router = createBrowserRouter([
       {
         path: "/faq",
         element: <FaqPage />,
+      },
+      {
+        path: "/collection",
+        children: [
+          { index: true, element: <AllProductPage /> },
+          {
+            path: "males",
+            element: <MalesPage />,
+          },
+          {
+            path: "females",
+            element: <FemalesPage />,
+          },
+          {
+            path: "sale",
+            element: <SalePage />,
+          },
+          {
+            path: "all",
+            element: <AllProductPage />,
+          },
+        ],
       },
     ],
   },

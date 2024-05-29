@@ -1,7 +1,5 @@
 import axios from "axios";
-import { Product, type ProductModel } from "~/models/Product";
-import type { ProductInterface } from "~/models/Product";
-import { mongooseConnect } from "~/lib/mongoose";
+import { Product, type ProductModel, ProductInterface } from "../models/Product";
 
 function linksToFileKeys(links: string[] | undefined) {
   if (!links) return "";
@@ -49,7 +47,6 @@ export class ProductService {
   }
 
   async deleteProcess(input: string) {
-    await mongooseConnect();
     try {
       const images = await this.getImages(input);
       await this.deleteImages(images);
@@ -62,7 +59,6 @@ export class ProductService {
   }
 
   async updateProduct(input: ProductInterface) {
-    await mongooseConnect();
     const { _id, ...rest } = input;
     const result = await (Product as ProductModel).findOneAndUpdate(
       { _id },
@@ -73,7 +69,6 @@ export class ProductService {
   }
 
   async createProduct(input: ProductInterface) {
-    await mongooseConnect();
     const result = await (Product as ProductModel).create(input);
     return { message: result ? "success" : "error" };
   }
@@ -95,7 +90,6 @@ export class ProductService {
 
   /* eslint-disable */
   async getProduct(input: string | string[]) {
-    await mongooseConnect();
     if (Array.isArray(input)) {
       const result = (await (Product as ProductModel).find({
         _id: input,
@@ -111,7 +105,6 @@ export class ProductService {
   /* eslint-enable */
 
   async getAllProducts(page: number) {
-    await mongooseConnect();
     const actualPage = page - 1;
     const results = (await (Product as ProductModel)
       .find()
@@ -121,13 +114,11 @@ export class ProductService {
   }
 
   async countPages(filterParams: object) {
-    await mongooseConnect();
     const count = await (Product as ProductModel).find(filterParams).countDocuments();
     return count / this.productsPerPage;
   }
 
   async getAllMaleProducts(page: number) {
-    await mongooseConnect();
     const actualPage = page - 1;
 
     const results = (await (Product as ProductModel)
@@ -138,7 +129,6 @@ export class ProductService {
   }
 
   async getAllFemaleProducts(page: number) {
-    await mongooseConnect();
     const actualPage = page - 1;
 
     const results = (await (Product as ProductModel)
@@ -149,7 +139,6 @@ export class ProductService {
   }
 
   async getAllOnSale(page: number) {
-    await mongooseConnect();
     const actualPage = page - 1;
 
     const results = (await (Product as ProductModel)
@@ -160,7 +149,6 @@ export class ProductService {
   }
 
   async getNewestProducts(n: number) {
-    await mongooseConnect();
     const results = (await (Product as ProductModel)
       .find({}, null, {
         sort: { updatedAt: -1 },
@@ -170,7 +158,6 @@ export class ProductService {
   }
 
   async getNewestStatusProducts(status: string, n: number) {
-    await mongooseConnect();
     const results = (await (Product as ProductModel)
       .find({ status: status }, null, {
         sort: { updatedAt: -1 },
@@ -183,7 +170,6 @@ export class ProductService {
   }
 
   async getCategory(category: string) {
-    await mongooseConnect();
     const results = (await (Product as ProductModel)
       .find({
         category: category,
@@ -193,7 +179,6 @@ export class ProductService {
   }
 
   async getCategoryN(category: string, n: number) {
-    await mongooseConnect();
     const results = (await (Product as ProductModel)
       .find({
         category: category,

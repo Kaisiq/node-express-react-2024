@@ -2,16 +2,14 @@
 import { useLocation } from "react-router";
 import ClothingCollectionWithFilter from "~/components/ClothingCollectionWithFilter";
 import CustomHead from "~/components/CustomHead";
-import { mongooseConnect } from "~/lib/mongoose";
-import { ProductService } from "~/services/ProductService";
 
-export default function Collection() {
+export default function MalesPage() {
   // props: { products: string; page: number; maxPages: number }
   const location = useLocation();
   return (
     <>
       <CustomHead
-        title={`Две Трети | Колекция | Намалени`}
+        title={`Две Трети | Колекция | Мъжко`}
         description={`Онлайн магазин за дрехи втора употреба`}
         image={`/b.webp?height=800&width=1600`}
         link={`${location.pathname}`}
@@ -19,7 +17,7 @@ export default function Collection() {
         domain={`${location.pathname}`}
       />
       <main>
-        <h1 className="text-center text-3xl font-bold tracking-tighter sm:text-5xl">Намалени</h1>
+        <h1 className="text-center text-3xl font-bold tracking-tighter sm:text-5xl">Мъжко</h1>
         {/* <ClothingCollectionWithFilter {...props} /> */}
       </main>
     </>
@@ -31,8 +29,12 @@ export default function Collection() {
 //   const pageNumber = Number(page);
 //   await mongooseConnect();
 //   const productService = new ProductService();
-//   const maxPages = Math.ceil(await productService.countPages({ sellPercent: { $gt: 0 } }));
-//   const products = await productService.getAllOnSale(pageNumber);
+//   const maxPages = Math.ceil(
+//     await productService.countPages({
+//       $or: [{ sex: "male" }, { sex: "both" }],
+//     })
+//   );
+//   const products = await productService.getAllMaleProducts(pageNumber);
 //   return {
 //     props: { products: JSON.stringify(products), page: pageNumber, maxPages },
 //   };

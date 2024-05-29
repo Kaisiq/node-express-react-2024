@@ -1,3 +1,4 @@
+import { Schema, model, models, type Document, type Model } from "mongoose";
 import z from "zod";
 
 export const UserFromSchema = z.object({
@@ -38,3 +39,34 @@ export const UserFromSchema = z.object({
 });
 
 export type UserInterface = z.infer<typeof UserFromSchema>;
+
+export interface UserDocument extends Document {
+  name?: string;
+  tel?: string;
+  city?: string;
+  address?: string;
+  email: string;
+  hashedPassword?: string;
+  image?: string;
+  emailVerified?: boolean;
+  admin?: boolean;
+}
+
+export type UserModel = Model<UserDocument>;
+
+const UserSchema = new Schema<UserDocument>(
+  {
+    name: { type: String },
+    tel: { type: String },
+    city: { type: String },
+    address: { type: String },
+    email: { type: String, required: true },
+    hashedPassword: { type: String, default: null },
+    image: { type: String },
+    emailVerified: { type: Boolean, default: null },
+    admin: { type: Boolean },
+  },
+  { collection: "users" }
+);
+
+export const User = models.User ?? model<UserDocument, UserModel>("User", UserSchema);

@@ -1,8 +1,7 @@
-import { Order, type OrderModel, type OrderInterface } from "~/models/Order";
-import { Product, type ProductModel } from "~/models/Product";
+import { Order, type OrderModel, OrderInterface } from "../models/Order";
+import { Product, type ProductModel } from "../models/Product";
 import { ProductService } from "./ProductService";
 import mongoose from "mongoose";
-import { mongooseConnect } from "~/lib/mongoose";
 
 // const timeToDeletion = 50400000; // 14h
 const timeToDeletion = 30000; // 30s
@@ -10,13 +9,11 @@ const productService = new ProductService();
 
 export class OrderService {
   async createOrder(input: OrderInterface) {
-    await mongooseConnect();
     const result = await (Order as OrderModel).create(input);
     return { message: result ? "success" : "error" };
   }
   /* eslint-disable */
   async getOrder(input: string | string[]) {
-    await mongooseConnect();
     if (Array.isArray(input)) {
       const result = (await (Order as OrderModel).find({
         _id: input,
@@ -28,7 +25,6 @@ export class OrderService {
   }
 
   async getLatestNOrders(n: number) {
-    await mongooseConnect();
     const result = (await (Order as OrderModel)
       .find({}, null, {
         sort: { updatedAt: -1 },
@@ -38,7 +34,6 @@ export class OrderService {
   }
 
   async getSingleOrder(input: string) {
-    await mongooseConnect();
     try {
       const _id = new mongoose.Types.ObjectId(input);
       const result = await (Order as OrderModel)
@@ -59,7 +54,6 @@ export class OrderService {
   }
 
   async getOrdersOf(input: string) {
-    await mongooseConnect();
     const result = (await (Order as OrderModel)
       .find({
         email: input,
@@ -69,7 +63,6 @@ export class OrderService {
   }
   /* eslint-enable */
   async getAllOrders() {
-    await mongooseConnect();
     const result = (await (Order as OrderModel)
       .find()
       .sort({ createdAt: -1 })
@@ -78,7 +71,6 @@ export class OrderService {
   }
 
   async removePicturesFromOrderProducts(order: OrderInterface) {
-    await mongooseConnect();
     if (order.status !== "complete") return false;
     try {
       for await (const productId of order.productIDs) {
@@ -93,7 +85,6 @@ export class OrderService {
   }
 
   async patchOrder(_id: string, input: object) {
-    await mongooseConnect();
     const result = (await (Order as OrderModel).findOneAndUpdate({ _id }, input, { new: true })) as
       | OrderInterface
       | undefined;
@@ -123,7 +114,6 @@ export class OrderService {
   }
 
   async updateOrder(input: OrderInterface) {
-    await mongooseConnect();
     const { _id, ...rest } = input;
     if (!input._id) return { message: "error", description: "No order ID" };
     const result = (await (Order as OrderModel).findOneAndUpdate(
@@ -158,7 +148,6 @@ export class OrderService {
   }
 
   async deleteOrder(input: string) {
-    await mongooseConnect();
     const orderToDelete = await this.getSingleOrder(input);
     if (!orderToDelete || orderToDelete?.status !== "canceled") {
       return { message: "error" };
