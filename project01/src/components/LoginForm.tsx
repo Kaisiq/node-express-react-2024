@@ -8,6 +8,7 @@ import { type FormEvent, useState } from "react";
 import axios, { type AxiosError, type AxiosResponse } from "axios";
 import { toast } from "./ui/use-toast";
 import type { UserInterface } from "~/models/User";
+import { Link } from "react-router-dom";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -55,19 +56,19 @@ export default function LoginForm() {
             <h1 className="text-3xl font-bold">Влизане в две/трети</h1>
             <p className="text-zinc-500 dark:text-zinc-400">
               Влизайки или създавайки акаунт, Вие се съгласявате с нашите{" "}
-              <a
+              <Link
                 className="text-blue-500 hover:text-blue-700"
-                href="#"
+                to="#"
               >
                 terms
-              </a>{" "}
+              </Link>{" "}
               и{" "}
-              <a
+              <Link
                 className="text-blue-500 hover:text-blue-700"
-                href="#"
+                to="#"
               >
                 privacy policy
-              </a>
+              </Link>
               .{"\n                            "}
             </p>
           </div>
@@ -94,12 +95,12 @@ export default function LoginForm() {
               required
               type="password"
             />
-            <a
+            <Link
               className="ml-auto inline-block text-sm underline"
-              href="#"
+              to="#"
             >
               Забравили сте паролата си?
-            </a>
+            </Link>
           </div>
           <Button
             type="submit"

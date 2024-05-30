@@ -1,5 +1,6 @@
 import { ShoppingCartIcon } from "lucide-react";
 import { MenuIcon } from "lucide-react";
+import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 // import { CartContext } from "./CartContextProvider";
 // import { useSession } from "next-auth/react";
@@ -32,7 +33,7 @@ export function HeaderNav() {
   return (
     <header className="flex flex-col items-center px-4 py-4 lg:flex-row lg:justify-between lg:px-6 lg:py-6">
       <div className="flex w-full items-center justify-between">
-        <a href="/">
+        <Link to="/">
           <div className="flex items-center space-x-2">
             <div className="flex-col font-Rubik text-xl leading-[0.5rem] tracking-tighter md:text-2xl md:leading-4 lg:text-[2rem] lg:leading-3">
               <span>две</span>
@@ -40,7 +41,7 @@ export function HeaderNav() {
               <span className="ml-[40px] lg:ml-[60px]">трети</span>
             </div>
           </div>
-        </a>
+        </Link>
         {isMdOrLess && (
           <button
             className="block lg:hidden xl:hidden"
@@ -55,54 +56,54 @@ export function HeaderNav() {
             isMenuOpen ? "mt-4 grid grid-cols-3 items-center gap-5" : "hidden"
           } lg:flex lg:flex-row lg:gap-4 lg:gap-6`}
         >
-          <a
+          <Link
             className="underline-offset-4 hover:underline sm:block lg:mt-0"
-            href="/"
+            to="/"
           >
             Начало
-          </a>
-          <a
+          </Link>
+          <Link
             className="underline-offset-4 hover:underline sm:block lg:mt-0"
-            href="/collection/females"
+            to="/collection/females"
           >
             Дамско
-          </a>
-          <a
+          </Link>
+          <Link
             className="underline-offset-4 hover:underline sm:block lg:mt-0"
-            href="/collection/males"
+            to="/collection/males"
           >
             Мъжко
-          </a>
-          <a
+          </Link>
+          <Link
             className="underline-offset-4 hover:underline sm:block lg:mt-0"
-            href="/collection/sale"
+            to="/collection/sale"
           >
             Намалени
-          </a>
+          </Link>
 
-          <a
+          <Link
             className="underline-offset-4 hover:underline sm:block lg:mt-0"
-            href="/collection/"
+            to="/collection/"
           >
             Всичко
-          </a>
+          </Link>
 
-          <a
+          <Link
             className="underline-offset-4 hover:underline sm:block lg:mt-0"
-            href="/account"
+            to="/account"
           >
             {/* {session ? "Акаунт" : "Влизане"} */}
             Акаунт
-          </a>
+          </Link>
 
-          <a
+          <Link
             className="underline-offset-4 hover:underline sm:block lg:mt-0"
-            href="/cart"
+            to="/cart"
           >
             <div className="flex">
               <ShoppingCartIcon /> {/*"(" + cartProducts.length + ")"*/}
             </div>
-          </a>
+          </Link>
         </nav>
       </div>
     </header>

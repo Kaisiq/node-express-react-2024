@@ -7,6 +7,7 @@ import { useContext } from "react";
 import { AdminContext } from "./AdminContextProvider";
 import { useNavigate } from "react-router";
 import { getUser } from "~/lib/utils";
+import { Link } from "react-router-dom";
 
 export function AccountHeaderNav() {
   // const { data: session } = useSession();
@@ -46,12 +47,12 @@ export function AccountHeaderNav() {
           Информация за акаунта
         </a>
         {isAdmin && (
-          <a
+          <Link
             className="border-b-2 border-transparent pb-2 transition-colors hover:border-gray-500 dark:hover:border-gray-400"
-            href="/admin"
+            to="/admin"
           >
             Админски панел
-          </a>
+          </Link>
         )}
       </nav>
     </>

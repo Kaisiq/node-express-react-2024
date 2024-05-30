@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 export function HeroSection() {
   return (
@@ -15,12 +16,12 @@ export function HeroSection() {
         </p>
         <div className="flex justify-center gap-4">
           <Button variant="outline">
-            <a
-              href="/collection"
+            <Link
+              to="/collection"
               className="text-lg"
             >
               Разгледай колекцията от дрехи
-            </a>
+            </Link>
           </Button>
         </div>
       </div>

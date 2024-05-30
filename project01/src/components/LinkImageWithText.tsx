@@ -1,6 +1,8 @@
 // import Link from "next/link";
 // import Image from "next/image";
 
+import { Link } from "react-router-dom";
+
 const LinkImageWithText = (props: {
   image: string;
   text: string;
@@ -9,8 +11,8 @@ const LinkImageWithText = (props: {
 }) => {
   return (
     <div className="relative">
-      <a
-        href="/collection/sale"
+      <Link
+        to="/collection/sale"
         className="rounded-xl text-lg"
       >
         <img
@@ -25,7 +27,7 @@ const LinkImageWithText = (props: {
             {props.text}
           </span>
         </div>
-      </a>
+      </Link>
     </div>
   );
 };

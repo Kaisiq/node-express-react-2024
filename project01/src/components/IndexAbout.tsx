@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 export function IndexAbout() {
   return (
@@ -39,8 +40,8 @@ export function IndexAbout() {
                 Explore our handpicked selection of vintage clothing and accessories.
               </p>
             </div>
-            <a
-              href="/collection"
+            <Link
+              to="/collection"
               className="shrink-0 md:ml-auto"
             >
               <Button
@@ -49,7 +50,7 @@ export function IndexAbout() {
               >
                 View all
               </Button>
-            </a>
+            </Link>
           </div>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" />
         </div>
