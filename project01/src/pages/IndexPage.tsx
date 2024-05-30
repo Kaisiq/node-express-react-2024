@@ -4,20 +4,14 @@ import { Separator } from "@/components/ui/separator";
 import { HeroSection } from "@/components/HeroSection";
 import { ProductCollection } from "@/components/ProductCollection";
 import type { ProductInterface } from "@/models/Product";
-import { mongooseConnect } from "@/lib/mongoose";
 import CustomHead from "@/components/CustomHead";
 import { useLocation } from "react-router-dom";
 import LinkImageWithText from "@/components/LinkImageWithText";
 import { useLoaderData } from "react-router-dom";
 
 export default function IndexPage() {
-  // const props = useLoaderData() as { featured: string; newest: string };
-  // // props: { featured: string; newest: string };
-
-  // const parsedFeatured = JSON.parse(props.featured) as ProductInterface;
-  // const parsedNewest = JSON.parse(props.newest) as ProductInterface[];
+  const props = useLoaderData() as { featured: ProductInterface; newest: ProductInterface[] };
   const location = useLocation();
-
   return (
     <>
       <CustomHead
@@ -30,7 +24,7 @@ export default function IndexPage() {
       />
       <main className="flex-1">
         <HeroSection />
-        {/* <FeaturedProduct product={parsedFeatured} /> */}
+        <FeaturedProduct product={props.featured} />
         <Separator className="mb-4" />
         <section className="w-full pt-12 md:pt-16 lg:pt-20 xl:pt-24">
           <div className="container mx-auto grid items-center justify-center gap-4 px-4 text-justify md:px-6">
@@ -47,7 +41,7 @@ export default function IndexPage() {
             </div>
           </div>
         </section>
-        <LatestProducts n={3} />
+        <LatestProducts products={props.newest} />
         <section className="w-full pt-12 md:pt-16 lg:pt-20 xl:pt-24">
           <div className="container mx-auto grid items-center justify-center gap-4 px-4 text-justify md:px-6">
             <div className="space-y-3">
@@ -91,17 +85,4 @@ export default function IndexPage() {
       </main>
     </>
   );
-}
-
-export async function indexPageLoader() {
-  // const productService = new ProductService();
-  // const products = (await productService.getNewestStatusProducts("ok", 3)) as ProductInterface[];
-  // const newestProducts = await productService.getNewestProducts(3);
-  const randomNumber = Math.floor(Math.random() * 3);
-  return {
-    props: {
-      featured: JSON.stringify("products[randomNumber]"),
-      newest: JSON.stringify("newestProducts"),
-    },
-  };
 }

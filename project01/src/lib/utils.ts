@@ -12,3 +12,5 @@ export function getUser() {
     : undefined;
   return user;
 }
+
+export const SERVER = process.env.REACT_APP_SERVER_ADDRESS;

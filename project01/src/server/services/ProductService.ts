@@ -104,48 +104,32 @@ export class ProductService {
   }
   /* eslint-enable */
 
-  async getAllProducts(page: number) {
+  stringFilterToObj = (filter: string) => {
+    let actualFilter = {};
+    if (filter === "male") {
+      actualFilter = { $or: [{ sex: "male" }, { sex: "both" }] };
+    } else if (filter === "female") {
+      actualFilter = { $or: [{ sex: "female" }, { sex: "both" }] };
+    } else if (filter === "sale") {
+      actualFilter = { sellPercent: { $gt: 0 } };
+    }
+    return actualFilter;
+  };
+
+  async getAllProducts(page: number, filter: string) {
     const actualPage = page - 1;
+    const actualFilter = this.stringFilterToObj(filter);
     const results = (await (Product as ProductModel)
-      .find()
+      .find(actualFilter)
       .skip(actualPage * this.productsPerPage)
       .limit(this.productsPerPage)) as ProductInterface[];
     return results;
   }
 
-  async countPages(filterParams: object) {
-    const count = await (Product as ProductModel).find(filterParams).countDocuments();
+  async countPages(filterParams: string) {
+    const actualFilter = this.stringFilterToObj(filterParams);
+    const count = await (Product as ProductModel).find(actualFilter).countDocuments();
     return count / this.productsPerPage;
-  }
-
-  async getAllMaleProducts(page: number) {
-    const actualPage = page - 1;
-
-    const results = (await (Product as ProductModel)
-      .find({ $or: [{ sex: "male" }, { sex: "both" }] })
-      .skip(actualPage * this.productsPerPage)
-      .limit(this.productsPerPage)) as ProductInterface[];
-    return results;
-  }
-
-  async getAllFemaleProducts(page: number) {
-    const actualPage = page - 1;
-
-    const results = (await (Product as ProductModel)
-      .find({ $or: [{ sex: "female" }, { sex: "both" }] })
-      .skip(actualPage * this.productsPerPage)
-      .limit(this.productsPerPage)) as ProductInterface[];
-    return results;
-  }
-
-  async getAllOnSale(page: number) {
-    const actualPage = page - 1;
-
-    const results = (await (Product as ProductModel)
-      .find({ sellPercent: { $gt: 0 } })
-      .skip(actualPage * this.productsPerPage)
-      .limit(this.productsPerPage)) as ProductInterface[];
-    return results;
   }
 
   async getNewestProducts(n: number) {

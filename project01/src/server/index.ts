@@ -2,76 +2,53 @@ import { mongooseConnect } from "./lib/mongoose";
 import { DELETE, GET, POST, PUT } from "./products";
 import { ProductService } from "./services/ProductService";
 import { Request, Response } from "express";
-
 const express = require("express");
-const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const app = express();
-const User = require("./model/dataSchema.js");
+dotenv.config();
 
+const corsOptions = {
+  origin: "http://localhost:3000", // explicitly allow the front-end origin
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions)); // Ensure CORS is applied before other middleware
 app.use(express.json());
-app.use(cors());
+app.use(express.urlencoded({ extended: false }));
 
-// // DB config
-// const db = require("./config/keys").MongoURI;
-// mongoose.set("strictQuery", true);
-
-// // connect to mongo
-// mongoose
-//   .connect(db, {
-//     useUnifiedTopology: true,
-//     useNewUrlParser: true,
-//   })
-//   .then(() => console.log("MongoDB Connected"))
-//   .catch((error) => console.log(error));
 mongooseConnect();
 const productService = new ProductService();
 
-// bodyparser gets the req.body
-app.use(express.urlencoded({ extended: false }));
-
-app.get(
-  "/product/:_id",
-  async (req: { params: { _id: string } }, res: { json: (arg0: { exists: boolean }) => void }) => {
-    const { _id }: { _id: string } = req.params;
+app.get("/products/:_id", async (req: Request, res: Response) => {
+  const { _id } = req.params;
+  try {
     const document = await productService.getProduct(_id);
     const exists = !!document;
     res.json({ exists });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch product" });
   }
-);
+});
 
 app
-  .route("/product")
-  .get((req: Request, res: Response) => {
-    GET(req, res);
+  .route("/products")
+  .get(async (req: Request, res: Response) => {
+    await GET(req, res);
   })
-  .put((req: any, res: any) => {
-    PUT(req, res);
+  .put(async (req: Request, res: Response) => {
+    await PUT(req, res);
   })
-  .post((req: any, res: any) => {
-    POST(req, res);
+  .post(async (req: Request, res: Response) => {
+    await POST(req, res);
   })
-  .delete((req: any, res: any) => {
-    DELETE(req, res);
+  .delete(async (req: Request, res: Response) => {
+    await DELETE(req, res);
   });
 
-// app.post("/insert", async (req, res) => {
-//   const walletAddress = req.body.walletAddress;
-
-//   const formData = new User({
-//     walletAddress,
-//   });
-
-//   try {
-//     await formData.save();
-//     res.send("inserted data..");
-//   } catch (err) {
-//     console.log(err);
-//   }
-// });
-
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);

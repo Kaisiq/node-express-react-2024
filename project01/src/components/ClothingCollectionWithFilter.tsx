@@ -8,7 +8,7 @@ import ClothingListFilter, {
 import { ClothingPagination } from "./ClothingPagination";
 
 export default function ClothingCollectionWithFilter(props: {
-  products: string;
+  products: ProductInterface[];
   page: number;
   maxPages: number;
 }) {
@@ -34,16 +34,16 @@ export default function ClothingCollectionWithFilter(props: {
     setSearchFor(value);
   };
 
-  const parsedProducts = useMemo(() => {
-    return JSON.parse(props.products) as ProductInterface[];
-  }, [props.products]);
+  // const parsedProducts = useMemo(() => {
+  //   return JSON.parse(props.products) as ProductInterface[];
+  // }, [props.products]);
 
   const filteredProducts = useMemo(() => {
     if (!filter || Object.keys(filter).length === 0) {
-      return parsedProducts;
+      return props.products;
     }
 
-    return parsedProducts.filter((product) => {
+    return props.products.filter((product) => {
       if (Object.values(filter).find((el) => el !== "all" && el !== ""))
         for (const [fltr, value] of Object.entries(filter)) {
           console.log(fltr, value);
@@ -56,7 +56,7 @@ export default function ClothingCollectionWithFilter(props: {
         }
       return true;
     });
-  }, [parsedProducts, filter]);
+  }, [props.products, filter]);
 
   const sortedProducts = useMemo(() => {
     if (sort === "normal") {

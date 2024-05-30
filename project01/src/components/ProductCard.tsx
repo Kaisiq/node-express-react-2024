@@ -7,41 +7,43 @@ import { Empty, Skeleton } from "./ui/skeleton";
 import { Card } from "./ui/card";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { Badge } from "./ui/badge";
-import SingleProductModal from "./SingleProductModal";
+import { useNavigate } from "react-router";
 
 export function ProductCard({ product }: { product: ProductInterface }) {
   const { addProduct } = useContext(CartContext);
   const screenSize = useScreenSize();
+  const navigate = useNavigate();
   return (
     <Card
       className="self-stretch"
       key={product._id}
     >
       <div className="group relative overflow-hidden rounded-lg">
-        <SingleProductModal product={product}>
-          <span className="sr-only">View</span>
-          <div className="relative">
-            {product?.images?.[0] ? (
-              <img
-                alt="Product 1"
-                className="aspect-[4/3] h-[400px] object-cover lg:h-[500px]"
-                width={screenSize < 780 ? screenSize : screenSize / 2}
-                height={screenSize / 2 + 100}
-                src={product.images[0]}
-                style={{
-                  objectFit: "cover",
-                }}
-              />
-            ) : (
-              <Skeleton className="aspect-[4/3] h-[400px] object-cover lg:h-[500px]" />
-            )}
-            {product.status === "sold" && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-80">
-                <span className="text-3xl font-bold text-white drop-shadow-md">Изчерпано</span>
-              </div>
-            )}
-          </div>
-        </SingleProductModal>
+        <span className="sr-only">View</span>
+        <div
+          onClick={() => navigate(`/product/${product._id}`, { state: product })}
+          className="relative"
+        >
+          {product?.images?.[0] ? (
+            <img
+              alt="Product 1"
+              className="aspect-[4/3] h-[400px] object-cover lg:h-[500px]"
+              width={screenSize < 780 ? screenSize : screenSize / 2}
+              height={screenSize / 2 + 100}
+              src={product.images[0]}
+              style={{
+                objectFit: "cover",
+              }}
+            />
+          ) : (
+            <Skeleton className="aspect-[4/3] h-[400px] object-cover lg:h-[500px]" />
+          )}
+          {product.status === "sold" && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-80">
+              <span className="text-3xl font-bold text-white drop-shadow-md">Изчерпано</span>
+            </div>
+          )}
+        </div>
         <div className="justify-space-between flex">
           <div className="flex flex-1 flex-col justify-between bg-white p-4 dark:bg-gray-950">
             <div className="grid gap-1">
@@ -79,9 +81,12 @@ export function ProductCard({ product }: { product: ProductInterface }) {
             )}
           </div>
           <div className="mr-5 flex flex-col gap-3 pt-4">
-            <SingleProductModal product={product}>
-              <Button variant="outline">Разгледай</Button>
-            </SingleProductModal>
+            <Button
+              onClick={() => navigate(`/product/${product._id}`, { state: product })}
+              variant="outline"
+            >
+              Разгледай
+            </Button>
             {product.status !== "sold" && (
               <Button
                 onClick={() => {

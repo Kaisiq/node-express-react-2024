@@ -5,9 +5,10 @@ import { CartContext } from "./CartContextProvider";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSizeLTMd } from "@/hooks/useScreenSize";
 import { Badge } from "./ui/badge";
-import SingleProductModal from "./SingleProductModal";
+import { useNavigate } from "react-router";
 
 export function FeaturedProduct({ product }: { product: ProductInterface }) {
+  const navigate = useNavigate();
   const { addProduct } = useContext(CartContext);
   const isMDOrLess = useSizeLTMd();
   function addToCart() {
@@ -50,22 +51,17 @@ export function FeaturedProduct({ product }: { product: ProductInterface }) {
     <section className="w-full py-6 md:py-12">
       <div className="container px-4 md:px-6">
         <div className="grid items-center gap-6 lg:grid-cols-[1fr_500px] lg:gap-12 xl:grid-cols-[1fr_700px] xl:gap-16">
-          {product?.images?.[0] ? (
-            <SingleProductModal product={product}>
-              <img
-                alt="FeaturedProduct"
-                className={`mx-auto ${
-                  isMDOrLess ? "aspect-[4/3]" : "aspect-[3/4]"
-                } overflow-hidden rounded-xl object-cover object-center md:h-[400px] lg:h-[500px]`}
-                height="500"
-                src={product.images[0]}
-                width="500"
-              />
-            </SingleProductModal>
-          ) : (
-            <SingleProductModal product={product}>
-              <Skeleton className="mx-auto aspect-video w-full object-center" />
-            </SingleProductModal>
+          {product?.images?.[0] && (
+            <img
+              onClick={() => navigate(`/product/${product._id}`, { state: product })}
+              alt="FeaturedProduct"
+              className={`mx-auto ${
+                isMDOrLess ? "aspect-[4/3]" : "aspect-[3/4]"
+              } overflow-hidden rounded-xl object-cover object-center md:h-[400px] lg:h-[500px]`}
+              height="500"
+              src={product.images[0]}
+              width="500"
+            />
           )}
           <div className="space-y-4 text-center lg:text-left">
             <div className="space-y-2">
@@ -96,11 +92,12 @@ export function FeaturedProduct({ product }: { product: ProductInterface }) {
                 )}
               </div>
             </div>
-            <SingleProductModal product={product}>
-              <div className="inline-flex h-10 items-center justify-center rounded-md border border-gray-200 border-gray-200 bg-white px-8 text-sm font-medium shadow-sm transition-colors hover:bg-gray-100 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:border-gray-800 dark:border-gray-800 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus-visible:ring-gray-300">
-                Разгледай
-              </div>
-            </SingleProductModal>
+            <div
+              onClick={() => navigate(`/product/${product._id}`, { state: product })}
+              className="inline-flex h-10 items-center justify-center rounded-md border border-gray-200 border-gray-200 bg-white px-8 text-sm font-medium shadow-sm transition-colors hover:bg-gray-100 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:border-gray-800 dark:border-gray-800 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus-visible:ring-gray-300"
+            >
+              Разгледай
+            </div>
             <Button
               variant="default"
               className="ml-3 inline-flex h-10 items-center justify-center px-8"

@@ -12,8 +12,12 @@ import {
   CarouselNext,
   type CarouselApi,
 } from "~/components/ui/carousel";
+import { useLocation } from "react-router";
 
-export default function SingleProduct(product: ProductInterface) {
+export default function SingleProduct() {
+  const location = useLocation();
+  const product = location.state as ProductInterface;
+
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);

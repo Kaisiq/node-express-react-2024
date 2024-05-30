@@ -2,6 +2,7 @@ import { ClothingSlotsList, EmptyClothingSlotsList } from "@/components/Clothing
 import { useEffect, useState } from "react";
 import { ProductInterface } from "@/models/Product";
 import axios, { type AxiosResponse } from "axios";
+import { SERVER } from "~/lib/utils";
 
 function min(a: number, b: number) {
   return a < b ? a : b;
@@ -12,7 +13,7 @@ export function ProductCollection({ category, n }: { category: string; n: number
   useEffect(() => {
     if (category)
       axios
-        .get(`/api/products?category=${category}&number=${n}`)
+        .get(`${SERVER}/products?category=${category}&number=${n}`)
         .then((result: AxiosResponse<ProductInterface[]>) => {
           setData(result.data);
         })
@@ -22,7 +23,7 @@ export function ProductCollection({ category, n }: { category: string; n: number
         });
     else
       axios
-        .get(`/api/products?newest=${n}`)
+        .get(`${SERVER}/products?newest=${n}`)
         .then((res: AxiosResponse<ProductInterface[]>) => {
           setData(res.data);
         })

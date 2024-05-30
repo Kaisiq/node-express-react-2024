@@ -7,6 +7,7 @@ import {
 import { isAdminRequest } from "./auth";
 import { Request, Response } from "express";
 import { ProductService } from "./services/ProductService";
+import { DatabaseZap } from "lucide-react";
 
 const productService = new ProductService();
 
@@ -58,12 +59,22 @@ export async function GET(req: Request, res: Response) {
     const data = await productService.getProduct(toGet);
     res.json(data);
   } else if (req.query?.newest) {
-    const data = await productService.getNewestProducts(req.query.newest as unknown as number);
-    res.json(data);
+    if (req.query.status) {
+      const data = (await productService.getNewestStatusProducts(
+        req.query.status as string,
+        req.query.newest as unknown as number
+      )) as ProductInterface[];
+      res.json(data);
+    } else {
+      const data = await productService.getNewestProducts(req.query.newest as unknown as number);
+      res.json(data);
+    }
   } else {
     const page = Number(req.query.page as string) || 1;
-    const data = await productService.getAllProducts(page);
-    res.json(data);
+    const filter = (req.query.filter as string) || "";
+    const data = await productService.getAllProducts(page, filter);
+    const maxPages = Math.ceil(await productService.countPages(filter));
+    res.json({ products: data, maxPages });
   }
 }
 

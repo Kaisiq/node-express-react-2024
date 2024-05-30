@@ -63,21 +63,28 @@ export function HeaderNav() {
           </a>
           <a
             className="underline-offset-4 hover:underline sm:block lg:mt-0"
-            href="/collection/clothing"
+            href="/collection/females"
           >
-            Дрехи
+            Дамско
           </a>
           <a
             className="underline-offset-4 hover:underline sm:block lg:mt-0"
-            href="/collection/accessories"
+            href="/collection/males"
           >
-            Аксесоари
+            Мъжко
           </a>
           <a
             className="underline-offset-4 hover:underline sm:block lg:mt-0"
-            href="/collection/footwear"
+            href="/collection/sale"
           >
-            Обувки
+            Намалени
+          </a>
+
+          <a
+            className="underline-offset-4 hover:underline sm:block lg:mt-0"
+            href="/collection/"
+          >
+            Всичко
           </a>
 
           <a
