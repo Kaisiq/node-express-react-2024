@@ -3,7 +3,7 @@ import { MenuIcon } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import React, { useState, useEffect, useContext } from "react";
 import { CartContext } from "./CartContextProvider";
-import { getUser } from "~/services/UserServie";
+import { getUser } from "~/services/UserService";
 // import { useSession } from "next-auth/react";
 
 export function HeaderNav() {

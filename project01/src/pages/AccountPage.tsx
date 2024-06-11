@@ -5,25 +5,30 @@ import { AccountHeaderNav } from "~/components/AccountHeaderNav";
 import LoginForm from "~/components/LoginForm";
 import CustomHead from "~/components/CustomHead";
 import { useLocation } from "react-router";
-import { getUser } from "~/services/UserServie";
+import { getUser } from "~/services/UserService";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { AdminContext } from "~/components/AdminContextProvider";
 import { OrderInterface } from "~/models/Order";
 import axios, { AxiosResponse } from "axios";
 import { SERVER } from "~/lib/utils";
+import api from "~/lib/api";
 
 export default function AccountPage() {
-  const user = getUser();
+  const [user, setUser] = useState(getUser());
   const { isAdmin } = useContext(AdminContext);
   // const { data: session } = useSession();
   const location = useLocation();
 
   const [orders, setOrders] = useState<OrderInterface[]>([]);
 
+  useEffect(() => {
+    setUser(getUser());
+  }, [localStorage, location]);
+
   const updateOrders = useCallback(() => {
-    const email = getUser().userEmail;
+    const email = user ? user.userEmail : "";
     if (!email) return;
-    axios
+    api
       .get(`${SERVER}/orders?email=${email}`)
       .then((res: AxiosResponse<OrderInterface[]>) => {
         setOrders(res.data);
@@ -40,7 +45,7 @@ export default function AccountPage() {
 
   async function cancelOrder(_id: string | undefined, email: string) {
     try {
-      await axios.patch(`/api/orders/${_id}`, {
+      await axios.patch(`${SERVER}/orders/${_id}`, {
         status: "canceled",
         email,
       });

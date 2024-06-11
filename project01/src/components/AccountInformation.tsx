@@ -4,6 +4,9 @@ import { useCallback, useEffect, useState } from "react";
 import axios, { type AxiosResponse } from "axios";
 import { type UserInterface } from "~/models/User";
 import { Input } from "./ui/input";
+import { SERVER } from "~/lib/utils";
+import api from "~/lib/api";
+// import { getUser } from "~/services/UserServie";
 
 export function AccountInformation({ userEmail }: { userEmail: string }) {
   const [userData, setUserData] = useState<UserInterface>();
@@ -20,9 +23,8 @@ export function AccountInformation({ userEmail }: { userEmail: string }) {
     if (!userEmail) {
       return;
     }
-    const input = userEmail;
-    await axios
-      .get(`/api/users?email=${input}`)
+    await api
+      .get(`${SERVER}/users?email=${userEmail}`)
       .then((res: AxiosResponse<UserInterface>) => {
         setUserData(res.data);
         if (userData?.name) setName(userData.name);
@@ -64,8 +66,8 @@ export function AccountInformation({ userEmail }: { userEmail: string }) {
             onClick={() => {
               if (editingName) {
                 if (userData) userData.name = name;
-                axios
-                  .patch(`/api/users/${userData?.email}`, { name })
+                api
+                  .patch(`${SERVER}/users/${userData?.email}`, { name })
                   .then(() => {
                     getUserInformation().catch((err) => {
                       console.log(err);
@@ -101,8 +103,8 @@ export function AccountInformation({ userEmail }: { userEmail: string }) {
             onClick={() => {
               if (editingTel) {
                 if (userData) userData.tel = tel;
-                axios
-                  .patch(`/api/users/${userData?.email}`, { tel })
+                api
+                  .patch(`${SERVER}/users/${userData?.email}`, { tel })
                   .then(() => {
                     getUserInformation().catch((err) => {
                       console.log(err);
@@ -156,8 +158,8 @@ export function AccountInformation({ userEmail }: { userEmail: string }) {
                   userData.address = address;
                   userData.city = city;
                 }
-                axios
-                  .patch(`/api/users/${userData?.email}`, { city, address })
+                api
+                  .patch(`${SERVER}/users/${userData?.email}`, { city, address })
                   .then(() => {
                     getUserInformation().catch((err) => {
                       console.log(err);

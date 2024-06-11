@@ -8,21 +8,13 @@ import axios from "axios";
 import type { ProductInterface } from "~/models/Product";
 import { CheckoutSection } from "~/components/CheckoutSection";
 import CustomHead from "~/components/CustomHead";
-import { useLoaderData, useLocation, useNavigate } from "react-router";
+import { useLocation } from "react-router";
 import { SERVER } from "~/lib/utils";
 
 export default function CartPage() {
   const location = useLocation();
   const { cartProducts } = useContext(CartContext);
   const [data, setData] = useState<ProductInterface[]>([]);
-  const navigate = useNavigate();
-  const loaderData = useLoaderData() as { redirect: boolean };
-
-  useEffect(() => {
-    if (loaderData.redirect) {
-      navigate("/account");
-    }
-  }, [loaderData, navigate]);
 
   const updateCart = useCallback(() => {
     if (cartProducts.length > 0) {

@@ -1,7 +1,7 @@
 // import { getSession } from "next-auth/react";
 import { type ReactNode, createContext, useEffect, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
-import { getUser } from "~/services/UserServie";
+import { getUser } from "~/services/UserService";
 import { AuthService } from "~/services/AuthService";
 
 interface AdminContextType {

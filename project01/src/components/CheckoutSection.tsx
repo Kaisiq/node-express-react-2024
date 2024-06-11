@@ -31,7 +31,7 @@ import type { ProductInterface } from "~/models/Product";
 import type { UserInterface } from "~/models/User";
 // import posthog from "posthog-js";
 import { ToastAction } from "./ui/toast";
-import { getUser } from "~/services/UserServie";
+import { getUser } from "~/services/UserService";
 
 const FormSchema = z.object({
   flname: z.string().min(2, {

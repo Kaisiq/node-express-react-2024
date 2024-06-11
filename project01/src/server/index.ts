@@ -1,4 +1,6 @@
 import authRoutes from "./routes/authRoutes";
+import orderRoutes from "./routes/orderRoutes";
+import userRoutes from "./routes/userRoutes";
 import { mongooseConnect } from "./lib/mongoose";
 import productRoutes from "./routes/productRoutes";
 import passport from "./config/passport";
@@ -9,7 +11,7 @@ const app = express();
 dotenv.config();
 
 const corsOptions = {
-  origin: "http://localhost:3000", // explicitly allow the front-end origin
+  origin: ["http://localhost:3000"], // explicitly allow the front-end origin
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   preflightContinue: false,
   optionsSuccessStatus: 204,
@@ -25,6 +27,8 @@ mongooseConnect();
 
 app.use("/products", productRoutes);
 app.use("/auth", authRoutes);
+app.use("/orders", orderRoutes);
+app.use("/users", userRoutes);
 
 const port = process.env.PORT || 4000;
 

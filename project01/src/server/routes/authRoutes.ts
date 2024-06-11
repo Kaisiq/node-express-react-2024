@@ -1,10 +1,5 @@
 import { UserInterface } from "~/models/User";
 import { UserService } from "../services/UserService";
-import * as bcrypt from "bcrypt";
-// import passport from "passport";
-import { Strategy as LocalStrategy } from "passport-local";
-// import express from "express";
-// import { strategy } from "../config/passport";
 import express, { Request, Response } from "express";
 import passport from "../config/passport";
 import jwt from "jsonwebtoken";
@@ -43,31 +38,37 @@ router.get(
 
 export default router;
 
-export async function isAdminRequest(req: Request, res: Response) {
-  const us = new UserService();
-  const user = await us.getSingleUser("mazna");
-  return user?.admin;
+export async function isAdminRequest(req: Request, res: Response): Promise<boolean> {
+  return new Promise<boolean>((resolve, reject) => {
+    passport.authenticate("jwt", { session: false }, async (err: Error, user: UserInterface) => {
+      if (err || !user) {
+        console.log(err, user);
+        console.log("An error occurred while checking admin status or user not found.");
+        resolve(false);
+      } else {
+        try {
+          const userService = new UserService();
+          const fetchedUser = await userService.getSingleUser(user.email);
+          if (fetchedUser && fetchedUser.admin) {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        } catch (error) {
+          console.log("An error occurred while checking admin status.");
+          resolve(false);
+        }
+      }
+    })(req, res);
+  });
 }
 
 export async function isUserRequest(req: Request, res: Response) {
+  passport.authenticate("jwt", { session: false }),
+    async (err: Error, user: UserInterface) => {
+      console.log(user);
+      if (err) res.status(401).json(err);
+      res.status(200).json(user);
+    };
   return true;
-}
-
-export async function loginWithPass(req: Request, res: Response) {
-  interface RB {
-    email: string;
-    password: string;
-  }
-  const { email, password }: RB = req.body as RB;
-  const userService = new UserService();
-  const user = await userService.getSingleUser(email);
-  if (!user || !user.hashedPassword) {
-    res.status(401).send("user doesnt exist");
-  } else {
-    const validPass = await bcrypt.compare(password, user.hashedPassword);
-    if (!validPass) res.status(400);
-    else res.status(404);
-  }
-
-  res.json(user);
 }

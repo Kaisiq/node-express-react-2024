@@ -12,7 +12,7 @@ import { ProductInterface } from "./models/Product";
 import CollectionPage from "./pages/collection/CollectionPage";
 import CartPage from "./pages/CartPage";
 import api from "./lib/api";
-import { useNavigate } from "react-router-dom";
+import { redirect } from "react-router-dom";
 const SERVER = process.env.REACT_APP_SERVER_ADDRESS;
 
 const router = createBrowserRouter([
@@ -54,10 +54,11 @@ const router = createBrowserRouter([
         loader: async () => {
           try {
             const data = await api.get("/auth/profile");
-            return { redirect: data.status === 200 ? false : true };
+            if (!data) return redirect("/account");
+            return null;
           } catch (err) {
             console.log(err);
-            return { redirect: true };
+            return redirect("/account");
           }
         },
       },
