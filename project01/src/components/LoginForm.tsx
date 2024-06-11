@@ -9,6 +9,7 @@ import axios, { type AxiosError, type AxiosResponse } from "axios";
 import { toast } from "./ui/use-toast";
 import type { UserInterface } from "~/models/User";
 import { Link } from "react-router-dom";
+import { SERVER } from "~/lib/utils";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -21,7 +22,7 @@ export default function LoginForm() {
       password,
     };
     axios
-      .post("/api/login", credentials)
+      .post(`${SERVER}/auth/password`, credentials)
       .then((user: AxiosResponse<UserInterface>) => {
         console.log(user.data);
         // signIn("credentials", {
@@ -31,8 +32,8 @@ export default function LoginForm() {
         // console.log(error);
         // });
       })
-      .catch((err: AxiosError<{ error: string }>) => {
-        toast({ title: "Грешка", description: err.response?.data.error });
+      .catch((err: Error) => {
+        toast({ title: "Грешка", description: err.message });
       });
 
     // const result = await signIn("credentials", {

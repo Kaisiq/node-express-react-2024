@@ -1,14 +1,16 @@
 import { ShoppingCartIcon } from "lucide-react";
 import { MenuIcon } from "lucide-react";
 import { Link } from "react-router-dom";
-import React, { useState, useEffect } from "react";
-// import { CartContext } from "./CartContextProvider";
+import React, { useState, useEffect, useContext } from "react";
+import { CartContext } from "./CartContextProvider";
+import { getUser } from "~/services/UserServie";
 // import { useSession } from "next-auth/react";
 
 export function HeaderNav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  // const { cartProducts }: { cartProducts: string[] } = useContext(CartContext);
+  const { cartProducts }: { cartProducts: string[] } = useContext(CartContext);
   // const { data: session } = useSession();
+  const session = getUser();
   const [isMdOrLess, setIsMdOrLess] = useState(false);
 
   const toggleMenu = () => {
@@ -92,8 +94,7 @@ export function HeaderNav() {
             className="underline-offset-4 hover:underline sm:block lg:mt-0"
             to="/account"
           >
-            {/* {session ? "Акаунт" : "Влизане"} */}
-            Акаунт
+            {session ? "Акаунт" : "Влизане"}
           </Link>
 
           <Link
@@ -101,7 +102,7 @@ export function HeaderNav() {
             to="/cart"
           >
             <div className="flex">
-              <ShoppingCartIcon /> {/*"(" + cartProducts.length + ")"*/}
+              <ShoppingCartIcon /> {"(" + cartProducts.length + ")"}
             </div>
           </Link>
         </nav>

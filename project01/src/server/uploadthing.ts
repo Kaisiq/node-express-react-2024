@@ -1,6 +1,6 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next-legacy";
 import { UploadThingError } from "uploadthing/server";
-import { isAdminRequest } from "./auth";
+import { isAdminRequest } from "./routes/authRoutes";
 import { Request, Response } from "express";
 
 const f = createUploadthing();

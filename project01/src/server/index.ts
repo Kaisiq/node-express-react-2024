@@ -1,7 +1,9 @@
+import authRoutes, { loginWithPass } from "./routes/authRoutes";
 import { mongooseConnect } from "./lib/mongoose";
 import { DELETE, GET, POST, PUT } from "./products";
 import { ProductService } from "./services/ProductService";
 import { Request, Response } from "express";
+import passport from "./config/passport";
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
@@ -18,6 +20,8 @@ const corsOptions = {
 app.use(cors(corsOptions)); // Ensure CORS is applied before other middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+app.use(passport.initialize());
 
 mongooseConnect();
 const productService = new ProductService();
@@ -47,6 +51,8 @@ app
   .delete(async (req: Request, res: Response) => {
     await DELETE(req, res);
   });
+
+app.use("/auth", authRoutes);
 
 const port = process.env.PORT || 4000;
 

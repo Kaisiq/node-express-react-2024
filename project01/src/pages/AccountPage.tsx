@@ -5,13 +5,51 @@ import { AccountHeaderNav } from "~/components/AccountHeaderNav";
 import LoginForm from "~/components/LoginForm";
 import CustomHead from "~/components/CustomHead";
 import { useLocation } from "react-router";
-import { getUser } from "~/lib/utils";
+import { getUser } from "~/services/UserServie";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { AdminContext } from "~/components/AdminContextProvider";
+import { OrderInterface } from "~/models/Order";
+import axios, { AxiosResponse } from "axios";
 
 export default function AccountPage() {
-  const userEmail = getUser().userEmail;
+  const user = getUser();
+  const { isAdmin } = useContext(AdminContext);
   // const { data: session } = useSession();
   const location = useLocation();
-  if (userEmail)
+
+  const [orders, setOrders] = useState<OrderInterface[]>([]);
+
+  const updateOrders = useCallback(() => {
+    const email = sessionStorage.getItem("user");
+    if (!email) return;
+    axios
+      .get(`/api/orders?email=${email}`)
+      .then((res: AxiosResponse<OrderInterface[]>) => {
+        setOrders(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        return;
+      });
+  }, [sessionStorage]);
+
+  useEffect(() => {
+    updateOrders();
+  }, [updateOrders]);
+
+  async function cancelOrder(_id: string | undefined, email: string) {
+    try {
+      await axios.patch(`/api/orders/${_id}`, {
+        status: "canceled",
+        email,
+      });
+      updateOrders();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  if (user)
     return (
       <>
         <CustomHead
@@ -23,9 +61,15 @@ export default function AccountPage() {
           domain={`${location.pathname}`}
         />
         <main className="mx-auto flex w-[80%] flex-col gap-8 px-4 py-12 sm:px-6 lg:px-8">
-          <AccountHeaderNav />
-          <OrdersInformation />
-          <AccountInformation />
+          <AccountHeaderNav
+            {...user}
+            isAdmin={isAdmin}
+          />
+          <OrdersInformation
+            orders={orders}
+            cancelOrder={cancelOrder}
+          />
+          <AccountInformation userEmail={user.userEmail} />
         </main>
       </>
     );

@@ -4,7 +4,7 @@ import {
   ProductValidateSchema,
   ProductInterface,
 } from "./models/Product";
-import { isAdminRequest } from "./auth";
+import { isAdminRequest } from "./routes/authRoutes";
 import { Request, Response } from "express";
 import { ProductService } from "./services/ProductService";
 import { DatabaseZap } from "lucide-react";

@@ -3,10 +3,9 @@ import { Button } from "./ui/button";
 import { useCallback, useEffect, useState } from "react";
 import axios, { type AxiosResponse } from "axios";
 import { type UserInterface } from "~/models/User";
-import { getUser } from "~/lib/utils";
 import { Input } from "./ui/input";
 
-export function AccountInformation() {
+export function AccountInformation({ userEmail }: { userEmail: string }) {
   const [userData, setUserData] = useState<UserInterface>();
   const [editingName, setEditingName] = useState(false);
   const [name, setName] = useState("");
@@ -16,7 +15,6 @@ export function AccountInformation() {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   // const { data: session, status } = useSession();
-  const userEmail = getUser().userEmail;
 
   const getUserInformation = useCallback(async () => {
     if (!userEmail) {

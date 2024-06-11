@@ -31,7 +31,7 @@ import type { ProductInterface } from "~/models/Product";
 import type { UserInterface } from "~/models/User";
 // import posthog from "posthog-js";
 import { ToastAction } from "./ui/toast";
-import { getUser } from "~/lib/utils";
+import { getUser } from "~/services/UserServie";
 
 const FormSchema = z.object({
   flname: z.string().min(2, {
@@ -99,7 +99,7 @@ export function CheckoutSection() {
         console.log(err);
       }
     }
-  }, [sessionStorage, status, form]);
+  }, [sessionStorage, gotUser, form]);
 
   async function getProductInfo() {
     const productNames: string[] = [];

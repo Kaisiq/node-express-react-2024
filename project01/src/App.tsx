@@ -10,6 +10,7 @@ import axios from "axios";
 import SingleProduct from "./components/SingleProduct";
 import { ProductInterface } from "./models/Product";
 import CollectionPage from "./pages/collection/CollectionPage";
+import CartPage from "./pages/CartPage";
 const SERVER = process.env.REACT_APP_SERVER_ADDRESS;
 
 const router = createBrowserRouter([
@@ -45,6 +46,7 @@ const router = createBrowserRouter([
         path: "/aboutus",
         element: <AboutUsPage />,
       },
+      { path: "/cart", element: <CartPage /> },
       {
         path: "/account",
         element: <AccountPage />,

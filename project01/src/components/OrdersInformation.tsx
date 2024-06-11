@@ -12,38 +12,13 @@ function isLessThan24HoursFromOrder(orderCreation: string | undefined) {
   return hours < 24;
 }
 
-export function OrdersInformation() {
-  const [orders, setOrders] = useState<OrderInterface[]>();
-
-  const updateOrders = useCallback(() => {
-    const email = sessionStorage.getItem("user");
-    if (!email) return;
-    axios
-      .get(`/api/orders?email=${email}`)
-      .then((res: AxiosResponse<OrderInterface[]>) => {
-        setOrders(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-        return;
-      });
-  }, [sessionStorage]);
-
-  useEffect(() => {
-    updateOrders();
-  }, [updateOrders]);
-
-  async function cancelOrder(_id: string | undefined, email: string) {
-    try {
-      await axios.patch(`/api/orders/${_id}`, {
-        status: "canceled",
-        email,
-      });
-      updateOrders();
-    } catch (err) {
-      console.log(err);
-    }
-  }
+export function OrdersInformation({
+  orders,
+  cancelOrder,
+}: {
+  orders: OrderInterface[];
+  cancelOrder: (id: string | undefined, email: string) => void;
+}) {
   return (
     <section id="history">
       <h2 className="mb-4 text-xl font-semibold">Order History</h2>

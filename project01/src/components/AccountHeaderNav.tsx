@@ -3,23 +3,26 @@
 // import Link from "next/link";
 import { Button } from "./ui/button";
 // import { useRouter } from "next/router";
-import { useContext } from "react";
-import { AdminContext } from "./AdminContextProvider";
 import { useNavigate } from "react-router";
-import { getUser } from "~/lib/utils";
 import { Link } from "react-router-dom";
 
-export function AccountHeaderNav() {
+export function AccountHeaderNav({
+  username,
+  userEmail,
+  isAdmin,
+}: {
+  username: string;
+  userEmail: string;
+  isAdmin: boolean;
+}) {
   // const { data: session } = useSession();
   const navigate = useNavigate();
-  const user = getUser();
-  const { isAdmin } = useContext(AdminContext);
 
   return (
     <>
       <header className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <h1 className="text-2xl font-bold">{user.username}</h1>
+          <h1 className="text-2xl font-bold">{username}</h1>
         </div>
         <Button
           onClick={async () => {

@@ -9,6 +9,7 @@ import type { ProductInterface } from "~/models/Product";
 import { CheckoutSection } from "~/components/CheckoutSection";
 import CustomHead from "~/components/CustomHead";
 import { useLocation } from "react-router";
+import { SERVER } from "~/lib/utils";
 
 export default function CartPage() {
   const location = useLocation();
@@ -18,7 +19,7 @@ export default function CartPage() {
   const updateCart = useCallback(() => {
     if (cartProducts.length > 0) {
       axios
-        .post("/api/products", { ids: cartProducts })
+        .post(`${SERVER}/products`, { ids: cartProducts })
         .then((res) => {
           setData(res.data as ProductInterface[]);
         })
