@@ -8,12 +8,13 @@ import { type FormEvent, useState } from "react";
 import axios, { type AxiosError, type AxiosResponse } from "axios";
 import { toast } from "./ui/use-toast";
 import type { UserInterface } from "~/models/User";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SERVER } from "~/lib/utils";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (ev: FormEvent) => {
     ev.preventDefault();
@@ -23,14 +24,14 @@ export default function LoginForm() {
     };
     axios
       .post(`${SERVER}/auth/password`, credentials)
-      .then((user: AxiosResponse<UserInterface>) => {
-        console.log(user.data);
-        // signIn("credentials", {
-        // ...credentials,
-        // redirect: false,
-        // }).catch((error: string) => {
-        // console.log(error);
-        // });
+      .then((response: AxiosResponse<{ user: UserInterface; token: string }>) => {
+        const { user, token } = response.data;
+        localStorage.setItem("jwtToken", token);
+        localStorage.setItem(
+          "user",
+          JSON.stringify({ username: user.name, userEmail: user.email })
+        );
+        navigate("/account");
       })
       .catch((err: Error) => {
         toast({ title: "Грешка", description: err.message });
@@ -47,7 +48,7 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
+    <div className="flex h-full min-h-[80vh] items-center justify-center">
       <div className="max-w-sm space-y-6 rounded-lg border border-gray-200 bg-white p-6 shadow-lg dark:border-gray-700">
         <form
           className="space-y-4"
@@ -111,7 +112,7 @@ export default function LoginForm() {
           </Button>
         </form>
 
-        <div className="flex items-center space-x-2">
+        {/*<div className="flex items-center space-x-2">
           <hr className="flex-grow border-zinc-200 dark:border-zinc-700" />
           <span className="text-sm text-zinc-400 dark:text-zinc-300">или</span>
           <hr className="flex-grow border-zinc-200 dark:border-zinc-700" />
@@ -125,7 +126,7 @@ export default function LoginForm() {
             <ChromeIcon className="mr-2 h-5 w-5" />
             Влизане с Google
           </div>
-        </Button>
+  </Button>*/}
         {/* </div> */}
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { ShoppingCartIcon } from "lucide-react";
 import { MenuIcon } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import React, { useState, useEffect, useContext } from "react";
 import { CartContext } from "./CartContextProvider";
 import { getUser } from "~/services/UserServie";
@@ -10,8 +10,9 @@ export function HeaderNav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { cartProducts }: { cartProducts: string[] } = useContext(CartContext);
   // const { data: session } = useSession();
-  const session = getUser();
+  const [session, setSession] = useState(getUser());
   const [isMdOrLess, setIsMdOrLess] = useState(false);
+  const location = useLocation();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -31,6 +32,10 @@ export function HeaderNav() {
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  useEffect(() => {
+    setSession(getUser());
+  }, [localStorage, location]);
 
   return (
     <header className="flex flex-col items-center px-4 py-4 lg:flex-row lg:justify-between lg:px-6 lg:py-6">

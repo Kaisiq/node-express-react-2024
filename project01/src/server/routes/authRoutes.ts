@@ -12,22 +12,25 @@ import jwt from "jsonwebtoken";
 const router = express.Router();
 
 router.post("/password", (req: Request, res: Response, next) => {
-  passport.authenticate("local", (err: Error, user: any, info: { message: string }) => {
-    if (err) {
-      return res.status(400).send(err.message);
-    }
-    if (!user) {
-      return res.status(400).send(info.message);
-    }
-    const token = jwt.sign(
-      { id: user._id, email: user.email },
-      process.env.JWT_SECRET || "your_jwt_secret",
-      {
-        expiresIn: "1h", // Token expiry time
+  passport.authenticate(
+    "local",
+    (err: Error, user: UserInterface | undefined, info: { message: string }) => {
+      if (err) {
+        return res.status(400).send(err.message);
       }
-    );
-    return res.status(200).json({ user, token });
-  })(req, res, next);
+      if (!user) {
+        return res.status(400).send(info.message);
+      }
+      const token = jwt.sign(
+        { id: user._id, email: user.email, name: user.name },
+        process.env.JWT_SECRET || "your_jwt_secret",
+        {
+          expiresIn: "1h", // Token expiry time
+        }
+      );
+      return res.status(200).json({ user, token });
+    }
+  )(req, res, next);
 });
 
 export default router;

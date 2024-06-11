@@ -27,7 +27,8 @@ export function AccountHeaderNav({
         <Button
           onClick={async () => {
             // await signOut();
-            sessionStorage.removeItem("user");
+            localStorage.removeItem("user");
+            localStorage.removeItem("jwtToken");
             // await router.push("/");
             navigate("/");
           }}
