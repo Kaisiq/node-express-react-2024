@@ -33,12 +33,15 @@ router.post("/password", (req: Request, res: Response, next) => {
   )(req, res, next);
 });
 
-export default router;
+router.get(
+  "/profile",
+  passport.authenticate("jwt", { session: false }),
+  (req: Request, res: Response) => {
+    res.status(200).json({ message: "Profile access granted.", user: req.user });
+  }
+);
 
-// Example of a protected route
-// router.get("/profile", passport.authenticate('jwt', { session: false }), (req: Request, res: Response) => {
-//   res.status(200).json(req.user);
-// });
+export default router;
 
 export async function isAdminRequest(req: Request, res: Response) {
   const us = new UserService();

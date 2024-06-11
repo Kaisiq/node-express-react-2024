@@ -11,6 +11,8 @@ import SingleProduct from "./components/SingleProduct";
 import { ProductInterface } from "./models/Product";
 import CollectionPage from "./pages/collection/CollectionPage";
 import CartPage from "./pages/CartPage";
+import api from "./lib/api";
+import { useNavigate } from "react-router-dom";
 const SERVER = process.env.REACT_APP_SERVER_ADDRESS;
 
 const router = createBrowserRouter([
@@ -46,7 +48,19 @@ const router = createBrowserRouter([
         path: "/aboutus",
         element: <AboutUsPage />,
       },
-      { path: "/cart", element: <CartPage /> },
+      {
+        path: "/cart",
+        element: <CartPage />,
+        loader: async () => {
+          try {
+            const data = await api.get("/auth/profile");
+            return { redirect: data.status === 200 ? false : true };
+          } catch (err) {
+            console.log(err);
+            return { redirect: true };
+          }
+        },
+      },
       {
         path: "/account",
         element: <AccountPage />,

@@ -10,6 +10,7 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { AdminContext } from "~/components/AdminContextProvider";
 import { OrderInterface } from "~/models/Order";
 import axios, { AxiosResponse } from "axios";
+import { SERVER } from "~/lib/utils";
 
 export default function AccountPage() {
   const user = getUser();
@@ -20,10 +21,10 @@ export default function AccountPage() {
   const [orders, setOrders] = useState<OrderInterface[]>([]);
 
   const updateOrders = useCallback(() => {
-    const email = sessionStorage.getItem("user");
+    const email = getUser().userEmail;
     if (!email) return;
     axios
-      .get(`/api/orders?email=${email}`)
+      .get(`${SERVER}/orders?email=${email}`)
       .then((res: AxiosResponse<OrderInterface[]>) => {
         setOrders(res.data);
       })
@@ -31,7 +32,7 @@ export default function AccountPage() {
         console.log(err);
         return;
       });
-  }, [sessionStorage]);
+  }, [localStorage]);
 
   useEffect(() => {
     updateOrders();
