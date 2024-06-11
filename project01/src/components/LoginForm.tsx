@@ -1,11 +1,8 @@
-// import Link from "next/link";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { ChromeIcon } from "~/components/Icons";
-// import { signIn } from "next-auth/react";
 import { type FormEvent, useState } from "react";
-import axios, { type AxiosError, type AxiosResponse } from "axios";
+import axios, { type AxiosResponse } from "axios";
 import { toast } from "./ui/use-toast";
 import type { UserInterface } from "~/models/User";
 import { Link, useNavigate } from "react-router-dom";
@@ -36,15 +33,6 @@ export default function LoginForm() {
       .catch((err: Error) => {
         toast({ title: "Грешка", description: err.message });
       });
-
-    // const result = await signIn("credentials", {
-    // 	redirect: false,
-    // 	...credentials,
-    // });
-    // if (!result?.error) {
-    // } else {
-    // 	console.log("error logging in:", result.error);
-    // }
   };
 
   return (
@@ -111,23 +99,6 @@ export default function LoginForm() {
             Влизане
           </Button>
         </form>
-
-        {/*<div className="flex items-center space-x-2">
-          <hr className="flex-grow border-zinc-200 dark:border-zinc-700" />
-          <span className="text-sm text-zinc-400 dark:text-zinc-300">или</span>
-          <hr className="flex-grow border-zinc-200 dark:border-zinc-700" />
-        </div>
-        <Button
-          // onClick={async () => await signIn("google")}
-          className="w-full bg-[#4285F4] text-white"
-          variant="outline"
-        >
-          <div className="flex items-center justify-center">
-            <ChromeIcon className="mr-2 h-5 w-5" />
-            Влизане с Google
-          </div>
-  </Button>*/}
-        {/* </div> */}
       </div>
     </div>
   );

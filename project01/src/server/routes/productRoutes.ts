@@ -3,21 +3,48 @@ import {
   type ProductModel,
   ProductValidateSchema,
   ProductInterface,
-} from "./models/Product";
-import { isAdminRequest } from "./routes/authRoutes";
-import { Request, Response } from "express";
-import { ProductService } from "./services/ProductService";
-import { DatabaseZap } from "lucide-react";
+} from "../models/Product";
+import { isAdminRequest } from "./authRoutes";
+import { ProductService } from "../services/ProductService";
+import express, { Request, Response } from "express";
 
 const productService = new ProductService();
+const router = express.Router();
 
-export async function POST(req: Request, res: Response) {
+router
+  .route("/")
+  .get(async (req: Request, res: Response) => {
+    await GET(req, res);
+  })
+  .put(async (req: Request, res: Response) => {
+    await PUT(req, res);
+  })
+  .post(async (req: Request, res: Response) => {
+    await POST(req, res);
+  })
+  .delete(async (req: Request, res: Response) => {
+    await DELETE(req, res);
+  });
+
+router.get("/:_id", async (req: Request, res: Response) => {
+  const { _id } = req.params;
+  try {
+    const document = await productService.getProduct(_id);
+    const exists = !!document;
+    res.json({ exists });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch product" });
+  }
+});
+
+export default router;
+
+async function POST(req: Request, res: Response) {
   interface RB {
     ids: string[];
   }
 
   const { ids }: RB = req.body as RB;
-  // const { ids }: RB = reqBody;
   if (ids) {
     const data: ProductInterface[] = await (Product as ProductModel).find({
       _id: ids,
@@ -32,7 +59,7 @@ export async function POST(req: Request, res: Response) {
   res.json(data);
 }
 
-export async function GET(req: Request, res: Response) {
+async function GET(req: Request, res: Response) {
   if (req.query?.status as string) {
     if (req.query.number) {
       const data = await productService.getNewestStatusProducts(
@@ -78,7 +105,7 @@ export async function GET(req: Request, res: Response) {
   }
 }
 
-export async function PUT(req: Request, res: Response) {
+async function PUT(req: Request, res: Response) {
   const isAdmin = await isAdminRequest(req, res);
   if (!isAdmin) throw "not admin";
   const input = ProductValidateSchema.parse(req.body);
@@ -86,7 +113,7 @@ export async function PUT(req: Request, res: Response) {
   res.json(data);
 }
 
-export async function DELETE(req: Request, res: Response) {
+async function DELETE(req: Request, res: Response) {
   const isAdmin = await isAdminRequest(req, res);
   if (!isAdmin) throw "not admin";
   if (req.query?.id) {
