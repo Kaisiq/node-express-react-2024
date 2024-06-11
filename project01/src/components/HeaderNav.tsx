@@ -10,7 +10,7 @@ export function HeaderNav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { cartProducts }: { cartProducts: string[] } = useContext(CartContext);
   // const { data: session } = useSession();
-  const [session, setSession] = useState(getUser());
+  const [email, setEmail] = useState(getUser());
   const [isMdOrLess, setIsMdOrLess] = useState(false);
   const location = useLocation();
 
@@ -34,7 +34,7 @@ export function HeaderNav() {
   }, []);
 
   useEffect(() => {
-    setSession(getUser());
+    setEmail(getUser());
   }, [localStorage, location]);
 
   return (
@@ -99,7 +99,7 @@ export function HeaderNav() {
             className="underline-offset-4 hover:underline sm:block lg:mt-0"
             to="/account"
           >
-            {session ? "Акаунт" : "Влизане"}
+            {email ? "Акаунт" : "Влизане"}
           </Link>
 
           <Link

@@ -57,7 +57,7 @@ const FormSchema = z.object({
 export function CheckoutSection() {
   const { cartProducts, setCartProducts } = useContext(CartContext);
   // const { data: session, status } = useSession();
-  const gotUser = getUser();
+  const email = getUser();
   const [reserveProducts, setReserveProducts] = useState(false);
   // const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -87,10 +87,9 @@ export function CheckoutSection() {
   );
 
   const getUserInformation = useCallback(async () => {
-    if (gotUser) {
-      const input = gotUser.userEmail;
+    if (email) {
       try {
-        const res: AxiosResponse<UserInterface> = await axios.get(`/api/users?email=${input}`);
+        const res: AxiosResponse<UserInterface> = await axios.get(`/api/users?email=${email}`);
         if (res.data.name) form.setValue("flname", res.data.name);
         if (res.data.city) form.setValue("city", res.data.city);
         if (res.data.address) form.setValue("address", res.data.address);
@@ -99,7 +98,7 @@ export function CheckoutSection() {
         console.log(err);
       }
     }
-  }, [sessionStorage, gotUser, form]);
+  }, [localStorage, email, form]);
 
   async function getProductInfo() {
     const productNames: string[] = [];
@@ -125,7 +124,7 @@ export function CheckoutSection() {
     const order = {
       flname: data.flname,
       tel: data.tel,
-      email: gotUser.userEmail ?? "",
+      email: email ?? "",
       address: data.address,
       info: data.info,
       city: data.city,
@@ -148,9 +147,9 @@ export function CheckoutSection() {
       description,
     });
     setCartProducts([]);
-    if (gotUser.userEmail) {
+    if (email) {
       //ask to save info if different:
-      const user = (await axios.get(`/api/users?email=${gotUser.userEmail}`)).data as UserInterface;
+      const user = (await axios.get(`/api/users?email=${email}`)).data as UserInterface;
       if (!user) {
         throw new Error("impossible action");
       }

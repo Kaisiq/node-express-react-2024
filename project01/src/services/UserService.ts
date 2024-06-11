@@ -1,12 +1,7 @@
 export function getUser() {
-  const userString = localStorage.getItem("user");
-
+  const user = localStorage.getItem("user");
   try {
-    const user = userString ? JSON.parse(userString) : null;
-    if (user && user.username && user.userEmail) {
-      return user;
-    }
-    return null;
+    return user;
   } catch (error) {
     console.error("Error parsing user from localStorage", error);
     return null;

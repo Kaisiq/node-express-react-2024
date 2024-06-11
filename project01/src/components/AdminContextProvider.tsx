@@ -27,13 +27,13 @@ export function AdminContextProvider({ children }: { children: ReactNode }) {
   async function checkForAdmin() {
     // const session = await getSession();
     const user = getUser();
-    if (!user?.userEmail) {
+    if (!user) {
       console.error("No session:", user);
       setIsAdmin(false);
       return;
     }
     const authService = new AuthService();
-    const adminBool = await authService.isAdmin(user.userEmail);
+    const adminBool = await authService.isAdmin(user);
     setIsAdmin(adminBool);
     return;
   }

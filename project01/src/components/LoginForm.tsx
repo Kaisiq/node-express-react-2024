@@ -24,10 +24,7 @@ export default function LoginForm() {
       .then((response: AxiosResponse<{ user: UserInterface; token: string }>) => {
         const { user, token } = response.data;
         localStorage.setItem("jwtToken", token);
-        localStorage.setItem(
-          "user",
-          JSON.stringify({ username: user.name, userEmail: user.email })
-        );
+        localStorage.setItem("user", user.email);
         navigate("/account");
       })
       .catch((err: Error) => {

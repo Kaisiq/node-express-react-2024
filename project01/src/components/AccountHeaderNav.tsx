@@ -1,28 +1,15 @@
-// import { useSession, signOut } from "next-auth/react";
-// import Image from "next/image";
-// import Link from "next/link";
 import { Button } from "./ui/button";
-// import { useRouter } from "next/router";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 
-export function AccountHeaderNav({
-  username,
-  userEmail,
-  isAdmin,
-}: {
-  username: string;
-  userEmail: string;
-  isAdmin: boolean;
-}) {
-  // const { data: session } = useSession();
+export function AccountHeaderNav({ userEmail, isAdmin }: { userEmail: string; isAdmin: boolean }) {
   const navigate = useNavigate();
 
   return (
     <>
       <header className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <h1 className="text-2xl font-bold">{username}</h1>
+          <h1 className="text-2xl font-bold">{userEmail}</h1>
         </div>
         <Button
           onClick={async () => {

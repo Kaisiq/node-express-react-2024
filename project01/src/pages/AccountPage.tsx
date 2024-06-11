@@ -26,7 +26,7 @@ export default function AccountPage() {
   }, [localStorage, location]);
 
   const updateOrders = useCallback(() => {
-    const email = user ? user.userEmail : "";
+    const email = user ? user : "";
     if (!email) return;
     api
       .get(`${SERVER}/orders?email=${email}`)
@@ -68,14 +68,14 @@ export default function AccountPage() {
         />
         <main className="mx-auto flex w-[80%] flex-col gap-8 px-4 py-12 sm:px-6 lg:px-8">
           <AccountHeaderNav
-            {...user}
+            userEmail={user}
             isAdmin={isAdmin}
           />
           <OrdersInformation
             orders={orders}
             cancelOrder={cancelOrder}
           />
-          <AccountInformation userEmail={user.userEmail} />
+          <AccountInformation userEmail={user} />
         </main>
       </>
     );
