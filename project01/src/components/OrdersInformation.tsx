@@ -1,5 +1,3 @@
-import { useCallback, useEffect, useState } from "react";
-import axios, { type AxiosResponse } from "axios";
 import type { OrderInterface } from "~/models/Order";
 import { AlertDialogOnAction } from "./AlertDialogOnAction";
 
