@@ -16,6 +16,7 @@ import { redirect } from "react-router-dom";
 import AdminLayout from "./components/AdminLayout";
 import AdminPage from "./pages/admin/AdminPage";
 import { OrderInterface } from "./models/Order";
+import ProductsPage from "./pages/admin/ProductsPage";
 const SERVER = process.env.REACT_APP_SERVER_ADDRESS;
 
 const router = createBrowserRouter([
@@ -157,22 +158,44 @@ const router = createBrowserRouter([
         children: [
           {
             path: "/admin",
-            element: <AdminPage />,
-            loader: async () => {
-              try {
-                const data = (await api.get("/auth/admin")).data.isAdmin;
-                if (!data) return redirect("/account");
-                const orders = (await api.get(`${SERVER}/orders?newest=3`))
-                  .data as OrderInterface[];
+            children: [
+              {
+                index: true,
+                element: <AdminPage />,
+                loader: async () => {
+                  try {
+                    const data = (await api.get("/auth/admin")).data.isAdmin;
+                    if (!data) return redirect("/account");
+                    const orders = (await api.get(`${SERVER}/orders?newest=3`))
+                      .data as OrderInterface[];
 
-                const products = (await api.get(`${SERVER}/products?newest=3`))
-                  .data as ProductInterface[];
-                return { orders, products };
-              } catch (err) {
-                console.log(err);
-                return redirect("/account");
-              }
-            },
+                    const products = (await api.get(`${SERVER}/products?newest=3`))
+                      .data as ProductInterface[];
+                    return { orders, products };
+                  } catch (err) {
+                    console.log(err);
+                    return redirect("/account");
+                  }
+                },
+              },
+              {
+                path: "products",
+                element: <ProductsPage />,
+                loader: async () => {
+                  try {
+                    const data = (await api.get("/auth/admin")).data.isAdmin;
+                    if (!data) return redirect("/account");
+
+                    const products = (await api.get(`${SERVER}/products`))
+                      .data as ProductInterface[];
+                    return products;
+                  } catch (err) {
+                    console.log(err);
+                    return redirect("/account");
+                  }
+                },
+              },
+            ],
           },
         ],
       },
