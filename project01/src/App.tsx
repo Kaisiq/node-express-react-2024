@@ -13,6 +13,9 @@ import CollectionPage from "./pages/collection/CollectionPage";
 import CartPage from "./pages/CartPage";
 import api from "./lib/api";
 import { redirect } from "react-router-dom";
+import AdminLayout from "./components/AdminLayout";
+import AdminPage from "./pages/admin/AdminPage";
+import { OrderInterface } from "./models/Order";
 const SERVER = process.env.REACT_APP_SERVER_ADDRESS;
 
 const router = createBrowserRouter([
@@ -148,6 +151,30 @@ const router = createBrowserRouter([
       {
         path: "/product/:id",
         element: <SingleProduct />,
+      },
+      {
+        element: <AdminLayout />,
+        children: [
+          {
+            path: "/admin",
+            element: <AdminPage />,
+            loader: async () => {
+              try {
+                const data = (await api.get("/auth/admin")).data.isAdmin;
+                if (!data) return redirect("/account");
+                const orders = (await api.get(`${SERVER}/orders?newest=3`))
+                  .data as OrderInterface[];
+
+                const products = (await api.get(`${SERVER}/products?newest=3`))
+                  .data as ProductInterface[];
+                return { orders, products };
+              } catch (err) {
+                console.log(err);
+                return redirect("/account");
+              }
+            },
+          },
+        ],
       },
     ],
   },

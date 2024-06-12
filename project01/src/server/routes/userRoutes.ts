@@ -27,7 +27,7 @@ router.patch("/:email", async (req: Request, res: Response) => {
     const input: object = req.body as object;
     const isAdmin = await isAdminCheck(req, res);
     const isUser = await isUserRequest(req, res);
-    if (!isAdmin && !isUser) throw "Cannot do that operation. Please log in";
+    if (!isAdmin && !isUser) res.status(401).send("Cannot do that operation. Please log in");
     const result = await userService.patchUser(email, input);
     res.json(result);
   } catch (error) {
@@ -41,7 +41,7 @@ async function GET(req: Request, res: Response) {
   try {
     const isAdmin = await isAdminCheck(req, res);
     const isUser = await isUserRequest(req, res);
-    if (!isAdmin && !isUser) throw "Cannot do that operation. Please log in";
+    if (!isAdmin && !isUser) res.status(401).send("Cannot do that operation. Please log in");
     if (req?.query?.email) {
       const data = await userService.getUser(req.query.email as string | string[]);
       res.json(data);

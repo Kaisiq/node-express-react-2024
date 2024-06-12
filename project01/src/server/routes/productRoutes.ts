@@ -53,7 +53,9 @@ async function POST(req: Request, res: Response) {
     return;
   }
   const isAdmin = await isAdminCheck(req, res);
-  if (!isAdmin) throw "not admin";
+  if (!isAdmin) {
+    res.status(401).send("Unauthorized");
+  }
   const input = ProductValidateSchema.parse(req.body);
   const data = await productService.createProduct(input);
   res.json(data);
@@ -107,7 +109,9 @@ async function GET(req: Request, res: Response) {
 
 async function PUT(req: Request, res: Response) {
   const isAdmin = await isAdminCheck(req, res);
-  if (!isAdmin) throw "not admin";
+  if (!isAdmin) {
+    res.status(401).send("Unauthorized");
+  }
   const input = ProductValidateSchema.parse(req.body);
   const data = await productService.updateProduct(input);
   res.json(data);
@@ -115,7 +119,9 @@ async function PUT(req: Request, res: Response) {
 
 async function DELETE(req: Request, res: Response) {
   const isAdmin = await isAdminCheck(req, res);
-  if (!isAdmin) throw "not admin";
+  if (!isAdmin) {
+    res.status(401).send("Unauthorized");
+  }
   if (req.query?.id) {
     const toDelete = req.query.id as string | string[];
     const data = await productService.deleteProduct(toDelete);
