@@ -1,12 +1,12 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next-legacy";
 import { UploadThingError } from "uploadthing/server";
-import { isAdminRequest } from "./routes/authRoutes";
+import { isAdminCheck } from "./routes/authRoutes";
 import { Request, Response } from "express";
 
 const f = createUploadthing();
 
 const auth = async (req: Request, res: Response) => {
-  const isAdmin = await isAdminRequest(req, res);
+  const isAdmin = await isAdminCheck(req, res);
   if (!isAdmin) {
     return null;
   }

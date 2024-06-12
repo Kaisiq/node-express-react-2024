@@ -1,4 +1,4 @@
-import { isAdminRequest, isUserRequest } from "./authRoutes";
+import { isAdminCheck, isUserRequest } from "./authRoutes";
 import express, { Request, Response } from "express";
 import { OrderService } from "../services/OrderService";
 import { OrderFormSchema } from "../models/Order";
@@ -31,7 +31,7 @@ async function POST(req: Request, res: Response) {
 
 async function GET(req: Request, res: Response) {
   if (req?.query?.id) {
-    const isAdmin = await isAdminRequest(req, res);
+    const isAdmin = await isAdminCheck(req, res);
     if (!isAdmin) throw "not admin";
     const data = await orderService.getOrder(req.query.id as string | string[]);
     res.json(data);
@@ -45,12 +45,12 @@ async function GET(req: Request, res: Response) {
       throw "not authenticated user";
     }
   } else if (req?.query?.newest) {
-    const isAdmin = await isAdminRequest(req, res);
+    const isAdmin = await isAdminCheck(req, res);
     if (!isAdmin) throw "not admin";
     const data = await orderService.getLatestNOrders(req.query.newest as unknown as number);
     res.json(data);
   } else {
-    const isAdmin = await isAdminRequest(req, res);
+    const isAdmin = await isAdminCheck(req, res);
     if (!isAdmin) throw "not admin";
     const data = await orderService.getAllOrders();
     res.json(data);
@@ -59,7 +59,7 @@ async function GET(req: Request, res: Response) {
 
 async function PUT(req: Request, res: Response) {
   const data = OrderFormSchema.parse(req.body);
-  const isAdmin = await isAdminRequest(req, res);
+  const isAdmin = await isAdminCheck(req, res);
   const isUser = await isUserRequest(req, res);
   if (!isAdmin || !isUser) throw "Cannot do that operation. Please log in";
   const result = await orderService.updateOrder(data);
@@ -67,7 +67,7 @@ async function PUT(req: Request, res: Response) {
 }
 
 async function DELETE(req: Request, res: Response) {
-  const isAdmin = await isAdminRequest(req, res);
+  const isAdmin = await isAdminCheck(req, res);
   if (!isAdmin) throw "not admin";
   if (req.query?.id) {
     const data = await orderService.deleteOrder(req.query.id as string);

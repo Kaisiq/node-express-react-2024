@@ -1,4 +1,4 @@
-import { isAdminRequest, isUserRequest } from "./authRoutes";
+import { isAdminCheck, isUserRequest } from "./authRoutes";
 import express, { Request, Response } from "express";
 import { UserFromSchema } from "../models/User";
 import { UserService } from "../services/UserService";
@@ -25,7 +25,7 @@ router.patch("/:email", async (req: Request, res: Response) => {
   const { email } = req.params;
   try {
     const input: object = req.body as object;
-    const isAdmin = await isAdminRequest(req, res);
+    const isAdmin = await isAdminCheck(req, res);
     const isUser = await isUserRequest(req, res);
     if (!isAdmin && !isUser) throw "Cannot do that operation. Please log in";
     const result = await userService.patchUser(email, input);
@@ -39,7 +39,7 @@ export default router;
 
 async function GET(req: Request, res: Response) {
   try {
-    const isAdmin = await isAdminRequest(req, res);
+    const isAdmin = await isAdminCheck(req, res);
     const isUser = await isUserRequest(req, res);
     if (!isAdmin && !isUser) throw "Cannot do that operation. Please log in";
     if (req?.query?.email) {

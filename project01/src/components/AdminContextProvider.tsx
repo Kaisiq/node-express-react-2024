@@ -33,7 +33,7 @@ export function AdminContextProvider({ children }: { children: ReactNode }) {
       return;
     }
     const authService = new AuthService();
-    const adminBool = await authService.isAdmin(user);
+    const adminBool = await authService.isAdmin();
     setIsAdmin(adminBool);
     return;
   }

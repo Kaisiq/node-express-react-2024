@@ -4,7 +4,7 @@ import {
   ProductValidateSchema,
   ProductInterface,
 } from "../models/Product";
-import { isAdminRequest } from "./authRoutes";
+import { isAdminCheck } from "./authRoutes";
 import { ProductService } from "../services/ProductService";
 import express, { Request, Response } from "express";
 
@@ -52,7 +52,7 @@ async function POST(req: Request, res: Response) {
     res.json(data);
     return;
   }
-  const isAdmin = await isAdminRequest(req, res);
+  const isAdmin = await isAdminCheck(req, res);
   if (!isAdmin) throw "not admin";
   const input = ProductValidateSchema.parse(req.body);
   const data = await productService.createProduct(input);
@@ -106,7 +106,7 @@ async function GET(req: Request, res: Response) {
 }
 
 async function PUT(req: Request, res: Response) {
-  const isAdmin = await isAdminRequest(req, res);
+  const isAdmin = await isAdminCheck(req, res);
   if (!isAdmin) throw "not admin";
   const input = ProductValidateSchema.parse(req.body);
   const data = await productService.updateProduct(input);
@@ -114,7 +114,7 @@ async function PUT(req: Request, res: Response) {
 }
 
 async function DELETE(req: Request, res: Response) {
-  const isAdmin = await isAdminRequest(req, res);
+  const isAdmin = await isAdminCheck(req, res);
   if (!isAdmin) throw "not admin";
   if (req.query?.id) {
     const toDelete = req.query.id as string | string[];

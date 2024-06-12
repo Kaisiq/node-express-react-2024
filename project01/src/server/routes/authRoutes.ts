@@ -36,9 +36,35 @@ router.get(
   }
 );
 
+router.get("/admin", async (req: Request, res: Response) => {
+  passport.authenticate("jwt", { session: false }, async (err: Error, user: UserInterface) => {
+    if (err || !user) {
+      console.error(err);
+      console.log("An error occurred while checking admin status or user not found.");
+      return res
+        .status(500)
+        .json({ error: "An error occurred while checking admin status or user not found." });
+    } else {
+      try {
+        const userService = new UserService();
+        const fetchedUser = await userService.getSingleUser(user.email);
+        if (fetchedUser && fetchedUser.admin) {
+          return res.json({ isAdmin: true });
+        } else {
+          return res.json({ isAdmin: false });
+        }
+      } catch (error) {
+        console.error(error);
+        console.log("An error occurred while checking admin status.");
+        return res.status(500).json({ error: "An error occurred while checking admin status." });
+      }
+    }
+  })(req, res);
+});
+
 export default router;
 
-export async function isAdminRequest(req: Request, res: Response): Promise<boolean> {
+export async function isAdminCheck(req: Request, res: Response): Promise<boolean> {
   return new Promise<boolean>((resolve, reject) => {
     passport.authenticate("jwt", { session: false }, async (err: Error, user: UserInterface) => {
       if (err || !user) {
