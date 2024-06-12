@@ -1,29 +1,20 @@
 import { OrdersInformation } from "~/components/OrdersInformation";
 import { AccountInformation } from "~/components/AccountInformation";
 import { AccountHeaderNav } from "~/components/AccountHeaderNav";
-// import { useSession } from "next-auth/react";
 import LoginForm from "~/components/LoginForm";
 import CustomHead from "~/components/CustomHead";
 import { useLocation } from "react-router";
-import { getUser } from "~/services/UserService";
 import { useCallback, useContext, useEffect, useState } from "react";
-import { AdminContext } from "~/components/AdminContextProvider";
+import { UserContext } from "~/components/UserContextProvider";
 import { OrderInterface } from "~/models/Order";
 import axios, { AxiosResponse } from "axios";
 import { SERVER } from "~/lib/utils";
 import api from "~/lib/api";
 
 export default function AccountPage() {
-  const [user, setUser] = useState(getUser());
-  const { isAdmin } = useContext(AdminContext);
-  // const { data: session } = useSession();
+  const { isAdmin, user } = useContext(UserContext);
   const location = useLocation();
-
   const [orders, setOrders] = useState<OrderInterface[]>([]);
-
-  useEffect(() => {
-    setUser(getUser());
-  }, [localStorage, location]);
 
   const updateOrders = useCallback(() => {
     const email = user ? user : "";

@@ -1,18 +1,18 @@
 import { ShoppingCartIcon } from "lucide-react";
 import { MenuIcon } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
-import React, { useState, useEffect, useContext } from "react";
+import { Link } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
 import { CartContext } from "./CartContextProvider";
-import { getUser } from "~/services/UserService";
+import { UserContext } from "./UserContextProvider";
+// import { getUser } from "~/services/UserService";
 // import { useSession } from "next-auth/react";
 
 export function HeaderNav() {
+  const { user } = useContext(UserContext);
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { cartProducts }: { cartProducts: string[] } = useContext(CartContext);
-  // const { data: session } = useSession();
-  const [email, setEmail] = useState(getUser());
   const [isMdOrLess, setIsMdOrLess] = useState(false);
-  const location = useLocation();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -32,10 +32,6 @@ export function HeaderNav() {
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  useEffect(() => {
-    setEmail(getUser());
-  }, [localStorage, location]);
 
   return (
     <header className="flex flex-col items-center px-4 py-4 lg:flex-row lg:justify-between lg:px-6 lg:py-6">
@@ -99,7 +95,7 @@ export function HeaderNav() {
             className="underline-offset-4 hover:underline sm:block lg:mt-0"
             to="/account"
           >
-            {email ? "Акаунт" : "Влизане"}
+            {user ? "Акаунт" : "Влизане"}
           </Link>
 
           <Link

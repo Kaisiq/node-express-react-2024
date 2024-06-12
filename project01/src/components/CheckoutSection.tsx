@@ -22,16 +22,13 @@ import {
 } from "~/components/ui/form";
 import { Textarea } from "./ui/textarea";
 import { toast } from "~/components/ui/use-toast";
-// import { useSession } from "next-auth/react";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { CartContext } from "./CartContextProvider";
 import axios, { type AxiosResponse } from "axios";
 import type { ProductInterface } from "~/models/Product";
-// import { useRouter } from "next/router";
 import type { UserInterface } from "~/models/User";
-// import posthog from "posthog-js";
 import { ToastAction } from "./ui/toast";
-import { getUser } from "~/services/UserService";
+import { UserContext } from "./UserContextProvider";
 
 const FormSchema = z.object({
   flname: z.string().min(2, {
@@ -55,9 +52,9 @@ const FormSchema = z.object({
 });
 
 export function CheckoutSection() {
+  const { user } = useContext(UserContext);
+  const email = user;
   const { cartProducts, setCartProducts } = useContext(CartContext);
-  // const { data: session, status } = useSession();
-  const email = getUser();
   const [reserveProducts, setReserveProducts] = useState(false);
   // const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
