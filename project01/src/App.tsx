@@ -17,6 +17,7 @@ import AdminLayout from "./components/AdminLayout";
 import AdminPage from "./pages/admin/AdminPage";
 import { OrderInterface } from "./models/Order";
 import ProductsPage from "./pages/admin/ProductsPage";
+import OrdersPage from "./pages/admin/OrdersPage";
 const SERVER = process.env.REACT_APP_SERVER_ADDRESS;
 
 const router = createBrowserRouter([
@@ -189,6 +190,22 @@ const router = createBrowserRouter([
                     const products = (await api.get(`${SERVER}/products`))
                       .data as ProductInterface[];
                     return products;
+                  } catch (err) {
+                    console.log(err);
+                    return redirect("/account");
+                  }
+                },
+              },
+              {
+                path: "orders",
+                element: <OrdersPage />,
+                loader: async () => {
+                  try {
+                    const data = (await api.get("/auth/admin")).data.isAdmin;
+                    if (!data) return redirect("/account");
+
+                    const orders = (await api.get(`${SERVER}/orders`)).data as OrderInterface[];
+                    return orders;
                   } catch (err) {
                     console.log(err);
                     return redirect("/account");
