@@ -4,12 +4,12 @@ import { ChevronLeftIcon } from "~/components/Icons";
 import { CartItem } from "~/components/CartItem";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { CartContext } from "~/components/CartContextProvider";
-import axios from "axios";
 import type { ProductInterface } from "~/models/Product";
 import { CheckoutSection } from "~/components/CheckoutSection";
 import CustomHead from "~/components/CustomHead";
 import { useLocation } from "react-router";
 import { SERVER } from "~/lib/utils";
+import api from "~/lib/api";
 
 export default function CartPage() {
   const location = useLocation();
@@ -18,7 +18,7 @@ export default function CartPage() {
 
   const updateCart = useCallback(() => {
     if (cartProducts.length > 0) {
-      axios
+      api
         .post(`${SERVER}/products`, { ids: cartProducts })
         .then((res) => {
           setData(res.data as ProductInterface[]);

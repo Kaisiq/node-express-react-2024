@@ -24,11 +24,14 @@ import { Textarea } from "./ui/textarea";
 import { toast } from "~/components/ui/use-toast";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { CartContext } from "./CartContextProvider";
-import axios, { type AxiosResponse } from "axios";
+import { type AxiosResponse } from "axios";
 import type { ProductInterface } from "~/models/Product";
 import type { UserInterface } from "~/models/User";
 import { ToastAction } from "./ui/toast";
 import { UserContext } from "./UserContextProvider";
+import { SERVER } from "~/lib/utils";
+import api from "~/lib/api";
+import { useLocation } from "react-router";
 
 const FormSchema = z.object({
   flname: z.string().min(2, {
@@ -52,11 +55,11 @@ const FormSchema = z.object({
 });
 
 export function CheckoutSection() {
+  const location = useLocation();
   const { user } = useContext(UserContext);
   const email = user;
   const { cartProducts, setCartProducts } = useContext(CartContext);
   const [reserveProducts, setReserveProducts] = useState(false);
-  // const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -71,13 +74,13 @@ export function CheckoutSection() {
   const setProductStatus = useCallback(
     async (status: string) => {
       for await (const product of cartProducts) {
-        const result: AxiosResponse<ProductInterface> = await axios.get(
-          "/api/products?id=" + product
+        const result: AxiosResponse<ProductInterface> = await api.get(
+          `${SERVER}/products?id=` + product
         );
         if (result.data.status != "sold") {
           result.data.status = status;
         }
-        await axios.put("/api/products", result.data);
+        await api.put(`${SERVER}/products`, result.data);
       }
     },
     [cartProducts]
@@ -86,7 +89,7 @@ export function CheckoutSection() {
   const getUserInformation = useCallback(async () => {
     if (email) {
       try {
-        const res: AxiosResponse<UserInterface> = await axios.get(`/api/users?email=${email}`);
+        const res: AxiosResponse<UserInterface> = await api.get(`${SERVER}/users?email=${email}`);
         if (res.data.name) form.setValue("flname", res.data.name);
         if (res.data.city) form.setValue("city", res.data.city);
         if (res.data.address) form.setValue("address", res.data.address);
@@ -101,8 +104,8 @@ export function CheckoutSection() {
     const productNames: string[] = [];
     let price = 0;
     for await (const product of cartProducts) {
-      const result: AxiosResponse<ProductInterface> = await axios.get(
-        "/api/products?id=" + product
+      const result: AxiosResponse<ProductInterface> = await api.get(
+        `${SERVER}/products?id=` + product
       );
       productNames.push(result.data.name);
       price += result.data.price;
@@ -111,7 +114,7 @@ export function CheckoutSection() {
   }
 
   async function updateUser(user: UserInterface) {
-    await axios.put("/api/users", user);
+    await api.put(`${SERVER}/users`, user);
   }
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
@@ -130,7 +133,7 @@ export function CheckoutSection() {
       productIDs: cartProducts,
       productNames,
     };
-    await axios.post("/api/orders", order);
+    await api.post(`${SERVER}/orders`, order);
     let description =
       "Скоро ще получите имейл с потвърждение за поръчката на следният продукт: " +
       productNames.join("");
@@ -146,7 +149,7 @@ export function CheckoutSection() {
     setCartProducts([]);
     if (email) {
       //ask to save info if different:
-      const user = (await axios.get(`/api/users?email=${email}`)).data as UserInterface;
+      const user = (await api.get(`${SERVER}/users?email=${email}`)).data as UserInterface;
       if (!user) {
         throw new Error("impossible action");
       }
@@ -218,19 +221,18 @@ export function CheckoutSection() {
         console.log(err);
       });
     }
-  }, [reserveProducts, setProductStatus, getUserInformation]);
+  }, [reserveProducts, getUserInformation]);
 
-  // useEffect(() => {
-  //   setProductStatus("ok").catch((err) => {
-  //     console.log(err);
-  //   });
-  // }, [router.query, router.pathname, setProductStatus]);
+  useEffect(() => {
+    setProductStatus("ok").catch((err) => {
+      console.log(err);
+    });
+  }, [location]);
 
   return (
     <Sheet
       onOpenChange={(open) => {
         setReserveProducts(open);
-        // posthog.capture("my event", { property: "value" });
       }}
     >
       <SheetTrigger className="h-10 w-[100%] rounded-md bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90">
