@@ -24,15 +24,15 @@ export function UserContextProvider({ children }: { children: ReactNode }) {
   const location = useLocation();
 
   useEffect(() => {
-    if (isAdmin) return;
-    checkForAdmin().catch((err) => console.log(err));
-  }, [user]);
-
-  useEffect(() => {
     async function isValidSession() {
       try {
         const result = await authService.getUser();
-        result ? setUser(result) : setUser("");
+        if (!result) {
+          setUser("");
+          return;
+        }
+        setUser(result);
+        checkForAdmin().catch((err) => console.log(err));
       } catch (err) {
         setUser("");
       }

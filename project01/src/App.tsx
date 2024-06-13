@@ -18,6 +18,10 @@ import AdminPage from "./pages/admin/AdminPage";
 import { OrderInterface } from "./models/Order";
 import ProductsPage from "./pages/admin/ProductsPage";
 import OrdersPage from "./pages/admin/OrdersPage";
+import AnalyticsPage from "./pages/admin/AnalyticsPage";
+import AddProductPage from "./pages/admin/AddProductPage";
+import EditProductPage from "./pages/admin/EditProductPage";
+import DeleteProductPage from "./pages/admin/DeleteProductPage";
 const SERVER = process.env.REACT_APP_SERVER_ADDRESS;
 
 const router = createBrowserRouter([
@@ -181,20 +185,37 @@ const router = createBrowserRouter([
               },
               {
                 path: "products",
-                element: <ProductsPage />,
-                loader: async () => {
-                  try {
-                    const data = (await api.get("/auth/admin")).data.isAdmin;
-                    if (!data) return redirect("/account");
+                children: [
+                  {
+                    index: true,
+                    element: <ProductsPage />,
+                    loader: async () => {
+                      try {
+                        const data = (await api.get("/auth/admin")).data.isAdmin;
+                        if (!data) return redirect("/account");
 
-                    const products = (await api.get(`${SERVER}/products`))
-                      .data as ProductInterface[];
-                    return products;
-                  } catch (err) {
-                    console.log(err);
-                    return redirect("/account");
-                  }
-                },
+                        const products = (await api.get(`${SERVER}/products`))
+                          .data as ProductInterface[];
+                        return products;
+                      } catch (err) {
+                        console.log(err);
+                        return redirect("/account");
+                      }
+                    },
+                  },
+                  {
+                    path: "add",
+                    element: <AddProductPage />,
+                  },
+                  {
+                    path: "delete",
+                    element: <DeleteProductPage />,
+                  },
+                  {
+                    path: ":id",
+                    element: <EditProductPage />,
+                  },
+                ],
               },
               {
                 path: "orders",
@@ -206,6 +227,21 @@ const router = createBrowserRouter([
 
                     const orders = (await api.get(`${SERVER}/orders`)).data as OrderInterface[];
                     return orders;
+                  } catch (err) {
+                    console.log(err);
+                    return redirect("/account");
+                  }
+                },
+              },
+              {
+                path: "analytics",
+                element: <AnalyticsPage />,
+                loader: async () => {
+                  try {
+                    const data = (await api.get("/auth/admin")).data.isAdmin;
+                    if (!data) return redirect("/account");
+
+                    return null;
                   } catch (err) {
                     console.log(err);
                     return redirect("/account");

@@ -25,7 +25,7 @@ export default function LoginForm() {
         const { user, token } = response.data;
         localStorage.setItem("jwtToken", token);
         localStorage.setItem("user", user.email);
-        navigate("/account");
+        navigate(-1);
       })
       .catch((err: Error) => {
         toast({ title: "Грешка", description: err.message });
