@@ -12,6 +12,9 @@ import { Button } from "../ui/button";
 import { MoreHorizontal, Trash2Icon } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import api from "~/lib/api";
+import { useNavigate } from "react-router";
+import { SERVER } from "~/lib/utils";
+import ActionsCell from "./ActionsCell";
 
 export const columns: ColumnDef<OrderInterface>[] = [
   {
@@ -50,7 +53,7 @@ export const columns: ColumnDef<OrderInterface>[] = [
           onValueChange={(value) => {
             status = value;
             const updatedOrder = { ...order, status: value };
-            api.put("/api/orders", updatedOrder).catch((err) => {
+            api.put(`${SERVER}/orders`, updatedOrder).catch((err) => {
               console.log(err);
             });
           }}
@@ -87,44 +90,6 @@ export const columns: ColumnDef<OrderInterface>[] = [
     header: "Още",
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => {
-      const order = row.original;
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              className="h-8 w-8 p-0"
-            >
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(order.address)}>
-              Copy order address
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
-            {order.status === "canceled" && (
-              <>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  className="gap-2"
-                  onClick={async () => {
-                    window.location.href = "/admin/orders/delete/" + order._id;
-                  }}
-                >
-                  <Trash2Icon className="h-4 w-4" />
-                  <span>Delete Order</span>
-                </DropdownMenuItem>
-              </>
-            )}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    cell: ({ row }) => <ActionsCell row={row} />,
   },
 ];

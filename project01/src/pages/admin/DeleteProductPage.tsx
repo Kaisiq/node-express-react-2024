@@ -9,14 +9,14 @@ export default function DeleteProductPage() {
   const id = location.state;
 
   function goBack() {
-    navigate("/admin/products");
+    navigate(-1);
   }
 
   function deleteProduct() {
     api
       .delete(`${SERVER}/products?id=` + id)
       .then(() => {
-        navigate("admin/products");
+        navigate(-1);
       })
       .catch((err) => {
         console.log(err);

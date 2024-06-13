@@ -82,15 +82,15 @@ export function AddProduct({
       if (!_id) {
         product.status = status = "ok";
         await api.post(`${SERVER}/products`, product);
-        navigate("/admin/products");
+        navigate(-1);
       } else {
         const product2 = { ...product, _id: _id };
         await api.put(`${SERVER}/products`, product2);
-        navigate("/admin/products");
+        navigate(-1);
       }
     } catch (err) {
       console.log(err);
-      navigate("/admin/products");
+      navigate(-1);
     }
   }
 
