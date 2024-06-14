@@ -77,4 +77,22 @@ export class UserService {
       return { message: err };
     }
   }
+
+  async getUserCount() {
+    const result = await (User as UserModel).aggregate([
+      {
+        $group: {
+          _id: null,
+          users_count: {
+            $sum: 1,
+          },
+        },
+      },
+    ]);
+    if (result.length > 0) {
+      return result[0];
+    } else {
+      return 0;
+    }
+  }
 }

@@ -162,4 +162,134 @@ export class OrderService {
     }
     return { message: "success" };
   }
+
+  async getTotalRevenue() {
+    const now = new Date();
+    const oneMonthAgo = new Date(now);
+    const currentDay = now.getDate();
+    oneMonthAgo.setMonth(now.getMonth() - 1);
+    if (oneMonthAgo.getDate() !== currentDay) {
+      oneMonthAgo.setDate(0);
+    }
+    const result = await (Order as OrderModel).aggregate([
+      {
+        $match: {
+          status: { $ne: "canceled" },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          total_sales: {
+            $sum: "$price",
+          },
+          count: {
+            $sum: 1,
+          },
+        },
+      },
+    ]);
+
+    const lastMonth = await (Order as OrderModel).aggregate([
+      {
+        $match: {
+          status: { $ne: "canceled" },
+          createdAt: {
+            $lt: oneMonthAgo,
+          },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          total_sales: {
+            $sum: "$price",
+          },
+        },
+      },
+    ]);
+
+    if (result.length > 0 && lastMonth.length > 0) {
+      const percentage = `+${(lastMonth[0].total_sales / result[0].total_sales) * 100}%`;
+      return { total_count: result[0].count, total_sales: result[0].total_sales, percentage };
+    } else {
+      return 0;
+    }
+  }
+
+  async getTotalRevenueLastMonth() {
+    const now = new Date();
+    const oneMonthAgo = new Date(now);
+    const twoMonthsAgo = new Date(now);
+    const currentDay = now.getDate();
+
+    oneMonthAgo.setMonth(now.getMonth() - 1);
+    twoMonthsAgo.setMonth(now.getMonth() - 2);
+
+    if (oneMonthAgo.getDate() !== currentDay) {
+      oneMonthAgo.setDate(0);
+    }
+    if (twoMonthsAgo.getDate() !== currentDay) {
+      twoMonthsAgo.setDate(0);
+    }
+
+    const result = await (Order as OrderModel).aggregate([
+      {
+        $match: {
+          status: { $ne: "canceled" },
+          createdAt: {
+            $gte: oneMonthAgo,
+            $lt: now,
+          },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          total_sales: {
+            $sum: "$price",
+          },
+        },
+      },
+    ]);
+
+    const lastMonth = await (Order as OrderModel).aggregate([
+      {
+        $match: {
+          status: { $ne: "canceled" },
+          createdAt: {
+            $gte: twoMonthsAgo,
+            $lt: oneMonthAgo,
+          },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          total_sales: {
+            $sum: "$price",
+          },
+        },
+      },
+    ]);
+    if (result.length > 0 && lastMonth.length > 0) {
+      if (lastMonth[0].total_sales > result[0].total_sales) {
+        const percentage = `-${(result[0].total_sales / lastMonth[0].total_sales) * 100}%`;
+        return { total_sales: result[0].total_sales, percentage };
+      } else {
+        const percentage = `+${(lastMonth[0].total_sales / result[0].total_sales) * 100}%`;
+        return { total_sales: result[0].total_sales, percentage };
+      }
+    } else if (result.length === 0) {
+      return { total_sales: 0, percentage: "-100%" };
+    } else if (lastMonth.length === 0) {
+      return { total_sales: result[0].total_sales, percentage: "+100%" };
+    } else {
+      return { total_sales: 0, percentage: "+0%" };
+    }
+  }
+
+  async getWeeklyRevenue() {}
+
+  async getTotalSales() {}
 }

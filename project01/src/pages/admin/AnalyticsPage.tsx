@@ -3,8 +3,18 @@ import { DollarSignIcon } from "~/components/Icons";
 import { CreditCardIcon } from "~/components/Icons";
 import { ActivityIcon } from "~/components/Icons";
 import { UsersIcon } from "~/components/Icons";
+import { useLoaderData } from "react-router-dom";
 
 export default function AnalyticsPage() {
+  const { totalRevenue, totalPercentage, ordersCount, usersCount, monthPercentage, monthRevenue } =
+    useLoaderData() as {
+      totalRevenue: number;
+      totalPercentage: string;
+      ordersCount: number;
+      usersCount: number;
+      monthPercentage: string;
+      monthRevenue: number;
+    };
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
       <div className="grid gap-4 md:grid-cols-2">
@@ -14,17 +24,19 @@ export default function AnalyticsPage() {
             <DollarSignIcon className="h-4 w-4 text-gray-500 dark:text-gray-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$45,231.89</div>
-            <p className="text-xs text-gray-500 dark:text-gray-400">+20.1% from last month</p>
+            <div className="text-2xl font-bold">{totalRevenue}лв</div>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              {totalPercentage} в сравнение с предния месец
+            </p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Subscriptions</CardTitle>
+            <CardTitle className="text-sm font-medium">Accounts</CardTitle>
             <UsersIcon className="h-4 w-4 text-gray-500 dark:text-gray-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+2350</div>
+            <div className="text-2xl font-bold">+{usersCount}</div>
             <p className="text-xs text-gray-500 dark:text-gray-400">+180.1% from last month</p>
           </CardContent>
         </Card>
@@ -35,18 +47,8 @@ export default function AnalyticsPage() {
           <CreditCardIcon className="h-4 w-4 text-gray-500 dark:text-gray-400" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">+12,234</div>
+          <div className="text-2xl font-bold">+{ordersCount}</div>
           <p className="text-xs text-gray-500 dark:text-gray-400">+19% from last month</p>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Active Now</CardTitle>
-          <ActivityIcon className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">+573</div>
-          <p className="text-xs text-gray-500 dark:text-gray-400">+201 since last hour</p>
         </CardContent>
       </Card>
       <Card>
@@ -55,8 +57,10 @@ export default function AnalyticsPage() {
           <DollarSignIcon className="h-4 w-4 text-gray-500 dark:text-gray-400" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">$12,345.67</div>
-          <p className="text-xs text-gray-500 dark:text-gray-400">-10.5% compared to last month</p>
+          <div className="text-2xl font-bold">{monthRevenue}лв</div>
+          <p className="text-xs text-gray-500 dark:text-gray-400">
+            {monthPercentage} в сравнение с предния месец
+          </p>
         </CardContent>
       </Card>
       <Card>

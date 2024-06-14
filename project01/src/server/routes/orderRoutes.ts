@@ -60,6 +60,32 @@ router.patch("/:_id", async (req: Request, res: Response) => {
   return res.json(result);
 });
 
+router.get("/totalrevenue", async (req: Request, res: Response) => {
+  try {
+    const isAdmin = await isAdminCheck(req, res);
+    if (!isAdmin) {
+      return res.status(401).send("Unauthorized. Please log in");
+    }
+    const data = await orderService.getTotalRevenue();
+    return res.json(data);
+  } catch (err) {
+    return res.status(401).send("Unauthorized. Please log in");
+  }
+});
+
+router.get("/monthrevenue", async (req: Request, res: Response) => {
+  try {
+    const isAdmin = await isAdminCheck(req, res);
+    if (!isAdmin) {
+      return res.status(401).send("Unauthorized. Please log in");
+    }
+    const data = await orderService.getTotalRevenueLastMonth();
+    return res.json(data);
+  } catch (err) {
+    return res.status(401).send("Unauthorized. Please log in");
+  }
+});
+
 export default router;
 
 async function POST(req: Request, res: Response) {

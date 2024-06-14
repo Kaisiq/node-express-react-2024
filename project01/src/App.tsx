@@ -254,7 +254,17 @@ const router = createBrowserRouter([
                     const data = (await api.get("/auth/admin")).data.isAdmin;
                     if (!data) return redirect("/account");
 
-                    return null;
+                    const req1 = (await api.get("/orders/totalrevenue")).data;
+                    const req3 = (await api.get("/orders/monthrevenue")).data;
+                    const req2 = (await api.get("/users/total")).data;
+                    return {
+                      totalRevenue: req1.total_sales,
+                      totalPercentage: req1.percentage,
+                      ordersCount: req1.total_count,
+                      usersCount: req2.users_count,
+                      monthPercentage: req3.percentage,
+                      monthRevenue: req3.total_sales,
+                    };
                   } catch (err) {
                     console.log(err);
                     return redirect("/account");

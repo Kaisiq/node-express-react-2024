@@ -40,6 +40,19 @@ router.patch("/:email", async (req: Request, res: Response) => {
   }
 });
 
+router.get("/total", async (req: Request, res: Response) => {
+  try {
+    const isAdmin = await isAdminCheck(req, res);
+    if (!isAdmin) {
+      return res.status(401);
+    }
+    const result = await userService.getUserCount();
+    return res.json(result);
+  } catch (err) {
+    return res.status(401);
+  }
+});
+
 export default router;
 
 async function GET(req: Request, res: Response) {
