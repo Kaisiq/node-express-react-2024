@@ -17,7 +17,7 @@ export default function IndexPage() {
       <CustomHead
         title={`Две Трети`}
         description={`Онлайн магазин за дрехи втора употреба | начална страница`}
-        image={`/b.webp?height=800&width=1600`}
+        image={`https://utfs.io/f/15b3b1f1-3e84-477b-baf2-b37a7bd5c5bf-2q.webp`}
         link={`${location.pathname}`}
         type="web"
         domain={`${location.pathname}`}
@@ -65,19 +65,19 @@ export default function IndexPage() {
           <h2 className="text-3xl">Разгледай още:</h2>
           <div className="grid grid-cols-2 gap-5 lg:grid-cols-4">
             <LinkImageWithText
-              image={"/males.jpg"}
+              image={"https://utfs.io/f/92ba3f13-c28c-4a66-a1d7-83d7b4e6675d-1ppszq.jpg"}
               text={"Мъжко"}
             />
             <LinkImageWithText
-              image={"/females.png"}
+              image={"https://utfs.io/f/911d233c-718e-4b01-aa4b-d748fc99b033-g0qlw9.png"}
               text={"Дамско"}
             />
             <LinkImageWithText
-              image={"/males.jpg"}
+              image={"https://utfs.io/f/911d233c-718e-4b01-aa4b-d748fc99b033-g0qlw9.png"}
               text={"Намалени"}
             />
             <LinkImageWithText
-              image={"/males.jpg"}
+              image={"https://utfs.io/f/911d233c-718e-4b01-aa4b-d748fc99b033-g0qlw9.png"}
               text={"Всичко"}
             />
           </div>
