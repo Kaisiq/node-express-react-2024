@@ -18,4 +18,17 @@ api.interceptors.request.use(
   }
 );
 
+api.interceptors.response.use(
+  (response) => {
+    const newToken = response.headers["authorization"];
+    if (newToken) {
+      localStorage.setItem("jwtToken", newToken.split(" ")[1]);
+    }
+    return response;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 export default api;
