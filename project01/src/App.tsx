@@ -23,6 +23,9 @@ import AddProductPage from "./pages/admin/AddProductPage";
 import EditProductPage from "./pages/admin/EditProductPage";
 import DeleteProductPage from "./pages/admin/DeleteProductPage";
 import DeleteOrderPage from "./pages/admin/DeleteOrderPage";
+import { UserInterface } from "./models/User";
+import UsersPage from "./pages/admin/UsersPage";
+import SingleUserPage from "./pages/admin/SingleUserPage";
 const SERVER = process.env.REACT_APP_SERVER_ADDRESS;
 
 const router = createBrowserRouter([
@@ -257,6 +260,40 @@ const router = createBrowserRouter([
                     return redirect("/account");
                   }
                 },
+              },
+              {
+                path: "users",
+                children: [
+                  {
+                    index: true,
+                    element: <UsersPage />,
+                    loader: async () => {
+                      try {
+                        const data = (await api.get("/auth/admin")).data.isAdmin;
+                        if (!data) return redirect("/account");
+                        const users = (await api.get(`${SERVER}/users`)).data as UserInterface[];
+                        return users;
+                      } catch (err) {
+                        console.log(err);
+                        return redirect("/account");
+                      }
+                    },
+                  },
+                  {
+                    path: ":_id",
+                    element: <SingleUserPage />,
+                    loader: async () => {
+                      try {
+                        const data = (await api.get("/auth/admin")).data.isAdmin;
+                        if (!data) return redirect("/account");
+                        return null;
+                      } catch (err) {
+                        console.log(err);
+                        return redirect("/account");
+                      }
+                    },
+                  },
+                ],
               },
             ],
           },

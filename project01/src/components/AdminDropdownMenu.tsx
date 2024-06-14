@@ -64,6 +64,15 @@ export function AdminDropdownMenu() {
               Analytics
             </Link>
           </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>
+            <Link
+              className="h-full w-full"
+              to="/admin/users"
+            >
+              Users
+            </Link>
+          </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
       </DropdownMenuContent>

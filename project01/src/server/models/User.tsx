@@ -1,5 +1,9 @@
 import { Schema, model, models, type Document, type Model } from "mongoose";
 import z from "zod";
+enum AdminType {
+  User = 0,
+  Admin = 1,
+}
 
 export const UserFromSchema = z.object({
   name: z
@@ -32,7 +36,7 @@ export const UserFromSchema = z.object({
   email: z.string(),
   hashedPassword: z.string().optional(),
   image: z.string().optional(),
-  admin: z.boolean().optional(),
+  admin: z.nativeEnum(AdminType).optional(),
   emailVerified: z.boolean().optional(),
   _id: z.string().min(4).optional().or(z.literal("")),
   createdAt: z.string().min(4).optional().or(z.literal("")),
@@ -49,7 +53,7 @@ export interface UserDocument extends Document {
   hashedPassword?: string;
   image?: string;
   emailVerified?: boolean;
-  admin?: boolean;
+  admin?: number;
 }
 
 export type UserModel = Model<UserDocument>;
@@ -64,9 +68,12 @@ const UserSchema = new Schema<UserDocument>(
     hashedPassword: { type: String, default: null },
     image: { type: String },
     emailVerified: { type: Boolean, default: null },
-    admin: { type: Boolean },
+    admin: { type: Number },
   },
-  { collection: "users" }
+  {
+    timestamps: true,
+    collection: "users",
+  }
 );
 
 export const User = models.User ?? model<UserDocument, UserModel>("User", UserSchema);

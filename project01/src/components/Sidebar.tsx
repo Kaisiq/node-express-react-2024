@@ -1,3 +1,4 @@
+import { UserIcon } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { HomeIcon } from "~/components/Icons";
 import { ShoppingCartIcon } from "~/components/Icons";
@@ -43,6 +44,13 @@ export function Sidebar() {
             >
               <LineChartIcon className="h-4 w-4" />
               Analytics
+            </Link>
+            <Link
+              className={pathname.includes("/admin/users") ? activeLink : inactiveLink}
+              to="/admin/users"
+            >
+              <UserIcon className="h-4 w-4" />
+              Users
             </Link>
           </nav>
         </div>

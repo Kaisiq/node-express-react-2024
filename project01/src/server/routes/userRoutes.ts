@@ -31,7 +31,7 @@ router.patch("/:email", async (req: Request, res: Response) => {
     if (isUser?.newToken) {
       res.setHeader("Authorization", `Bearer ${isUser.newToken}`);
     }
-    if (isUser.user?.email != email)
+    if (isUser.user?.email != email && !isAdmin)
       return res.status(401).send("Unauthorized. Log in to this account to edit it.");
     const result = await userService.patchUser(email, input);
     return res.json(result);
@@ -52,10 +52,13 @@ async function GET(req: Request, res: Response) {
       res.setHeader("Authorization", `Bearer ${isUser.newToken}`);
     }
     if (req?.query?.email) {
-      if (req.query.email != isUser?.user?.email) {
+      if (req.query.email != isUser?.user?.email && !isAdmin) {
         return res.status(401).send("Unauthorized. You can get info only about yourself");
       }
       const data = await userService.getUser(req.query.email as string | string[]);
+      return res.json(data);
+    } else {
+      const data = await userService.getAllUsers();
       return res.json(data);
     }
   } catch (error) {
@@ -73,7 +76,7 @@ async function PUT(req: Request, res: Response) {
       res.setHeader("Authorization", `Bearer ${isUser.newToken}`);
     }
     const data = UserFromSchema.parse(req.body);
-    if (isUser?.user?.email != data.email) {
+    if (isUser?.user?.email != data.email && !isAdmin) {
       return res.status(401).send("Unauthorized. You can edit only your profile");
     }
     const result = await userService.updateUser(data);

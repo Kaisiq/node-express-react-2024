@@ -1,5 +1,10 @@
 import z from "zod";
 
+export enum AdminType {
+  User = 0,
+  Admin = 1,
+}
+
 export const UserFromSchema = z.object({
   name: z
     .string()
@@ -31,7 +36,7 @@ export const UserFromSchema = z.object({
   email: z.string(),
   hashedPassword: z.string().optional(),
   image: z.string().optional(),
-  admin: z.boolean().optional(),
+  admin: z.nativeEnum(AdminType).optional(),
   emailVerified: z.boolean().optional(),
   _id: z.string().min(4).optional().or(z.literal("")),
   createdAt: z.string().min(4).optional().or(z.literal("")),

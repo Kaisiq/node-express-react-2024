@@ -2,6 +2,11 @@ import { User, type UserModel, UserInterface } from "../models/User";
 
 export class UserService {
   /* eslint-disable */
+  async getAllUsers() {
+    const result = await (User as UserModel).find();
+    return result;
+  }
+
   async getUser(input: string | string[]) {
     if (Array.isArray(input)) {
       const result = (await (User as UserModel).find({
