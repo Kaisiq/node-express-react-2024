@@ -89,12 +89,42 @@ export async function isAdminCheck(req: Request, res: Response): Promise<boolean
   });
 }
 
-export async function isUserRequest(req: Request, res: Response) {
-  passport.authenticate("jwt", { session: false }),
-    async (err: Error, user: UserInterface) => {
-      console.log(user);
-      if (err) res.status(401).json(err);
-      res.status(200).json(user);
-    };
-  return true;
+export async function isUserRequest(
+  req: Request,
+  res: Response
+): Promise<{ user?: UserInterface; newToken?: string }> {
+  return new Promise((resolve, reject) => {
+    passport.authenticate("jwt", { session: false }, async (err: Error, user: UserInterface) => {
+      if (err || !user) {
+        console.log("An error occurred while checking user status or user not found.");
+        return resolve({});
+      } else {
+        try {
+          // Renew token if it's about to expire
+          const token = req.headers["authorization"]?.split(" ")[1];
+          if (token) {
+            const decodedToken = jwt.decode(token) as { exp: number };
+            const currentTime = Date.now() / 1000;
+            const timeLeft = decodedToken.exp - currentTime;
+            const threshold = 60 * 5; // 5 minutes
+
+            if (timeLeft < threshold) {
+              const newToken = jwt.sign(
+                { id: user._id, email: user.email },
+                process.env.JWT_SECRET || "your_jwt_secret",
+                {
+                  expiresIn: "15m",
+                }
+              );
+              return resolve({ user, newToken });
+            }
+          }
+          return resolve({ user });
+        } catch (error) {
+          console.log("An error occurred while checking user status.");
+          return resolve({});
+        }
+      }
+    })(req, res);
+  });
 }

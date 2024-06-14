@@ -55,7 +55,6 @@ export function OrdersInformation({
                     continueText="Продължаване"
                     cancelText="Назад"
                     fn={async () => {
-                      console.log("here1");
                       await cancelOrder(order._id, order.email);
                     }}
                   />

@@ -7,7 +7,6 @@ export default function CollectionPage() {
   const location = useLocation();
   const pathSplit = location.pathname.split("/");
   const name = pathSplit.at(pathSplit.length - 1);
-  console.log(name);
   const props = useLoaderData() as { products: ProductInterface[]; page: number; maxPages: number };
   return (
     <>

@@ -7,7 +7,7 @@ import { useLocation } from "react-router";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { UserContext } from "~/components/UserContextProvider";
 import { OrderInterface } from "~/models/Order";
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import { SERVER } from "~/lib/utils";
 import api from "~/lib/api";
 
@@ -36,7 +36,7 @@ export default function AccountPage() {
 
   async function cancelOrder(_id: string | undefined, email: string) {
     try {
-      await axios.patch(`${SERVER}/orders/${_id}`, {
+      await api.patch(`${SERVER}/orders/${_id}`, {
         status: "canceled",
         email,
       });
