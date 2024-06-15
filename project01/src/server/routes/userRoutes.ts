@@ -84,6 +84,15 @@ router
     } catch (err) {
       return res.status(500).send("Server error: " + err);
     }
+  })
+  .delete(adminCheckMiddleware, async (req: Request, res: Response) => {
+    const { email } = req.params;
+    try {
+      const deleted = await userService.deleteUser(email);
+      return res.json(deleted);
+    } catch (err) {
+      return res.status(500).send("Server error: " + err);
+    }
   });
 
 export default router;

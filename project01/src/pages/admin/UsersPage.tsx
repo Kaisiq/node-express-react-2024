@@ -1,4 +1,4 @@
-import { EditIcon } from "lucide-react";
+import { DeleteIcon, EditIcon } from "lucide-react";
 import { useLoaderData, useNavigate } from "react-router";
 import { Button } from "~/components/ui/button";
 import { AdminType, UserInterface } from "~/models/User";
@@ -74,14 +74,24 @@ const User = ({ user }: { user: UserInterface }) => {
       <p className="basis-full">{`${
         user.createdAt ? new Date(user.createdAt) : "няма информация"
       }`}</p>
-      <div className="basis-full">
+      <div className="flex basis-full flex-col gap-1">
         <Button
+          size="sm"
           onClick={() => {
             navigate(`/admin/users/${user._id}`, { state: user });
           }}
           className="bg-slate-600 m-auto"
         >
           <EditIcon />
+        </Button>
+        <Button
+          size="sm"
+          onClick={() => {
+            navigate(`/admin/users/delete`, { state: user._id });
+          }}
+          className="bg-slate-600 m-auto"
+        >
+          <DeleteIcon />
         </Button>
       </div>
     </section>

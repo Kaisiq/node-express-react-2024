@@ -78,6 +78,16 @@ export class UserService {
     }
   }
 
+  async deleteUser(_id: string) {
+    try {
+      const res = (await (User as UserModel).findOneAndDelete({ _id })) as UserInterface;
+      return res;
+    } catch (error) {
+      console.error(error);
+      return { message: error };
+    }
+  }
+
   async getUserCount() {
     const result = await (User as UserModel).aggregate([
       {

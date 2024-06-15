@@ -26,6 +26,7 @@ import DeleteOrderPage from "./pages/admin/DeleteOrderPage";
 import { UserInterface } from "./models/User";
 import UsersPage from "./pages/admin/UsersPage";
 import SingleUserPage from "./pages/admin/SingleUserPage";
+import DeleteUserPage from "./pages/admin/DeleteUserPage";
 const SERVER = process.env.REACT_APP_SERVER_ADDRESS;
 
 const router = createBrowserRouter([
@@ -295,6 +296,10 @@ const router = createBrowserRouter([
                         <SingleUserPage />
                       </div>
                     ),
+                  },
+                  {
+                    path: "delete",
+                    element: <DeleteUserPage />,
                   },
                   {
                     path: ":_id",
