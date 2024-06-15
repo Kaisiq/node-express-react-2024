@@ -20,7 +20,6 @@ passport.use(
         }
         const exists = await userService.getSingleUser(email);
         if (!exists) {
-          console.log("asd");
           const hashedPass = await bcrypt.hash(password, Number(process.env.NEXTAUTH_HASHLEVELS));
           const user = await userService.createUser({
             email,

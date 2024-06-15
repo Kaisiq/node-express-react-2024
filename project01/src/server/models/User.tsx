@@ -42,6 +42,20 @@ export const UserFromSchema = z.object({
   createdAt: z.string().min(4).optional().or(z.literal("")),
 });
 
+export const UserCreationFormSchema = z.object({
+  name: z.string().optional(),
+  tel: z.string().optional(),
+  address: z.string().optional(),
+  city: z.string().optional(),
+  email: z.string().email().min(3),
+  password: z.string().optional(),
+  image: z.string().optional(),
+  admin: z.nativeEnum(AdminType).optional(),
+  emailVerified: z.boolean().optional(),
+  _id: z.string().min(4).optional().or(z.literal("")),
+  createdAt: z.string().min(4).optional().or(z.literal("")),
+});
+
 export type UserInterface = z.infer<typeof UserFromSchema>;
 
 export interface UserDocument extends Document {

@@ -20,12 +20,12 @@ const SingleUserPage = () => {
   const [image, setImage] = useState(user.image);
   const [name, setName] = useState(user.name);
   const [tel, setTel] = useState(user.tel);
+  const [password, setPassword] = useState("");
 
   const saveUser = async (ev: FormEvent) => {
     try {
       ev.preventDefault();
       const userToSave = {
-        _id: user._id,
         name,
         address,
         admin,
@@ -34,8 +34,36 @@ const SingleUserPage = () => {
         image,
         tel,
       };
-      await api.put(`${SERVER}/users`, userToSave);
-      navigate(-1);
+      if (user._id) {
+        if (password) {
+          await api.put(`${SERVER}/users/${user._id}`, {
+            ...userToSave,
+            _id: user._id,
+            password: password,
+          });
+          navigate(-1);
+        } else {
+          await api.put(`${SERVER}/users/${user._id}`, { ...userToSave, _id: user._id });
+          navigate(-1);
+        }
+      } else {
+        try {
+          const isAdmin = (await api.get(`${SERVER}/auth/admin`)).data.isAdmin;
+          if (isAdmin) {
+            if (password) {
+              await api.post(`${SERVER}/users`, { ...userToSave, password });
+              navigate(-1);
+            } else {
+              await api.post(`${SERVER}/users`, userToSave);
+              navigate(-1);
+            }
+          }
+          throw "not admin";
+        } catch (err) {
+          console.log(err);
+          navigate(`/admin/users`);
+        }
+      }
     } catch (err) {
       console.log(err);
       navigate(-1);
@@ -43,10 +71,13 @@ const SingleUserPage = () => {
   };
 
   return (
-    <form onSubmit={saveUser}>
+    <form
+      className="flex flex-col m-5"
+      onSubmit={saveUser}
+    >
       <div className="flex items-center gap-4">
         <Button
-          className="ml-auto"
+          className="m-auto text-xl"
           size="sm"
         >
           <input
@@ -60,7 +91,7 @@ const SingleUserPage = () => {
         <CardContent>
           <div className="my-5 flex flex-col gap-4 md:grid md:grid-cols-2">
             <div className="flex flex-col gap-1">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name">Име</Label>
               <Input
                 id="name"
                 value={name}
@@ -69,7 +100,7 @@ const SingleUserPage = () => {
               />
             </div>
             <div className="flex flex-col gap-1">
-              <Label htmlFor="address">Address</Label>
+              <Label htmlFor="address">Адрес</Label>
               <Input
                 id="address"
                 value={address}
@@ -78,7 +109,7 @@ const SingleUserPage = () => {
               />
             </div>
             <div className="flex flex-col gap-1">
-              <Label htmlFor="admin">admin</Label>
+              <Label htmlFor="admin">Тип акаунт</Label>
 
               <select
                 id="admin"
@@ -91,7 +122,7 @@ const SingleUserPage = () => {
               </select>
             </div>
             <div className="flex flex-col gap-1">
-              <Label htmlFor="city">city</Label>
+              <Label htmlFor="city">Град</Label>
               <Input
                 id="city"
                 value={city}
@@ -100,7 +131,7 @@ const SingleUserPage = () => {
               />
             </div>
             <div className="flex flex-col gap-1">
-              <Label htmlFor="email">email</Label>
+              <Label htmlFor="email">Email адрес</Label>
               <Input
                 id="email"
                 value={email}
@@ -109,7 +140,7 @@ const SingleUserPage = () => {
               />
             </div>
             <div className="flex flex-col gap-1">
-              <Label htmlFor="image">image</Label>
+              <Label htmlFor="image">Линк към снимка</Label>
               <Input
                 id="image"
                 value={image}
@@ -118,12 +149,24 @@ const SingleUserPage = () => {
               />
             </div>
             <div className="flex flex-col gap-1">
-              <Label htmlFor="tel">tel</Label>
+              <Label htmlFor="tel">Телефонен Номер</Label>
               <Input
                 id="tel"
                 value={tel}
                 placeholder="Enter user tel"
                 onChange={(ev) => setTel(ev.target.value)}
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <Label htmlFor="password">
+                {user._id && "Нова"} Парола {user._id && "(старата ще се замени)"}
+              </Label>
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                placeholder="Enter user password"
+                onChange={(ev) => setPassword(ev.target.value)}
               />
             </div>
           </div>

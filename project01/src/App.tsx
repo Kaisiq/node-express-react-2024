@@ -183,11 +183,8 @@ const router = createBrowserRouter([
                 element: <AdminPage />,
                 loader: async () => {
                   try {
-                    const data = (await api.get("/auth/admin")).data.isAdmin;
-                    if (!data) return redirect("/account");
                     const orders = (await api.get(`${SERVER}/orders?newest=3`))
                       .data as OrderInterface[];
-
                     const products = (await api.get(`${SERVER}/products?newest=3`))
                       .data as ProductInterface[];
                     return { orders, products };
@@ -205,9 +202,6 @@ const router = createBrowserRouter([
                     element: <ProductsPage />,
                     loader: async () => {
                       try {
-                        const data = (await api.get("/auth/admin")).data.isAdmin;
-                        if (!data) return redirect("/account");
-
                         const products = (await api.get(`${SERVER}/products`))
                           .data as ProductInterface[];
                         return products;
@@ -239,9 +233,6 @@ const router = createBrowserRouter([
                     element: <OrdersPage />,
                     loader: async () => {
                       try {
-                        const data = (await api.get("/auth/admin")).data.isAdmin;
-                        if (!data) return redirect("/account");
-
                         const orders = (await api.get(`${SERVER}/orders`)).data as OrderInterface[];
                         return orders;
                       } catch (err) {
@@ -261,9 +252,6 @@ const router = createBrowserRouter([
                 element: <AnalyticsPage />,
                 loader: async () => {
                   try {
-                    const data = (await api.get("/auth/admin")).data.isAdmin;
-                    if (!data) return redirect("/account");
-
                     const req1 = (await api.get("/orders/totalrevenue")).data;
                     const req3 = (await api.get("/orders/monthrevenue")).data;
                     const req2 = (await api.get("/users/total")).data;
@@ -289,8 +277,6 @@ const router = createBrowserRouter([
                     element: <UsersPage />,
                     loader: async () => {
                       try {
-                        const data = (await api.get("/auth/admin")).data.isAdmin;
-                        if (!data) return redirect("/account");
                         const users = (await api.get(`${SERVER}/users`)).data as UserInterface[];
                         return users;
                       } catch (err) {
@@ -300,18 +286,19 @@ const router = createBrowserRouter([
                     },
                   },
                   {
+                    path: "register",
+                    element: (
+                      <div>
+                        <h1 className="text-center text-2xl m-3 bg-stone-100 w-[25%] mx-auto rounded-lg">
+                          Регистриране на потребител
+                        </h1>
+                        <SingleUserPage />
+                      </div>
+                    ),
+                  },
+                  {
                     path: ":_id",
                     element: <SingleUserPage />,
-                    loader: async () => {
-                      try {
-                        const data = (await api.get("/auth/admin")).data.isAdmin;
-                        if (!data) return redirect("/account");
-                        return null;
-                      } catch (err) {
-                        console.log(err);
-                        return redirect("/account");
-                      }
-                    },
                   },
                 ],
               },

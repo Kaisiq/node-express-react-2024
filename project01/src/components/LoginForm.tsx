@@ -2,11 +2,12 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { type FormEvent, useState } from "react";
-import axios, { type AxiosResponse } from "axios";
+import { type AxiosResponse } from "axios";
 import { toast } from "./ui/use-toast";
 import type { UserInterface } from "~/models/User";
 import { Link, useNavigate } from "react-router-dom";
 import { SERVER } from "~/lib/utils";
+import api from "~/lib/api";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -19,7 +20,7 @@ export default function LoginForm() {
       email,
       password,
     };
-    axios
+    api
       .post(`${SERVER}/auth/password`, credentials)
       .then((response: AxiosResponse<{ user: UserInterface; token: string }>) => {
         const { user, token } = response.data;
