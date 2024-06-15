@@ -4,9 +4,8 @@ import { OrderInterface } from "~/models/Order";
 
 export default function OrdersPage() {
   const orders = useLoaderData() as OrderInterface[];
-  console.log(orders);
   return (
-    <main className="p-4">
+    <main className="p-4 w-full">
       <OrdersTable data={orders} />
     </main>
   );

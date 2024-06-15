@@ -1,7 +1,4 @@
-import {
-  adminCheckMiddleware,
-  isEitherUserOrAdminMiddleware,
-} from "./authRoutes";
+import { adminCheckMiddleware, isEitherUserOrAdminMiddleware } from "./authRoutes";
 import express, { Request, Response } from "express";
 import { OrderService } from "../services/OrderService";
 import { OrderFormSchema } from "../models/Order";
@@ -46,8 +43,8 @@ router.get("/totalrevenue", adminCheckMiddleware, async (req: Request, res: Resp
 
 router.get("/newest/:number", adminCheckMiddleware, async (req: Request, res: Response) => {
   try {
-    const { num } = req.params;
-    const data = await orderService.getLatestNOrders(Number(num));
+    const { number } = req.params;
+    const data = await orderService.getLatestNOrders(Number(number));
     return res.json(data);
   } catch (err) {
     return res.status(500).send("Server error: " + err);
@@ -57,6 +54,24 @@ router.get("/newest/:number", adminCheckMiddleware, async (req: Request, res: Re
 router.get("/monthrevenue", adminCheckMiddleware, async (req: Request, res: Response) => {
   try {
     const data = await orderService.getTotalRevenueLastMonth();
+    return res.json(data);
+  } catch (err) {
+    return res.status(500).send("Server error: " + err);
+  }
+});
+
+router.get("/weekrevenue", adminCheckMiddleware, async (req: Request, res: Response) => {
+  try {
+    const data = await orderService.getWeeklyRevenue();
+    return res.json(data);
+  } catch (err) {
+    return res.status(500).send("Server error: " + err);
+  }
+});
+
+router.get("/dayrevenue", adminCheckMiddleware, async (req: Request, res: Response) => {
+  try {
+    const data = await orderService.getDailyRevenue();
     return res.json(data);
   } catch (err) {
     return res.status(500).send("Server error: " + err);

@@ -5,15 +5,29 @@ import { UsersIcon } from "~/components/Icons";
 import { useLoaderData } from "react-router-dom";
 
 export default function AnalyticsPage() {
-  const { totalRevenue, totalPercentage, ordersCount, usersCount, monthPercentage, monthRevenue } =
-    useLoaderData() as {
-      totalRevenue: number;
-      totalPercentage: string;
-      ordersCount: number;
-      usersCount: number;
-      monthPercentage: string;
-      monthRevenue: number;
-    };
+  const {
+    totalRevenue,
+    totalPercentage,
+    ordersCount,
+    usersCount,
+    monthPercentage,
+    monthRevenue,
+    weekPercentage,
+    weekRevenue,
+    dayPercentage,
+    dayRevenue,
+  } = useLoaderData() as {
+    totalRevenue: number;
+    totalPercentage: string;
+    ordersCount: number;
+    usersCount: number;
+    monthPercentage: string;
+    monthRevenue: number;
+    weekPercentage: string;
+    weekRevenue: number;
+    dayPercentage: string;
+    dayRevenue: number;
+  };
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
       <div className="grid gap-4 md:grid-cols-2">
@@ -64,22 +78,26 @@ export default function AnalyticsPage() {
       </Card>
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Total Revenue (Today)</CardTitle>
+          <CardTitle className="text-sm font-medium">Total Revenue (Week)</CardTitle>
           <DollarSignIcon className="h-4 w-4 text-gray-500 dark:text-gray-400" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">$2,345.67</div>
-          <p className="text-xs text-gray-500 dark:text-gray-400">+25% compared to yesterday</p>
+          <div className="text-2xl font-bold">{weekRevenue}лв</div>
+          <p className="text-xs text-gray-500 dark:text-gray-400">
+            {weekPercentage} в сравнение с предната седмица
+          </p>
         </CardContent>
       </Card>
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Total Revenue (This Year)</CardTitle>
+          <CardTitle className="text-sm font-medium">Total Revenue (Today)</CardTitle>
           <DollarSignIcon className="h-4 w-4 text-gray-500 dark:text-gray-400" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">$123,345.67</div>
-          <p className="text-xs text-gray-500 dark:text-gray-400">+5% compared to last year</p>
+          <div className="text-2xl font-bold">{dayRevenue}лв</div>
+          <p className="text-xs text-gray-500 dark:text-gray-400">
+            {dayPercentage} в сравнение с вчера
+          </p>
         </CardContent>
       </Card>
     </main>

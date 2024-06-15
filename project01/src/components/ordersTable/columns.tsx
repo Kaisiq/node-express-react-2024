@@ -42,7 +42,7 @@ export const columns: ColumnDef<OrderInterface>[] = [
           onValueChange={(value) => {
             status = value;
             const updatedOrder = { ...order, status: value };
-            api.put(`${SERVER}/orders`, updatedOrder).catch((err) => {
+            api.put(`${SERVER}/orders/${updatedOrder._id}`, updatedOrder).catch((err) => {
               console.log(err);
             });
           }}

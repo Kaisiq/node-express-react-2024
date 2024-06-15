@@ -184,11 +184,21 @@ const router = createBrowserRouter([
                 element: <AdminPage />,
                 loader: async () => {
                   try {
-                    const orders = (await api.get(`${SERVER}/orders?newest=3`))
+                    const orders = (await api.get(`${SERVER}/orders/newest/${3}`))
                       .data as OrderInterface[];
                     const products = (await api.get(`${SERVER}/products?newest=3`))
                       .data as ProductInterface[];
-                    return { orders, products };
+                    const req1 = (await api.get("/orders/totalrevenue")).data;
+                    const req2 = (await api.get("/orders/complete")).data;
+                    const req3 = (await api.get("/orders/incomplete")).data;
+
+                    return {
+                      orders,
+                      products,
+                      totalRevenue: req1.total_sales,
+                      salesCount: req2,
+                      notShippedCount: req3,
+                    };
                   } catch (err) {
                     console.log(err);
                     return redirect("/account");
@@ -254,8 +264,10 @@ const router = createBrowserRouter([
                 loader: async () => {
                   try {
                     const req1 = (await api.get("/orders/totalrevenue")).data;
-                    const req3 = (await api.get("/orders/monthrevenue")).data;
                     const req2 = (await api.get("/users/total")).data;
+                    const req3 = (await api.get("/orders/monthrevenue")).data;
+                    const req4 = (await api.get("/orders/weekrevenue")).data;
+                    const req5 = (await api.get("/orders/dayrevenue")).data;
                     return {
                       totalRevenue: req1.total_sales,
                       totalPercentage: req1.percentage,
@@ -263,6 +275,10 @@ const router = createBrowserRouter([
                       usersCount: req2.users_count,
                       monthPercentage: req3.percentage,
                       monthRevenue: req3.total_sales,
+                      weekPercentage: req4.percentage,
+                      weekRevenue: req4.total_sales,
+                      dayPercentage: req5.percentage,
+                      dayRevenue: req5.total_sales,
                     };
                   } catch (err) {
                     console.log(err);

@@ -11,9 +11,12 @@ import { type OrderInterface } from "~/models/Order";
 import { type ProductInterface } from "~/models/Product";
 
 export default function AdminPage() {
-  const { orders, products } = useLoaderData() as {
+  const { orders, products, totalRevenue, salesCount, notShippedCount } = useLoaderData() as {
     orders: OrderInterface[];
     products: ProductInterface[];
+    totalRevenue: number;
+    salesCount: number;
+    notShippedCount: number;
   };
   const newestOrders = orders;
   const newestProducts = products;
@@ -111,30 +114,23 @@ export default function AdminPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium">Total Revenue</p>
-                  <p className="text-2xl font-bold">$45,231.89</p>
+                  <p className="text-2xl font-bold">{totalRevenue}</p>
                 </div>
                 <DollarSignIcon className="h-6 w-6 text-gray-500 dark:text-gray-400" />
               </div>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-medium">New Subscriptions</p>
-                  <p className="text-2xl font-bold">+2,350</p>
+                  <p className="font-medium">Orders to ship</p>
+                  <p className="text-2xl font-bold">{notShippedCount}</p>
                 </div>
                 <UsersIcon className="h-6 w-6 text-gray-500 dark:text-gray-400" />
               </div>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-medium">Total Sales</p>
-                  <p className="text-2xl font-bold">+12,234</p>
+                  <p className="font-medium">Total Finished Orders</p>
+                  <p className="text-2xl font-bold">{salesCount}</p>
                 </div>
                 <CreditCardIcon className="h-6 w-6 text-gray-500 dark:text-gray-400" />
-              </div>
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-medium">Active Users</p>
-                  <p className="text-2xl font-bold">+573</p>
-                </div>
-                <ActivityIcon className="h-6 w-6 text-gray-500 dark:text-gray-400" />
               </div>
             </div>
           </CardContent>

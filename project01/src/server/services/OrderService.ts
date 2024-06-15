@@ -164,16 +164,18 @@ export class OrderService {
   }
 
   async getCompleteOrders() {
-    const result = (await (Order as OrderModel).find({
+    const result = (await (Order as OrderModel).countDocuments({
       status: { $eq: "completed" },
-    })) as OrderInterface[];
+    })) as number;
     return result;
   }
 
   async getIncompleteOrders() {
-    const result = (await (Order as OrderModel).find({
-      $and: [{ status: { $ne: "completed" } }, { status: { $ne: "canceled" } }],
-    })) as OrderInterface[];
+    const result = (await (Order as OrderModel)
+      .find({
+        $and: [{ status: { $ne: "completed" } }, { status: { $ne: "canceled" } }],
+      })
+      .countDocuments()) as number;
     return result;
   }
 
@@ -231,28 +233,13 @@ export class OrderService {
     }
   }
 
-  async getTotalRevenueLastMonth() {
-    const now = new Date();
-    const oneMonthAgo = new Date(now);
-    const twoMonthsAgo = new Date(now);
-    const currentDay = now.getDate();
-
-    oneMonthAgo.setMonth(now.getMonth() - 1);
-    twoMonthsAgo.setMonth(now.getMonth() - 2);
-
-    if (oneMonthAgo.getDate() !== currentDay) {
-      oneMonthAgo.setDate(0);
-    }
-    if (twoMonthsAgo.getDate() !== currentDay) {
-      twoMonthsAgo.setDate(0);
-    }
-
+  getRevenueBetweenDatesWithPercentage = async (now: Date, oneBefore: Date, twoBefore: Date) => {
     const result = await (Order as OrderModel).aggregate([
       {
         $match: {
           status: { $ne: "canceled" },
           createdAt: {
-            $gte: oneMonthAgo,
+            $gte: oneBefore,
             $lt: now,
           },
         },
@@ -272,8 +259,8 @@ export class OrderService {
         $match: {
           status: { $ne: "canceled" },
           createdAt: {
-            $gte: twoMonthsAgo,
-            $lt: oneMonthAgo,
+            $gte: twoBefore,
+            $lt: oneBefore,
           },
         },
       },
@@ -301,9 +288,42 @@ export class OrderService {
     } else {
       return { total_sales: 0, percentage: "+0%" };
     }
+  };
+
+  async getTotalRevenueLastMonth() {
+    const now = new Date();
+    const oneMonthAgo = new Date(now);
+    const twoMonthsAgo = new Date(now);
+    const currentDay = now.getDate();
+
+    oneMonthAgo.setMonth(now.getMonth() - 1);
+    twoMonthsAgo.setMonth(now.getMonth() - 2);
+
+    if (oneMonthAgo.getDate() !== currentDay) {
+      oneMonthAgo.setDate(0);
+    }
+    if (twoMonthsAgo.getDate() !== currentDay) {
+      twoMonthsAgo.setDate(0);
+    }
+    const result = await this.getRevenueBetweenDatesWithPercentage(now, oneMonthAgo, twoMonthsAgo);
+    return result;
   }
 
-  async getWeeklyRevenue() {}
+  async getWeeklyRevenue() {
+    const now = new Date();
+    const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const twoWeeksAgo = new Date(oneWeekAgo.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const result = await this.getRevenueBetweenDatesWithPercentage(now, oneWeekAgo, twoWeeksAgo);
+    return result;
+  }
+
+  async getDailyRevenue() {
+    const now = new Date();
+    const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+    const twoDaysAgo = new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000);
+    const result = await this.getRevenueBetweenDatesWithPercentage(now, yesterday, twoDaysAgo);
+    return result;
+  }
 
   async getTotalSales() {}
 }
