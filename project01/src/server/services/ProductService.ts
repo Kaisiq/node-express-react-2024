@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Product, type ProductModel, ProductInterface } from "../models/Product";
+import mongoose from "mongoose";
 
 function linksToFileKeys(links: string[] | undefined) {
   if (!links) return "";
@@ -96,10 +97,23 @@ export class ProductService {
       })) as ProductInterface[];
       return result;
     } else {
-      const result = (await (Product as ProductModel).find({
-        _id: input,
-      })) as ProductInterface[];
-      return result[0];
+      return await this.getSingleProduct(input);
+    }
+  }
+
+  async getSingleProduct(input: string) {
+    try {
+      const _id = new mongoose.Types.ObjectId(input);
+      const result = (await (Product as ProductModel).findById(_id).lean()) as ProductInterface; // Use lean query
+      if (!result) {
+        console.log("Product not found");
+        return null;
+      } else {
+        return result;
+      }
+    } catch (err) {
+      console.error("Error retrieving product:", err);
+      return null;
     }
   }
   /* eslint-enable */

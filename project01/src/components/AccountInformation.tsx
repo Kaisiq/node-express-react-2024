@@ -24,7 +24,7 @@ export function AccountInformation({ userEmail }: { userEmail: string }) {
       return;
     }
     await api
-      .get(`${SERVER}/users?email=${userEmail}`)
+      .get(`${SERVER}/users/${userEmail}`)
       .then((res: AxiosResponse<UserInterface>) => {
         setUserData(res.data);
         if (userData?.name) setName(userData.name);

@@ -167,6 +167,16 @@ const router = createBrowserRouter([
         children: [
           {
             path: "/admin",
+            loader: async () => {
+              try {
+                const data = (await api.get("/auth/admin")).data.isAdmin;
+                if (!data) return redirect("/account");
+                return null;
+              } catch (err) {
+                console.log(err);
+                return redirect("/account");
+              }
+            },
             children: [
               {
                 index: true,

@@ -1,8 +1,13 @@
-import { isAdminCheck, isUserRequest } from "./authRoutes";
+import {
+  adminCheckMiddleware,
+  isEitherUserOrAdminMiddleware,
+} from "./authRoutes";
 import express, { Request, Response } from "express";
 import { OrderService } from "../services/OrderService";
 import { OrderFormSchema } from "../models/Order";
 import z from "zod";
+import { ProductService } from "../services/ProductService";
+import { ProductInterface } from "../models/Product";
 
 const OrderPatchSchema = z.object({
   flname: z.string().optional(),
@@ -26,149 +31,161 @@ router
   .get(async (req: Request, res: Response) => {
     await GET(req, res);
   })
-  .put(async (req: Request, res: Response) => {
-    await PUT(req, res);
-  })
   .post(async (req: Request, res: Response) => {
     await POST(req, res);
-  })
-  .delete(async (req: Request, res: Response) => {
-    await DELETE(req, res);
   });
 
-router.patch("/:_id", async (req: Request, res: Response) => {
-  const { _id } = req.params;
-  const { email, ...rest } = OrderPatchSchema.parse(req.body);
-  Object.keys(rest).forEach((key) => {
-    if (rest[key as keyof typeof rest] === undefined) {
-      delete rest[key as keyof typeof rest];
-    }
-  });
-  const isAdmin = await isAdminCheck(req, res);
-  const isUser = await isUserRequest(req, res);
-  if (isUser.user?.email != email) {
-    res.status(401).send("Unauthorized. Please change account if you want to edit this.");
-    return;
-  }
-  if (!isAdmin && !isUser) {
-    return res.status(401).send("Unauthorized. Please log in");
-  }
-  if (isUser.newToken) {
-    res.setHeader("Authorization", `Bearer ${isUser.newToken}`);
-  }
-  const result = await orderService.patchOrder(_id, rest);
-  return res.json(result);
-});
-
-router.get("/totalrevenue", async (req: Request, res: Response) => {
+router.get("/totalrevenue", adminCheckMiddleware, async (req: Request, res: Response) => {
   try {
-    const isAdmin = await isAdminCheck(req, res);
-    if (!isAdmin) {
-      return res.status(401).send("Unauthorized. Please log in");
-    }
     const data = await orderService.getTotalRevenue();
     return res.json(data);
   } catch (err) {
-    return res.status(401).send("Unauthorized. Please log in");
+    return res.status(500).send("Server error: " + err);
   }
 });
 
-router.get("/monthrevenue", async (req: Request, res: Response) => {
+router.get("/newest/:number", adminCheckMiddleware, async (req: Request, res: Response) => {
   try {
-    const isAdmin = await isAdminCheck(req, res);
-    if (!isAdmin) {
-      return res.status(401).send("Unauthorized. Please log in");
-    }
+    const { num } = req.params;
+    const data = await orderService.getLatestNOrders(Number(num));
+    return res.json(data);
+  } catch (err) {
+    return res.status(500).send("Server error: " + err);
+  }
+});
+
+router.get("/monthrevenue", adminCheckMiddleware, async (req: Request, res: Response) => {
+  try {
     const data = await orderService.getTotalRevenueLastMonth();
     return res.json(data);
   } catch (err) {
-    return res.status(401).send("Unauthorized. Please log in");
+    return res.status(500).send("Server error: " + err);
   }
 });
+
+router.get("/incomplete", adminCheckMiddleware, async (req: Request, res: Response) => {
+  try {
+    const data = await orderService.getIncompleteOrders();
+    return res.json(data);
+  } catch (err) {
+    return res.status(500).send("Server error: " + err);
+  }
+});
+router.get("/complete", adminCheckMiddleware, async (req: Request, res: Response) => {
+  try {
+    const data = await orderService.getCompleteOrders();
+    return res.json(data);
+  } catch (err) {
+    return res.status(500).send("Server error: " + err);
+  }
+});
+
+router.get("/user/:email", isEitherUserOrAdminMiddleware, async (req: Request, res: Response) => {
+  try {
+    const { email } = req.params;
+    const data = await orderService.getOrdersOf(email);
+    return res.json(data);
+  } catch (err) {
+    return res.status(500).send("Server error: " + err);
+  }
+});
+
+router.get("/:id/products", adminCheckMiddleware, async (req: Request, res: Response) => {
+  try {
+    const productService = new ProductService();
+    const { _id } = req.params;
+
+    const data = await orderService.getSingleOrder(_id);
+    const result = [] as ProductInterface[];
+    data?.productIDs?.forEach(async (id) => {
+      const product = await productService.getSingleProduct(id);
+      if (product) result.push(product);
+    });
+    return res.json(result);
+  } catch (err) {
+    return res.status(500).send("Server error: " + err);
+  }
+});
+
+router
+  .route("/:_id")
+  .get(adminCheckMiddleware, async (req: Request, res: Response) => {
+    try {
+      const { _id } = req.params;
+      const data = await orderService.getSingleOrder(_id);
+      return res.json(data);
+    } catch (err) {
+      return res.status(500).send("Server error: " + err);
+    }
+  })
+  .patch(isEitherUserOrAdminMiddleware, async (req: Request, res: Response) => {
+    await PATCH(req, res);
+  })
+  .put(isEitherUserOrAdminMiddleware, async (req: Request, res: Response) => {
+    await PUT(req, res);
+  })
+  .delete(adminCheckMiddleware, async (req: Request, res: Response) => {
+    await DELETE(req, res);
+  });
 
 export default router;
 
 async function POST(req: Request, res: Response) {
-  const order = OrderFormSchema.parse(req.body);
-  const data = await orderService.createOrder(order);
-  res.json(data);
+  try {
+    const order = OrderFormSchema.parse(req.body);
+    const data = await orderService.createOrder(order);
+    return res.json(data);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send(err);
+  }
 }
 
 async function GET(req: Request, res: Response) {
-  if (req?.query?.id) {
-    const isAdmin = await isAdminCheck(req, res);
-    if (!isAdmin) {
-      res.status(401).send("Unauthorized");
-    }
-    const data = await orderService.getOrder(req.query.id as string | string[]);
-    res.json(data);
-  } else if (req?.query?.email) {
-    try {
-      const isUser = await isUserRequest(req, res);
-      if (!isUser || isUser.user?.email != req.query.email) {
-        return res.status(401).send("not authenticated user");
-      }
-      if (isUser.newToken) {
-        res.setHeader("Authorization", `Bearer ${isUser.newToken}`);
-      }
-      const data = await orderService.getOrdersOf(req.query.email as string);
-      return res.json(data);
-    } catch (err) {
-      return res.status(401).send("not authenticated user");
-    }
-  } else if (req?.query?.newest) {
-    const isAdmin = await isAdminCheck(req, res);
-    if (!isAdmin) {
-      res.status(401).send("Unauthorized");
-    }
-    const data = await orderService.getLatestNOrders(req.query.newest as unknown as number);
-    res.json(data);
-  } else {
-    const isAdmin = await isAdminCheck(req, res);
-    if (!isAdmin) {
-      res.status(401).send("Unauthorized");
-    }
+  try {
     const data = await orderService.getAllOrders();
-    res.json(data);
+    return res.json(data);
+  } catch (err) {
+    return res.status(500).send("Server error: " + err);
   }
 }
 
 async function PUT(req: Request, res: Response) {
   try {
+    const { _id } = req.params;
     const data = OrderFormSchema.parse(req.body);
-    const isAdmin = await isAdminCheck(req, res);
-    const isUser = await isUserRequest(req, res);
-    if (!isAdmin || !isUser) {
-      res.status(401).send("Unauthorized. Please log in");
-      return;
-    }
-    if (isUser.newToken) {
-      res.setHeader("Authorization", `Bearer ${isUser.newToken}`);
-    }
-    const result = await orderService.updateOrder(data);
+    const result = await orderService.updateOrder({ ...data, _id });
     return res.json(result);
   } catch (err) {
     console.log(err);
-    return res.status(401).send("Unauthorized");
+    return res.status(500).send("Server error: " + err);
+  }
+}
+
+async function PATCH(req: Request, res: Response) {
+  try {
+    const { _id } = req.params;
+    const { email, ...rest } = OrderPatchSchema.parse(req.body);
+    Object.keys(rest).forEach((key) => {
+      if (rest[key as keyof typeof rest] === undefined) {
+        delete rest[key as keyof typeof rest];
+      }
+    });
+    const result = await orderService.patchOrder(_id, rest);
+    return res.json(result);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send("Server error: " + err);
   }
 }
 
 async function DELETE(req: Request, res: Response) {
   try {
-    const isUser = await isUserRequest(req, res);
-    const isAdmin = await isAdminCheck(req, res);
-    if (isUser?.newToken) {
-      res.setHeader("Authorization", `Bearer ${isUser.newToken}`);
-    }
-    if (!isAdmin) {
-      return res.status(401).send("Unauthorized");
-    }
-    if (req.query?.id) {
-      const data = await orderService.deleteOrder(req.query.id as string);
-      return res.json(data);
-    }
+    const { _id } = req.params;
+    const data = await orderService.deleteOrder(_id);
+    return res.json(data);
   } catch (err) {
     console.log(err);
-    return res.status(401).send("Unauthorized");
+    return res.status(500).send("Server error: " + err);
   }
 }

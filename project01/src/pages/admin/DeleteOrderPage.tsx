@@ -6,7 +6,7 @@ import { SERVER } from "~/lib/utils";
 export default function DeleteOrderPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const id = location.state;
+  const _id = location.state;
 
   function goBack() {
     navigate(-1);
@@ -14,7 +14,7 @@ export default function DeleteOrderPage() {
 
   function deleteOrder() {
     api
-      .delete(`${SERVER}/orders?id=` + id)
+      .delete(`${SERVER}/orders/${_id}`)
       .then(() => {
         navigate(-1);
       })
@@ -26,7 +26,7 @@ export default function DeleteOrderPage() {
   return (
     <main className="p-10">
       <h1 className="text-center text-lg font-semibold md:text-2xl">
-        Сигурен ли си че искаш да изтриеш поръчка с номер: {id}
+        Сигурен ли си че искаш да изтриеш поръчка с номер: {_id}
       </h1>
       <div className="mt-10 flex justify-center">
         <Button

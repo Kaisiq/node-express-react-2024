@@ -1,6 +1,6 @@
 import { UserInterface } from "~/models/User";
 import { UserService } from "../services/UserService";
-import express, { Request, Response } from "express";
+import express, { Request, Response, NextFunction } from "express";
 import passport from "../config/passport";
 import jwt from "jsonwebtoken";
 
@@ -23,6 +23,7 @@ router.post("/password", (req: Request, res: Response, next) => {
           expiresIn: "1h", // Token expiry time
         }
       );
+      res.cookie("jwt", jwt, { httpOnly: true, secure: true });
       return res.status(200).json({ user, token });
     }
   )(req, res, next);
@@ -64,7 +65,7 @@ router.get("/admin", async (req: Request, res: Response) => {
 
 export default router;
 
-export async function isAdminCheck(req: Request, res: Response): Promise<boolean> {
+async function isAdminCheck(req: Request, res: Response): Promise<boolean> {
   return new Promise<boolean>((resolve, reject) => {
     passport.authenticate("jwt", { session: false }, async (err: Error, user: UserInterface) => {
       if (err || !user) {
@@ -89,7 +90,7 @@ export async function isAdminCheck(req: Request, res: Response): Promise<boolean
   });
 }
 
-export async function isUserRequest(
+async function isUserRequest(
   req: Request,
   res: Response
 ): Promise<{ user?: UserInterface; newToken?: string }> {
@@ -128,3 +129,63 @@ export async function isUserRequest(
     })(req, res);
   });
 }
+
+export const userCheckMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { email } = req.params;
+    const isUser = await isUserRequest(req, res);
+    if (!isUser) {
+      return res.status(401).send("Cannot do that operation. Please log in");
+    }
+    if (isUser?.newToken) {
+      res.setHeader("Authorization", `Bearer ${isUser.newToken}`);
+    }
+    if (!email || email === isUser.user?.email) next();
+    return res.status(401).send("Cannot do that operation. Please log in");
+  } catch (err) {
+    return res.status(401).send("Unauthorized. Please log in");
+  }
+};
+
+export const isEitherUserOrAdminMiddleware = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { email } = req.params;
+    const isUser = await isUserRequest(req, res);
+    if (!isUser) {
+      const isAdmin = await isAdminCheck(req, res);
+      if (!isAdmin) {
+        return res.status(401).send("Unauthorized. Please log in");
+      }
+      next();
+    }
+    if (isUser?.newToken) {
+      res.setHeader("Authorization", `Bearer ${isUser.newToken}`);
+    }
+    if (!email || email === isUser.user?.email) next();
+    else {
+      const isAdmin = await isAdminCheck(req, res);
+      if (!isAdmin) {
+        return res.status(401).send("Unauthorized. Please log in");
+      }
+      next();
+    }
+  } catch (err) {
+    return res.status(401).send("Unauthorized. Please log in");
+  }
+};
+
+export const adminCheckMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const isAdmin = await isAdminCheck(req, res);
+    if (!isAdmin) {
+      return res.status(401).send("Unauthorized. Please log in");
+    }
+    next();
+  } catch (err) {
+    return res.status(401).send("Unauthorized. Please log in");
+  }
+};

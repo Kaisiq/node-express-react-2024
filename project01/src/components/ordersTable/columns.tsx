@@ -1,18 +1,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import type { OrderInterface } from "~/models/Order";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { Button } from "../ui/button";
-import { MoreHorizontal, Trash2Icon } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import api from "~/lib/api";
-import { useNavigate } from "react-router";
 import { SERVER } from "~/lib/utils";
 import ActionsCell from "./ActionsCell";
 

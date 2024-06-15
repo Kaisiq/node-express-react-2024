@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { SERVER } from "./utils";
 
 const api = axios.create({

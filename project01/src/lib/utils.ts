@@ -11,5 +11,13 @@ export function cn(...inputs: ClassValue[]) {
 
 export const SERVER = process.env.REACT_APP_SERVER_ADDRESS;
 
-export const UploadButton = generateUploadButton<OurFileRouter>();
-export const UploadDropzone = generateUploadDropzone<OurFileRouter>();
+// export const UploadButton = generateUploadButton<OurFileRouter>();
+// export const UploadDropzone = generateUploadDropzone<OurFileRouter>();
+
+export const UploadButton = generateUploadButton({
+  url: `${SERVER}/api/uploadthing`,
+});
+
+export const UploadDropzone = generateUploadDropzone({
+  url: `${SERVER}/api/uploadthing`,
+});

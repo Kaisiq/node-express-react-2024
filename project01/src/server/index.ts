@@ -1,9 +1,11 @@
-import authRoutes from "./routes/authRoutes";
+import authRoutes, { adminCheckMiddleware } from "./routes/authRoutes";
 import orderRoutes from "./routes/orderRoutes";
 import userRoutes from "./routes/userRoutes";
 import { mongooseConnect } from "./lib/mongoose";
 import productRoutes from "./routes/productRoutes";
 import passport from "./config/passport";
+import { createRouteHandler } from "uploadthing/express";
+import { uploadRouter } from "./uploadthing";
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
@@ -29,6 +31,13 @@ app.use("/products", productRoutes);
 app.use("/auth", authRoutes);
 app.use("/orders", orderRoutes);
 app.use("/users", userRoutes);
+app.use(
+  "/api/uploadthing",
+  createRouteHandler({
+    router: uploadRouter,
+    config: {},
+  })
+);
 
 const port = process.env.PORT || 4000;
 

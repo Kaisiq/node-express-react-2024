@@ -163,6 +163,20 @@ export class OrderService {
     return { message: "success" };
   }
 
+  async getCompleteOrders() {
+    const result = (await (Order as OrderModel).find({
+      status: { $eq: "completed" },
+    })) as OrderInterface[];
+    return result;
+  }
+
+  async getIncompleteOrders() {
+    const result = (await (Order as OrderModel).find({
+      $and: [{ status: { $ne: "completed" } }, { status: { $ne: "canceled" } }],
+    })) as OrderInterface[];
+    return result;
+  }
+
   async getTotalRevenue() {
     const now = new Date();
     const oneMonthAgo = new Date(now);

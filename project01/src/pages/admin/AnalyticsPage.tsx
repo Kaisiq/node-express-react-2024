@@ -1,7 +1,6 @@
 import { CardTitle, CardHeader, CardContent, Card } from "~/components/ui/card";
 import { DollarSignIcon } from "~/components/Icons";
 import { CreditCardIcon } from "~/components/Icons";
-import { ActivityIcon } from "~/components/Icons";
 import { UsersIcon } from "~/components/Icons";
 import { useLoaderData } from "react-router-dom";
 

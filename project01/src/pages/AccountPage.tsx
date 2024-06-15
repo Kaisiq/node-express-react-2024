@@ -20,7 +20,7 @@ export default function AccountPage() {
     const email = user ? user : "";
     if (!email) return;
     api
-      .get(`${SERVER}/orders?email=${email}`)
+      .get(`${SERVER}/orders/user/${email}`)
       .then((res: AxiosResponse<OrderInterface[]>) => {
         setOrders(res.data);
       })

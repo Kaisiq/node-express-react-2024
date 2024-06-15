@@ -6,7 +6,7 @@ import api from "~/lib/api";
 export default function DeleteProductPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const id = location.state;
+  const _id = location.state;
 
   function goBack() {
     navigate(-1);
@@ -14,7 +14,7 @@ export default function DeleteProductPage() {
 
   function deleteProduct() {
     api
-      .delete(`${SERVER}/products?id=` + id)
+      .delete(`${SERVER}/products/${_id}`)
       .then(() => {
         navigate(-1);
       })
@@ -26,7 +26,7 @@ export default function DeleteProductPage() {
   return (
     <main className="p-10">
       <h1 className="text-lg font-semibold md:text-2xl">
-        Do you really want to delete product with id: {id}
+        Do you really want to delete product with id: {_id}
       </h1>
       <Button onClick={deleteProduct}>Yes</Button>
       <Button onClick={goBack}>No</Button>

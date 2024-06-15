@@ -85,7 +85,7 @@ export function AddProduct({
         navigate(-1);
       } else {
         const product2 = { ...product, _id: _id };
-        await api.put(`${SERVER}/products`, product2);
+        await api.put(`${SERVER}/products/${_id}`, product2);
         navigate(-1);
       }
     } catch (err) {
@@ -283,7 +283,22 @@ export function AddProduct({
               </div>
 
               <UploadDropzone
+                appearance={{
+                  button:
+                    "ut-ready:bg-green-500 ut-uploading:cursor-not-allowed rounded-r-none bg-red-500 bg-none after:bg-orange-400",
+                  container: "w-max flex-row rounded-md border-cyan-300 bg-slate-800",
+                  allowedContent: "flex h-8 flex-col items-center justify-center px-2 text-white",
+                }}
                 endpoint="imageUploader"
+                onBeforeUploadBegin={async (files) => {
+                  try {
+                    const isAdmin = (await api.get("/auth/admin")).data.isAdmin;
+                    if (isAdmin) return files;
+                    return [];
+                  } catch (err) {
+                    return [];
+                  }
+                }}
                 onClientUploadComplete={(res) => {
                   setImages((oldImages) => {
                     const data = res.map((el) => el.url);

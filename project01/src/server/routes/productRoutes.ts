@@ -4,7 +4,7 @@ import {
   ProductValidateSchema,
   ProductInterface,
 } from "../models/Product";
-import { isAdminCheck, isUserRequest } from "./authRoutes";
+import { adminCheckMiddleware } from "./authRoutes";
 import { ProductService } from "../services/ProductService";
 import express, { Request, Response } from "express";
 
@@ -16,26 +16,28 @@ router
   .get(async (req: Request, res: Response) => {
     await GET(req, res);
   })
-  .put(async (req: Request, res: Response) => {
-    await PUT(req, res);
-  })
-  .post(async (req: Request, res: Response) => {
+  .post(adminCheckMiddleware, async (req: Request, res: Response) => {
     await POST(req, res);
-  })
-  .delete(async (req: Request, res: Response) => {
-    await DELETE(req, res);
   });
 
-router.get("/:_id", async (req: Request, res: Response) => {
-  try {
-    const { _id } = req.params;
-    const document = await productService.getProduct(_id);
-    const exists = !!document;
-    res.json({ exists });
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch product" });
-  }
-});
+router
+  .route("/:_id")
+  .get(async (req: Request, res: Response) => {
+    try {
+      const { _id } = req.params;
+      const document = await productService.getProduct(_id);
+      const exists = !!document;
+      res.json({ exists });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch product" });
+    }
+  })
+  .put(adminCheckMiddleware, async (req: Request, res: Response) => {
+    await PUT(req, res);
+  })
+  .delete(adminCheckMiddleware, async (req: Request, res: Response) => {
+    await DELETE(req, res);
+  });
 
 export default router;
 
@@ -53,20 +55,12 @@ async function POST(req: Request, res: Response) {
       res.json(data);
       return;
     }
-    const isUser = await isUserRequest(req, res);
-    const isAdmin = await isAdminCheck(req, res);
-    if (isUser?.newToken) {
-      res.setHeader("Authorization", `Bearer ${isUser.newToken}`);
-    }
-    if (!isAdmin) {
-      return res.status(401).send("Unauthorized");
-    }
     const input = ProductValidateSchema.parse(req.body);
     const data = await productService.createProduct(input);
     return res.json(data);
   } catch (err) {
     console.log(err);
-    return res.status(401).send("Unauthorized");
+    return res.status(500).send("Server error: " + err);
   }
 }
 
@@ -117,31 +111,26 @@ async function GET(req: Request, res: Response) {
 }
 
 async function PUT(req: Request, res: Response) {
-  const isAdmin = await isAdminCheck(req, res);
-  const isUser = await isUserRequest(req, res);
-  if (isUser?.newToken) {
-    res.setHeader("Authorization", `Bearer ${isUser.newToken}`);
+  try {
+    const { _id } = req.params;
+    const input = ProductValidateSchema.parse(req.body);
+    if (input._id != _id) {
+      const data = await productService.updateProduct({ ...input, _id });
+      return res.json(data);
+    }
+    const data = await productService.updateProduct(input);
+    return res.json(data);
+  } catch (err) {
+    return res.status(500).send("Server error: " + err);
   }
-  if (!isAdmin) {
-    return res.status(401).send("Unauthorized");
-  }
-  const input = ProductValidateSchema.parse(req.body);
-  const data = await productService.updateProduct(input);
-  return res.json(data);
 }
 
 async function DELETE(req: Request, res: Response) {
-  const isAdmin = await isAdminCheck(req, res);
-  const isUser = await isUserRequest(req, res);
-  if (isUser?.newToken) {
-    res.setHeader("Authorization", `Bearer ${isUser.newToken}`);
-  }
-  if (!isAdmin) {
-    return res.status(401).send("Unauthorized");
-  }
-  if (req.query?.id) {
-    const toDelete = req.query.id as string | string[];
-    const data = await productService.deleteProduct(toDelete);
+  try {
+    const { _id } = req.params;
+    const data = await productService.deleteProduct(_id);
     return res.json(data);
+  } catch (err) {
+    return res.status(500).send("Server error: " + err);
   }
 }
