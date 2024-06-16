@@ -4,6 +4,12 @@ import express, { Request, Response, NextFunction } from "express";
 import passport from "../config/passport";
 import jwt from "jsonwebtoken";
 
+enum AdminType {
+  User = 0,
+  Staff = 1,
+  Admin = 2,
+}
+
 const router = express.Router();
 
 router.post("/password", (req: Request, res: Response, next) => {
@@ -65,25 +71,25 @@ router.get("/admin", async (req: Request, res: Response) => {
 
 export default router;
 
-async function isAdminCheck(req: Request, res: Response): Promise<boolean> {
-  return new Promise<boolean>((resolve, reject) => {
+async function isAdminCheck(req: Request, res: Response): Promise<AdminType> {
+  return new Promise<AdminType>((resolve, reject) => {
     passport.authenticate("jwt", { session: false }, async (err: Error, user: UserInterface) => {
       if (err || !user) {
         console.log(err, user);
         console.log("An error occurred while checking admin status or user not found.");
-        resolve(false);
+        resolve(AdminType.User);
       } else {
         try {
           const userService = new UserService();
           const fetchedUser = await userService.getSingleUser(user.email);
           if (fetchedUser && fetchedUser.admin) {
-            resolve(true);
+            resolve(fetchedUser.admin);
           } else {
-            resolve(false);
+            resolve(AdminType.User);
           }
         } catch (error) {
           console.log("An error occurred while checking admin status.");
-          resolve(false);
+          resolve(AdminType.User);
         }
       }
     })(req, res);
@@ -147,7 +153,7 @@ export const userCheckMiddleware = async (req: Request, res: Response, next: Nex
   }
 };
 
-export const isEitherUserOrAdminMiddleware = async (
+export const userOrGreaterCheckMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -178,10 +184,26 @@ export const isEitherUserOrAdminMiddleware = async (
   }
 };
 
-export const adminCheckMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+export const adminOrStaffCheckMiddleware = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const isAdmin = await isAdminCheck(req, res);
     if (!isAdmin) {
+      return res.status(401).send("Unauthorized. Please log in");
+    }
+    next();
+  } catch (err) {
+    return res.status(401).send("Unauthorized. Please log in");
+  }
+};
+
+export const adminCheckMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const isAdmin = await isAdminCheck(req, res);
+    if (isAdmin != AdminType.Admin) {
       return res.status(401).send("Unauthorized. Please log in");
     }
     next();

@@ -1,6 +1,7 @@
 import { Schema, model, models, type Document, type Model } from "mongoose";
 import z from "zod";
-enum AdminType {
+
+export enum AdminType {
   User = 0,
   Staff = 1,
   Admin = 2,

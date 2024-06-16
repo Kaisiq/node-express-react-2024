@@ -1,4 +1,4 @@
-import { adminCheckMiddleware, isEitherUserOrAdminMiddleware } from "./authRoutes";
+import { adminOrStaffCheckMiddleware, userOrGreaterCheckMiddleware } from "./authRoutes";
 import express, { Request, Response } from "express";
 import { UserCreationFormSchema } from "../models/User";
 import { UserService } from "../services/UserService";
@@ -9,7 +9,7 @@ const router = express.Router();
 
 router
   .route("/")
-  .get(adminCheckMiddleware, async (req: Request, res: Response) => {
+  .get(adminOrStaffCheckMiddleware, async (req: Request, res: Response) => {
     try {
       const data = await userService.getAllUsers();
       return res.json(data);
@@ -37,7 +37,7 @@ router
     }
   });
 
-router.get("/total", adminCheckMiddleware, async (req: Request, res: Response) => {
+router.get("/total", adminOrStaffCheckMiddleware, async (req: Request, res: Response) => {
   try {
     const result = await userService.getUserCount();
     return res.json(result);
@@ -48,7 +48,7 @@ router.get("/total", adminCheckMiddleware, async (req: Request, res: Response) =
 
 router
   .route("/:email")
-  .patch(isEitherUserOrAdminMiddleware, async (req: Request, res: Response) => {
+  .patch(userOrGreaterCheckMiddleware, async (req: Request, res: Response) => {
     try {
       const { email } = req.params;
       const input: object = req.body as object;
@@ -58,7 +58,7 @@ router
       return res.status(500).send("Server error: " + err);
     }
   })
-  .get(isEitherUserOrAdminMiddleware, async (req: Request, res: Response) => {
+  .get(userOrGreaterCheckMiddleware, async (req: Request, res: Response) => {
     try {
       const { email } = req.params;
       const data = await userService.getUser(email);
@@ -67,7 +67,7 @@ router
       return res.status(500).send("Server error: " + err);
     }
   })
-  .put(isEitherUserOrAdminMiddleware, async (req: Request, res: Response) => {
+  .put(userOrGreaterCheckMiddleware, async (req: Request, res: Response) => {
     try {
       const data = UserCreationFormSchema.parse(req.body);
       if (data.password) {
@@ -85,7 +85,7 @@ router
       return res.status(500).send("Server error: " + err);
     }
   })
-  .delete(adminCheckMiddleware, async (req: Request, res: Response) => {
+  .delete(adminOrStaffCheckMiddleware, async (req: Request, res: Response) => {
     const { email } = req.params;
     try {
       const deleted = await userService.deleteUser(email);

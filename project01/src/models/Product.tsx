@@ -6,6 +6,7 @@ export const ProductValidateSchema = z.object({
   price: z.number(),
   sellPercent: z.number().optional(),
   category: z.string(),
+  featured: z.boolean(),
   size: z.string(),
   color: z.string().optional(),
   materials: z.string().optional(),
@@ -17,5 +18,7 @@ export const ProductValidateSchema = z.object({
   updatedAt: z.string().optional(),
   sex: z.string(),
 });
+
+export const ProductsValidateSchema = z.array(ProductValidateSchema);
 
 export type ProductInterface = z.infer<typeof ProductValidateSchema>;

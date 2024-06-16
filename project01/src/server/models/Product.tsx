@@ -7,6 +7,7 @@ export const ProductValidateSchema = z.object({
   price: z.number(),
   sellPercent: z.number().optional(),
   category: z.string(),
+  featured: z.boolean(),
   size: z.string(),
   color: z.string().optional(),
   materials: z.string().optional(),
@@ -19,6 +20,8 @@ export const ProductValidateSchema = z.object({
   sex: z.string(),
 });
 
+export const ProductsValidateSchema = z.array(ProductValidateSchema);
+
 export type ProductInterface = z.infer<typeof ProductValidateSchema>;
 
 export interface ProductDocument extends Document {
@@ -27,6 +30,7 @@ export interface ProductDocument extends Document {
   price: number;
   sellPercent: number;
   category: string;
+  featured: boolean;
   condition: string;
   size: string;
   color?: string;
@@ -34,7 +38,7 @@ export interface ProductDocument extends Document {
   fit?: string;
   images?: string[];
   status: string;
-  updatedAt?: string;
+  updatedAt: string;
   sex: "male" | "female" | "both";
 }
 
@@ -47,6 +51,7 @@ const ProductSchema = new Schema<ProductDocument>(
     price: { type: Number, required: true },
     sellPercent: { type: Number, required: true },
     category: { type: String, required: true },
+    featured: { type: Boolean, required: true },
     condition: { type: String, required: true },
     size: { type: String, required: true },
     color: String,

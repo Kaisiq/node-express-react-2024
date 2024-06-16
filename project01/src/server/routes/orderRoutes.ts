@@ -1,4 +1,4 @@
-import { adminCheckMiddleware, isEitherUserOrAdminMiddleware } from "./authRoutes";
+import { adminOrStaffCheckMiddleware, userOrGreaterCheckMiddleware } from "./authRoutes";
 import express, { Request, Response } from "express";
 import { OrderService } from "../services/OrderService";
 import { OrderFormSchema } from "../models/Order";
@@ -32,7 +32,7 @@ router
     await POST(req, res);
   });
 
-router.get("/totalrevenue", adminCheckMiddleware, async (req: Request, res: Response) => {
+router.get("/totalrevenue", adminOrStaffCheckMiddleware, async (req: Request, res: Response) => {
   try {
     const data = await orderService.getTotalRevenue();
     return res.json(data);
@@ -41,7 +41,7 @@ router.get("/totalrevenue", adminCheckMiddleware, async (req: Request, res: Resp
   }
 });
 
-router.get("/newest/:number", adminCheckMiddleware, async (req: Request, res: Response) => {
+router.get("/newest/:number", adminOrStaffCheckMiddleware, async (req: Request, res: Response) => {
   try {
     const { number } = req.params;
     const data = await orderService.getLatestNOrders(Number(number));
@@ -51,7 +51,7 @@ router.get("/newest/:number", adminCheckMiddleware, async (req: Request, res: Re
   }
 });
 
-router.get("/monthrevenue", adminCheckMiddleware, async (req: Request, res: Response) => {
+router.get("/monthrevenue", adminOrStaffCheckMiddleware, async (req: Request, res: Response) => {
   try {
     const data = await orderService.getTotalRevenueLastMonth();
     return res.json(data);
@@ -60,7 +60,7 @@ router.get("/monthrevenue", adminCheckMiddleware, async (req: Request, res: Resp
   }
 });
 
-router.get("/weekrevenue", adminCheckMiddleware, async (req: Request, res: Response) => {
+router.get("/weekrevenue", adminOrStaffCheckMiddleware, async (req: Request, res: Response) => {
   try {
     const data = await orderService.getWeeklyRevenue();
     return res.json(data);
@@ -69,7 +69,7 @@ router.get("/weekrevenue", adminCheckMiddleware, async (req: Request, res: Respo
   }
 });
 
-router.get("/dayrevenue", adminCheckMiddleware, async (req: Request, res: Response) => {
+router.get("/dayrevenue", adminOrStaffCheckMiddleware, async (req: Request, res: Response) => {
   try {
     const data = await orderService.getDailyRevenue();
     return res.json(data);
@@ -78,7 +78,7 @@ router.get("/dayrevenue", adminCheckMiddleware, async (req: Request, res: Respon
   }
 });
 
-router.get("/incomplete", adminCheckMiddleware, async (req: Request, res: Response) => {
+router.get("/incomplete", adminOrStaffCheckMiddleware, async (req: Request, res: Response) => {
   try {
     const data = await orderService.getIncompleteOrders();
     return res.json(data);
@@ -86,7 +86,7 @@ router.get("/incomplete", adminCheckMiddleware, async (req: Request, res: Respon
     return res.status(500).send("Server error: " + err);
   }
 });
-router.get("/complete", adminCheckMiddleware, async (req: Request, res: Response) => {
+router.get("/complete", adminOrStaffCheckMiddleware, async (req: Request, res: Response) => {
   try {
     const data = await orderService.getCompleteOrders();
     return res.json(data);
@@ -95,7 +95,7 @@ router.get("/complete", adminCheckMiddleware, async (req: Request, res: Response
   }
 });
 
-router.get("/user/:email", isEitherUserOrAdminMiddleware, async (req: Request, res: Response) => {
+router.get("/user/:email", userOrGreaterCheckMiddleware, async (req: Request, res: Response) => {
   try {
     const { email } = req.params;
     const data = await orderService.getOrdersOf(email);
@@ -105,7 +105,7 @@ router.get("/user/:email", isEitherUserOrAdminMiddleware, async (req: Request, r
   }
 });
 
-router.get("/:id/products", adminCheckMiddleware, async (req: Request, res: Response) => {
+router.get("/:id/products", adminOrStaffCheckMiddleware, async (req: Request, res: Response) => {
   try {
     const productService = new ProductService();
     const { _id } = req.params;
@@ -124,7 +124,7 @@ router.get("/:id/products", adminCheckMiddleware, async (req: Request, res: Resp
 
 router
   .route("/:_id")
-  .get(adminCheckMiddleware, async (req: Request, res: Response) => {
+  .get(adminOrStaffCheckMiddleware, async (req: Request, res: Response) => {
     try {
       const { _id } = req.params;
       const data = await orderService.getSingleOrder(_id);
@@ -133,13 +133,13 @@ router
       return res.status(500).send("Server error: " + err);
     }
   })
-  .patch(isEitherUserOrAdminMiddleware, async (req: Request, res: Response) => {
+  .patch(userOrGreaterCheckMiddleware, async (req: Request, res: Response) => {
     await PATCH(req, res);
   })
-  .put(isEitherUserOrAdminMiddleware, async (req: Request, res: Response) => {
+  .put(userOrGreaterCheckMiddleware, async (req: Request, res: Response) => {
     await PUT(req, res);
   })
-  .delete(adminCheckMiddleware, async (req: Request, res: Response) => {
+  .delete(adminOrStaffCheckMiddleware, async (req: Request, res: Response) => {
     await DELETE(req, res);
   });
 

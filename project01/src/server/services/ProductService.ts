@@ -140,6 +140,31 @@ export class ProductService {
     return results;
   }
 
+  async removeAllFeatured() {
+    const result = await (Product as ProductModel).updateMany(
+      { featured: true },
+      { $set: { featured: false } }
+    );
+    return result;
+  }
+
+  async setNewFeatured(newFeaturedIds: string[]) {
+    const result = await (Product as ProductModel).updateMany(
+      { _id: { $in: newFeaturedIds } },
+      { $set: { featured: true } }
+    );
+    return result;
+  }
+
+  async getFeatured() {
+    const result = (await (Product as ProductModel)
+      .find({
+        featured: true,
+      })
+      .limit(10)) as ProductInterface[];
+    return result;
+  }
+
   async countPages(filterParams: string) {
     const actualFilter = this.stringFilterToObj(filterParams);
     const count = await (Product as ProductModel).find(actualFilter).countDocuments();

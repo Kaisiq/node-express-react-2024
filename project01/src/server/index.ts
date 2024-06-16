@@ -1,4 +1,4 @@
-import authRoutes, { adminCheckMiddleware } from "./routes/authRoutes";
+import authRoutes, { adminOrStaffCheckMiddleware } from "./routes/authRoutes";
 import orderRoutes from "./routes/orderRoutes";
 import userRoutes from "./routes/userRoutes";
 import { mongooseConnect } from "./lib/mongoose";

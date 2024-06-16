@@ -2,9 +2,10 @@ import {
   Product,
   type ProductModel,
   ProductValidateSchema,
+  ProductsValidateSchema,
   ProductInterface,
 } from "../models/Product";
-import { adminCheckMiddleware } from "./authRoutes";
+import { adminOrStaffCheckMiddleware } from "./authRoutes";
 import { ProductService } from "../services/ProductService";
 import express, { Request, Response } from "express";
 
@@ -16,10 +17,33 @@ router
   .get(async (req: Request, res: Response) => {
     await GET(req, res);
   })
-  .post(adminCheckMiddleware, async (req: Request, res: Response) => {
+  .post(adminOrStaffCheckMiddleware, async (req: Request, res: Response) => {
     await POST(req, res);
   });
 
+router
+  .route("/featured")
+  .post(adminOrStaffCheckMiddleware, async (req: Request, res: Response) => {
+    try {
+      const products = req.body as string[];
+      await productService.removeAllFeatured();
+      const result = await productService.setNewFeatured(products);
+      res.status(204).send(result);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err);
+    }
+  })
+  .get(async (req: Request, res: Response) => {
+    try {
+      const featuredProducts = await productService.getFeatured();
+      const randomNumber = Math.floor(Math.random() * featuredProducts.length);
+      return res.json(featuredProducts[randomNumber]);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err);
+    }
+  });
 router
   .route("/:_id")
   .get(async (req: Request, res: Response) => {
@@ -32,10 +56,10 @@ router
       res.status(500).json({ error: "Failed to fetch product" });
     }
   })
-  .put(adminCheckMiddleware, async (req: Request, res: Response) => {
+  .put(adminOrStaffCheckMiddleware, async (req: Request, res: Response) => {
     await PUT(req, res);
   })
-  .delete(adminCheckMiddleware, async (req: Request, res: Response) => {
+  .delete(adminOrStaffCheckMiddleware, async (req: Request, res: Response) => {
     await DELETE(req, res);
   });
 

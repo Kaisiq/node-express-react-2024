@@ -6,7 +6,6 @@ import AboutUsPage from "./pages/AboutUsPage";
 import AccountPage from "./pages/AccountPage";
 import ContactPage from "./pages/ContactPage";
 import FaqPage from "./pages/FaqPage";
-import axios from "axios";
 import SingleProduct from "./components/SingleProduct";
 import { ProductInterface } from "./models/Product";
 import CollectionPage from "./pages/collection/CollectionPage";
@@ -27,6 +26,7 @@ import { UserInterface } from "./models/User";
 import UsersPage from "./pages/admin/UsersPage";
 import SingleUserPage from "./pages/admin/SingleUserPage";
 import DeleteUserPage from "./pages/admin/DeleteUserPage";
+import EditFeaturedPage from "./pages/admin/EditFeaturedPage";
 const SERVER = process.env.REACT_APP_SERVER_ADDRESS;
 
 const router = createBrowserRouter([
@@ -38,12 +38,10 @@ const router = createBrowserRouter([
         element: <IndexPage />,
         loader: async () => {
           try {
-            const products = (await axios.get(`${SERVER}/products?newest=3`)).data;
-            const newestProducts = (await axios.get(`${SERVER}/products?newest=3`)).data;
-
-            const randomNumber = Math.floor(Math.random() * products.length);
-            const featuredProduct = products[randomNumber];
-
+            const featuredProduct = (await api.get(`${SERVER}/products/featured`))
+              .data as ProductInterface;
+            const newestProducts = (await api.get(`${SERVER}/products?newest=3`))
+              .data as ProductInterface[];
             return {
               featured: featuredProduct,
               newest: newestProducts,
@@ -98,7 +96,7 @@ const router = createBrowserRouter([
               let { page } = params;
               const pageNumber = page ? Number(page) : 1;
 
-              const res = (await axios.get(`${SERVER}/products?page=${pageNumber}`)).data as {
+              const res = (await api.get(`${SERVER}/products?page=${pageNumber}`)).data as {
                 products: ProductInterface[];
                 maxPages: number;
               };
@@ -116,7 +114,7 @@ const router = createBrowserRouter([
               let { page } = params;
               const pageNumber = page ? Number(page) : 1;
 
-              const res = (await axios.get(`${SERVER}/products?page=${pageNumber}&filter=male`))
+              const res = (await api.get(`${SERVER}/products?page=${pageNumber}&filter=male`))
                 .data as { products: ProductInterface[]; maxPages: number };
               return {
                 products: res.products,
@@ -132,7 +130,7 @@ const router = createBrowserRouter([
               let { page } = params;
               const pageNumber = page ? Number(page) : 1;
 
-              const res = (await axios.get(`${SERVER}/products?page=${pageNumber}&filter=female`))
+              const res = (await api.get(`${SERVER}/products?page=${pageNumber}&filter=female`))
                 .data as { products: ProductInterface[]; maxPages: number };
               return {
                 products: res.products,
@@ -148,7 +146,7 @@ const router = createBrowserRouter([
               let { page } = params;
               const pageNumber = page ? Number(page) : 1;
 
-              const res = (await axios.get(`${SERVER}/products?page=${pageNumber}&filter=sale`))
+              const res = (await api.get(`${SERVER}/products?page=${pageNumber}&filter=sale`))
                 .data as { products: ProductInterface[]; maxPages: number };
               return {
                 products: res.products,
@@ -229,6 +227,10 @@ const router = createBrowserRouter([
                   {
                     path: "delete",
                     element: <DeleteProductPage />,
+                  },
+                  {
+                    path: "featured",
+                    element: <EditFeaturedPage />,
                   },
                   {
                     path: ":id",

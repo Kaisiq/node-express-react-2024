@@ -28,6 +28,7 @@ export function AddProduct({
   price: existingPrice = null as unknown as number,
   sellPercent: existingSellPercent = null as unknown as number,
   category: existingCategory = "",
+  featured: existingFeatured = false,
   condition: existingCondition = "",
   sex: existingSex = "",
   size: existingSize = "",
@@ -76,6 +77,7 @@ export function AddProduct({
         price,
         sellPercent,
         category,
+        existingFeatured,
         images,
         status,
       };

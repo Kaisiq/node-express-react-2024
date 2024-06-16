@@ -11,6 +11,7 @@ export default function AddProductPage() {
     sex: "",
     size: "",
     status: "",
+    featured: false,
     _id: "",
     images: [],
   };
