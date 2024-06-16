@@ -17,7 +17,10 @@ export function ProductCardAdmin(product: ProductInterface) {
       className="group relative flex h-full flex-col justify-between overflow-hidden rounded-lg bg-gray-200"
       key={product._id}
     >
-      <div onClick={() => navigate(`${editLink + product._id}`, { state: product })}>
+      <div
+        className="relative"
+        onClick={() => navigate(`${editLink + product._id}`, { state: product })}
+      >
         <img
           alt={product.name}
           className="aspect-square w-full overflow-hidden rounded-lg border border-gray-200 object-cover dark:border-gray-800"
@@ -25,6 +28,11 @@ export function ProductCardAdmin(product: ProductInterface) {
           src={imageLink}
           width={600}
         />
+        {product.status === "sold" && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-80">
+            <span className="text-3xl font-bold text-white drop-shadow-md">Продадено</span>
+          </div>
+        )}
       </div>
       <div className="flex h-full flex-col justify-between gap-2 p-4">
         <div>
