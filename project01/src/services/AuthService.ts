@@ -3,7 +3,7 @@ import { SERVER } from "~/lib/utils";
 
 export class AuthService {
   async isAdmin() {
-    const { isAdmin }: { isAdmin: boolean } = (await api.get(`${SERVER}/auth/admin`)).data;
+    const { isAdmin }: { isAdmin: number } = (await api.get(`${SERVER}/auth/admin`)).data;
     return isAdmin;
   }
 

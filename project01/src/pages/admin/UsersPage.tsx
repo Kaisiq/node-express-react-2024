@@ -70,7 +70,13 @@ const User = ({ user }: { user: UserInterface }) => {
       <p className="basis-full">{`${user.tel ? user.tel : ""}`}</p>
       <p className="basis-full">{`${user.address ? user.address : ""}`}</p>
       <p className="basis-full">{`${user.city ? user.city : ""}`}</p>
-      <p className="basis-full">{`${user.admin ? "Да" : ""}`}</p>
+      <p className="basis-full">{`${
+        user.admin === AdminType.Admin
+          ? "Админ"
+          : user.admin === AdminType.Staff
+          ? "Служител"
+          : "Потребител"
+      }`}</p>
       <p className="basis-full">{`${
         user.createdAt ? new Date(user.createdAt) : "няма информация"
       }`}</p>

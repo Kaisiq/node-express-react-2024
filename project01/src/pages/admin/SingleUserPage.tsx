@@ -118,6 +118,7 @@ const SingleUserPage = () => {
                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value={AdminType.User}>User</option>
+                <option value={AdminType.Staff}>Staff</option>
                 <option value={AdminType.Admin}>Admin</option>
               </select>
             </div>

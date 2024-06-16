@@ -12,7 +12,7 @@ import { SERVER } from "~/lib/utils";
 import api from "~/lib/api";
 
 export default function AccountPage() {
-  const { isAdmin, user } = useContext(UserContext);
+  const { userType, user } = useContext(UserContext);
   const location = useLocation();
   const [orders, setOrders] = useState<OrderInterface[]>([]);
 
@@ -60,7 +60,7 @@ export default function AccountPage() {
         <main className="mx-auto flex w-[80%] flex-col gap-8 px-4 py-12 sm:px-6 lg:px-8">
           <AccountHeaderNav
             userEmail={user}
-            isAdmin={isAdmin}
+            userType={userType}
           />
           <OrdersInformation
             orders={orders}

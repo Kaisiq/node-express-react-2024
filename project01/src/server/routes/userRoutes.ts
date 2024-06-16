@@ -1,6 +1,6 @@
 import { adminCheckMiddleware, isEitherUserOrAdminMiddleware } from "./authRoutes";
 import express, { Request, Response } from "express";
-import { UserCreationFormSchema, UserFromSchema } from "../models/User";
+import { UserCreationFormSchema } from "../models/User";
 import { UserService } from "../services/UserService";
 import bcrypt from "bcrypt";
 
@@ -75,7 +75,7 @@ router
           data.password,
           Number(process.env.NEXTAUTH_HASHLEVELS)
         );
-        const created = await userService.createUser({ ...data, hashedPassword: hashedPass });
+        const created = await userService.updateUser({ ...data, hashedPassword: hashedPass });
         return res.json(created);
       } else {
         const result = await userService.updateUser(data);

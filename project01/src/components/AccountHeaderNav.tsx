@@ -1,8 +1,15 @@
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
+import { AdminType } from "~/models/User";
 
-export function AccountHeaderNav({ userEmail, isAdmin }: { userEmail: string; isAdmin: boolean }) {
+export function AccountHeaderNav({
+  userEmail,
+  userType,
+}: {
+  userEmail: string;
+  userType: AdminType;
+}) {
   const navigate = useNavigate();
 
   return (
@@ -37,7 +44,7 @@ export function AccountHeaderNav({ userEmail, isAdmin }: { userEmail: string; is
         >
           Информация за акаунта
         </a>
-        {isAdmin && (
+        {(userType === AdminType.Admin || userType === AdminType.Staff) && (
           <Link
             className="border-b-2 border-transparent pb-2 transition-colors hover:border-gray-500 dark:hover:border-gray-400"
             to="/admin"

@@ -1,24 +1,25 @@
 import { type ReactNode, createContext, useEffect, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import { useLocation } from "react-router";
+import { AdminType } from "~/models/User";
 import { AuthService } from "~/services/AuthService";
 
 interface UserContextType {
-  isAdmin: boolean;
+  userType: AdminType;
   user: string;
-  setIsAdmin: Dispatch<SetStateAction<boolean>>;
+  setUserType: Dispatch<SetStateAction<AdminType>>;
   checkForAdmin: () => Promise<void>;
 }
 
 export const UserContext = createContext<UserContextType>({
-  isAdmin: false,
+  userType: AdminType.User,
   user: "",
-  setIsAdmin: () => {}, // eslint-disable-line
+  setUserType: () => {}, // eslint-disable-line
   checkForAdmin: async () => {}, // eslint-disable-line
 });
 
 export function UserContextProvider({ children }: { children: ReactNode }) {
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [userType, setUserType] = useState<AdminType>(AdminType.User);
   const [user, setUser] = useState<string>("");
   const authService = new AuthService();
   const location = useLocation();
@@ -45,15 +46,15 @@ export function UserContextProvider({ children }: { children: ReactNode }) {
     const user = await authService.getUser();
     if (!user) {
       console.error("No session:", user);
-      setIsAdmin(false);
+      setUserType(AdminType.User);
       return;
     }
-    const adminBool = await authService.isAdmin();
-    setIsAdmin(adminBool);
+    const accountType = await authService.isAdmin();
+    setUserType(accountType);
     return;
   }
   return (
-    <UserContext.Provider value={{ isAdmin, user, setIsAdmin, checkForAdmin }}>
+    <UserContext.Provider value={{ userType, user, setUserType, checkForAdmin }}>
       {children}
     </UserContext.Provider>
   );

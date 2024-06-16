@@ -9,8 +9,12 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { Package2Icon } from "~/components/Icons";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "./UserContextProvider";
+import { AdminType } from "~/models/User";
 
 export function AdminDropdownMenu() {
+  const { userType } = useContext(UserContext);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -64,15 +68,19 @@ export function AdminDropdownMenu() {
               Analytics
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>
-            <Link
-              className="h-full w-full"
-              to="/admin/users"
-            >
-              Users
-            </Link>
-          </DropdownMenuItem>
+          {userType === AdminType.Admin && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <Link
+                  className="h-full w-full"
+                  to="/admin/users"
+                >
+                  Users
+                </Link>
+              </DropdownMenuItem>
+            </>
+          )}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
       </DropdownMenuContent>

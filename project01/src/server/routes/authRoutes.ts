@@ -49,8 +49,8 @@ router.get("/admin", async (req: Request, res: Response) => {
       try {
         const userService = new UserService();
         const fetchedUser = await userService.getSingleUser(user.email);
-        if (fetchedUser && fetchedUser.admin) {
-          return res.json({ isAdmin: true });
+        if (fetchedUser) {
+          return res.json({ isAdmin: fetchedUser.admin });
         } else {
           return res.json({ isAdmin: false });
         }

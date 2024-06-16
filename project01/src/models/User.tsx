@@ -2,7 +2,8 @@ import z from "zod";
 
 export enum AdminType {
   User = 0,
-  Admin = 1,
+  Staff = 1,
+  Admin = 2,
 }
 
 export const UserFromSchema = z.object({
