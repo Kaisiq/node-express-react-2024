@@ -10,6 +10,9 @@ import { MoreHorizontal, Trash2Icon } from "lucide-react";
 import { useNavigate } from "react-router";
 import { Button } from "../ui/button";
 import { Row } from "@tanstack/react-table";
+import { useContext } from "react";
+import { UserContext } from "../UserContextProvider";
+import { AdminType } from "~/models/User";
 
 const ActionsCell = ({
   row,
@@ -30,6 +33,7 @@ const ActionsCell = ({
   }>;
 }) => {
   const order = row.original;
+  const { userType } = useContext(UserContext);
   const navigate = useNavigate();
   return (
     <DropdownMenu>
@@ -50,7 +54,7 @@ const ActionsCell = ({
         <DropdownMenuSeparator />
         <DropdownMenuItem>View customer</DropdownMenuItem>
         <DropdownMenuItem>View payment details</DropdownMenuItem>
-        {order.status === "canceled" && (
+        {order.status === "canceled" && userType === AdminType.Admin && (
           <>
             <DropdownMenuSeparator />
             <DropdownMenuItem
