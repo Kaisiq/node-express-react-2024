@@ -8,13 +8,7 @@ export default function AboutUsPage() {
     {
       id: 1,
       name: "Даниел Иванов",
-      designation: "Software Engineer",
-      image: "/cat.jpg",
-    },
-    {
-      id: 2,
-      name: "Иван Колев",
-      designation: "Product Manager",
+      designation: "4 курс, Информатика",
       image: "/cat.jpg",
     },
   ];
@@ -35,8 +29,10 @@ export default function AboutUsPage() {
             <div className="flex flex-col items-center space-y-6">
               <h1 className="text-3xl font-bold tracking-tight">За нас</h1>
               <p className="text-center text-gray-500 dark:text-gray-400">
-                We are a passionate team dedicated to creating the tools that empower you to build
-                the web.
+                Две Трети е уеб платформа за препродаване на дрехи втора употреба.
+              </p>
+              <p className="text-center text-gray-500 dark:text-gray-400">
+                Дрехите са в перфектно качество, ако друго не е указано.
               </p>
             </div>
             <div className="mt-8 grid items-start gap-6 md:grid-cols-2">
@@ -49,23 +45,35 @@ export default function AboutUsPage() {
                 </p>
               </div>
               <div className="flex flex-col space-y-2">
-                <h2 className="text-xl font-semibold tracking-tight">Our Values</h2>
+                <h2 className="text-xl font-semibold tracking-tight">Използвани технологии</h2>
                 <ul className="grid grid-cols-1 gap-4 text-gray-500 dark:text-gray-400 md:grid-cols-2">
                   <li className="flex space-x-2">
                     <CheckIcon className="h-4 w-4 text-blue-600" />
-                    <span>Empowerment</span>
+                    <span>Create React App(w/ Typescript)</span>
                   </li>
                   <li className="flex space-x-2">
                     <CheckIcon className="h-4 w-4 text-blue-600" />
-                    <span>Innovation</span>
+                    <span>ExpressJS, PassportJS JWT</span>
                   </li>
                   <li className="flex space-x-2">
                     <CheckIcon className="h-4 w-4 text-blue-600" />
-                    <span>Accessibility</span>
+                    <span>zod, axios, bcrypt</span>
                   </li>
                   <li className="flex space-x-2">
                     <CheckIcon className="h-4 w-4 text-blue-600" />
-                    <span>Community</span>
+                    <span>react-router</span>
+                  </li>
+                  <li className="flex space-x-2">
+                    <CheckIcon className="h-4 w-4 text-blue-600" />
+                    <span>UploadThing</span>
+                  </li>
+                  <li className="flex space-x-2">
+                    <CheckIcon className="h-4 w-4 text-blue-600" />
+                    <span>MongoDB, Mongoose</span>
+                  </li>
+                  <li className="flex space-x-2">
+                    <CheckIcon className="h-4 w-4 text-blue-600" />
+                    <span>TailwindCSS, shadcnUI</span>
                   </li>
                 </ul>
               </div>
