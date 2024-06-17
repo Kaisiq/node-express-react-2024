@@ -19,7 +19,7 @@ const corsOptions = {
   optionsSuccessStatus: 204,
 };
 
-app.use(cors(corsOptions)); // Ensure CORS is applied before other middleware
+app.use(cors()); // Ensure CORS is applied before other middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
