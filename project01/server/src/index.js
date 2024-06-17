@@ -19,7 +19,7 @@ var corsOptions = {
     preflightContinue: false,
     optionsSuccessStatus: 204,
 };
-app.use((0, cors_1.default)(corsOptions)); // Ensure CORS is applied before other middleware
+app.use((0, cors_1.default)()); // Ensure CORS is applied before other middleware
 app.use(express_2.default.json());
 app.use(express_2.default.urlencoded({ extended: false }));
 app.use(passport_1.default.initialize());
