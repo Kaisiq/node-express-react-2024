@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
     // Enable latest features
     "lib": ["ESNext", "DOM"],
     "target": "ESNext",
@@ -13,6 +15,7 @@
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "noEmit": true,
+    "esModuleInterop": true,
 
     "allowSyntheticDefaultImports": true,
 
@@ -26,5 +29,7 @@
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false
   },
-  "include": ["**/*"]
+  "include": [
+    "src/**/*"],
+  "exclude": ["node-modules", "src/node-modules"]
 }

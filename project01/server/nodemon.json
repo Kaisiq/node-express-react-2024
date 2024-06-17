@@ -1,7 +1,7 @@
 {
   "watch": [
-    "lib/", "config/", "routes/", "models/", "services/", "index.ts", "uploadthing.ts"
+    "src/"
   ],
   "ext": "ts,json",
-  "exec": "node --loader ts-node/esm ./index.ts"
+  "exec": "node --loader ts-node/esm ./src/index.ts"
 }

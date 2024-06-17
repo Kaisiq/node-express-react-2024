@@ -1,6 +1,6 @@
-import { Order, type OrderModel, type OrderInterface } from "../models/Order.ts";
-import { Product, type ProductModel } from "../models/Product.ts";
-import { ProductService } from "./ProductService.ts";
+import { Order, type OrderModel, type OrderInterface } from "../models/Order";
+import { Product, type ProductModel } from "../models/Product";
+import { ProductService } from "./ProductService";
 import mongoose from "mongoose";
 
 // const timeToDeletion = 50400000; // 14h

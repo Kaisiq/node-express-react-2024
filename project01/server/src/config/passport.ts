@@ -1,9 +1,9 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as JwtStrategy, ExtractJwt, type StrategyOptions } from "passport-jwt";
-import { UserService } from "../services/UserService.ts";
+import { UserService } from "../services/UserService";
 import * as bcrypt from "bcrypt";
-import { mongooseConnect } from "../lib/mongoose.ts";
+import { mongooseConnect } from "../lib/mongoose";
 
 // Initialize passport strategy
 passport.use(
