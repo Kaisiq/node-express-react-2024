@@ -1,10 +1,10 @@
-import { adminOrStaffCheckMiddleware, userOrGreaterCheckMiddleware } from "./authRoutes";
+import { adminOrStaffCheckMiddleware, userOrGreaterCheckMiddleware } from "./authRoutes.ts";
 import express, { type Request, type Response } from "express";
-import { OrderService } from "../services/OrderService";
-import { OrderFormSchema } from "../models/Order";
+import { OrderService } from "../services/OrderService.ts";
+import { OrderFormSchema } from "../models/Order.ts";
 import z from "zod";
-import { ProductService } from "../services/ProductService";
-import type { ProductInterface } from "../models/Product";
+import { ProductService } from "../services/ProductService.ts";
+import type { ProductInterface } from "../models/Product.ts";
 
 const OrderPatchSchema = z.object({
   flname: z.string().optional(),

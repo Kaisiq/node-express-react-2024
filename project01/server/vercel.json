@@ -1,4 +1,4 @@
 { "version": 2, 
-  "builds": [{"src": "./index.ts", "use": "@vercel/bun"}],
+  "builds": [{"src": "./index.ts", "use": "@vercel/node"}],
   "routes": [{ "src": "/(.*)", "dest": "/" }] 
 }

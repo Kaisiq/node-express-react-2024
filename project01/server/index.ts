@@ -1,14 +1,15 @@
-import authRoutes from "./routes/authRoutes";
-import orderRoutes from "./routes/orderRoutes";
-import userRoutes from "./routes/userRoutes";
-import { mongooseConnect } from "./lib/mongoose";
-import productRoutes from "./routes/productRoutes";
-import passport from "./config/passport";
+import authRoutes from "./routes/authRoutes.ts";
+import orderRoutes from "./routes/orderRoutes.ts";
+import userRoutes from "./routes/userRoutes.ts";
+import { mongooseConnect } from "./lib/mongoose.ts";
+import productRoutes from "./routes/productRoutes.ts";
+import passport from "./config/passport.ts";
 import { createRouteHandler } from "uploadthing/express";
-import { uploadRouter } from "./uploadthing";
-const express = require("express");
-const dotenv = require("dotenv");
-const cors = require("cors");
+import { uploadRouter } from "./uploadthing.ts";
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+
 const app = express();
 dotenv.config();
 

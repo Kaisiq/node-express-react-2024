@@ -1,4 +1,4 @@
-import { User, type UserModel, type UserInterface } from "../models/User";
+import { User, type UserModel, type UserInterface } from "../models/User.ts";
 
 export class UserService {
   /* eslint-disable */

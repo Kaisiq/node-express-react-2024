@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Product, type ProductModel, type ProductInterface } from "../models/Product";
+import { Product, type ProductModel, type ProductInterface } from "../models/Product.ts";
 import mongoose from "mongoose";
 
 function linksToFileKeys(links: string[] | undefined) {

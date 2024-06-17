@@ -1,4 +1,5 @@
-import { Schema, model, models, type Document, type Model } from "mongoose";
+import pkg, { type Document, type Model } from "mongoose";
+const { Schema, model, models } = pkg;
 import z from "zod";
 
 export const OrderFormSchema = z.object({

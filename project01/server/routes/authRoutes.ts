@@ -1,7 +1,7 @@
-import { type UserInterface } from "../models/User";
-import { UserService } from "../services/UserService";
+import { type UserInterface } from "../models/User.ts";
+import { UserService } from "../services/UserService.ts";
 import express, { type Request, type Response, type NextFunction } from "express";
-import passport from "../config/passport";
+import passport from "../config/passport.ts";
 import jwt from "jsonwebtoken";
 
 enum AdminType {

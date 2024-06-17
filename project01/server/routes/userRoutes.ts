@@ -1,7 +1,7 @@
-import { adminOrStaffCheckMiddleware, userOrGreaterCheckMiddleware } from "./authRoutes";
+import { adminOrStaffCheckMiddleware, userOrGreaterCheckMiddleware } from "./authRoutes.ts";
 import express, { type Request, type Response } from "express";
-import { UserCreationFormSchema } from "../models/User";
-import { UserService } from "../services/UserService";
+import { UserCreationFormSchema } from "../models/User.ts";
+import { UserService } from "../services/UserService.ts";
 import bcrypt from "bcrypt";
 
 const userService = new UserService();

@@ -3,9 +3,9 @@ import {
   type ProductModel,
   ProductValidateSchema,
   type ProductInterface,
-} from "../models/Product";
-import { adminOrStaffCheckMiddleware } from "./authRoutes";
-import { ProductService } from "../services/ProductService";
+} from "../models/Product.ts";
+import { adminOrStaffCheckMiddleware } from "./authRoutes.ts";
+import { ProductService } from "../services/ProductService.ts";
 import express, { type Request, type Response } from "express";
 
 const productService = new ProductService();
