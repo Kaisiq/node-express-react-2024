@@ -77,7 +77,7 @@ export function AddProduct({
         price,
         sellPercent,
         category,
-        existingFeatured,
+        featured: existingFeatured,
         images,
         status,
       };

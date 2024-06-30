@@ -2,7 +2,7 @@ import pkg, { type Document, type Model } from "mongoose";
 const { Schema, model, models } = pkg;
 import { z } from "zod";
 
-export const ProductValidateSchema = z.object({
+export const ProductCreationSchema = z.object({
   name: z.string(),
   description: z.string(),
   price: z.number(),
@@ -15,13 +15,21 @@ export const ProductValidateSchema = z.object({
   fit: z.string().optional(),
   condition: z.string(),
   status: z.string(),
-  _id: z.string() /*.optional()*/,
+  // _id: z.string() /*.optional()*/,
   images: z.array(z.string()),
   updatedAt: z.string().optional(),
   sex: z.string(),
 });
 
+const ProductIDSchema = z.object({
+  _id: z.string(),
+});
+
+export const ProductValidateSchema = ProductCreationSchema.merge(ProductIDSchema);
+
 export const ProductsValidateSchema = z.array(ProductValidateSchema);
+
+export type ProductCreationInterface = z.infer<typeof ProductCreationSchema>;
 
 export type ProductInterface = z.infer<typeof ProductValidateSchema>;
 

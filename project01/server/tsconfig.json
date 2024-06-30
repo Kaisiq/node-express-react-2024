@@ -22,6 +22,6 @@
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false
   },
-  "include": ["./src/**/*", "dist/authRoutes.js", "dist/orderRoutes.js", "dist/productRoutes.js", "dist/userRoutes.js"],
+  "include": ["./src/**/*"],
   "exclude": ["node-modules", "src/node-modules"]
 }

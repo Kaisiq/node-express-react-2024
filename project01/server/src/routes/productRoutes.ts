@@ -3,6 +3,7 @@ import {
   type ProductModel,
   ProductValidateSchema,
   type ProductInterface,
+  ProductCreationSchema,
 } from "../models/Product";
 import { adminOrStaffCheckMiddleware } from "./authRoutes";
 import { ProductService } from "../services/ProductService";
@@ -78,7 +79,7 @@ async function POST(req: Request, res: Response) {
       res.json(data);
       return;
     }
-    const input = ProductValidateSchema.parse(req.body);
+    const input = ProductCreationSchema.parse(req.body);
     const data = await productService.createProduct(input);
     return res.json(data);
   } catch (err) {

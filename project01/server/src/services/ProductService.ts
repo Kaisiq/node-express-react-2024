@@ -1,5 +1,10 @@
 import axios from "axios";
-import { Product, type ProductModel, type ProductInterface } from "../models/Product";
+import {
+  Product,
+  type ProductModel,
+  type ProductInterface,
+  ProductCreationInterface,
+} from "../models/Product";
 import mongoose from "mongoose";
 
 function linksToFileKeys(links: string[] | undefined) {
@@ -69,7 +74,7 @@ export class ProductService {
     return { message: result ? "success" : "error" };
   }
 
-  async createProduct(input: ProductInterface) {
+  async createProduct(input: ProductCreationInterface) {
     const result = await (Product as ProductModel).create(input);
     return { message: result ? "success" : "error" };
   }
