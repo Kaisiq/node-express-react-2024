@@ -1,7 +1,6 @@
 {
-  "watch": [
-    "src/"
-  ],
+  "watch": ["src"],
   "ext": "ts,json",
-  "exec": "node --loader ts-node/esm ./src/index.ts"
+  "ignore": ["dist"],
+  "exec": "bun run ./src/index.ts"
 }
