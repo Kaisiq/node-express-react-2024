@@ -1,0 +1,14 @@
+{
+  "name": "twothirds",
+  "version": "1.0.0",
+  "main": "server/src/index.ts",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "start": "concurrently \"cd client && npm install --force && npm run start\" \"cd server && npm install && npm run start\""
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
