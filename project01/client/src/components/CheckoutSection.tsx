@@ -31,7 +31,7 @@ import { ToastAction } from "./ui/toast";
 import { UserContext } from "./UserContextProvider";
 import { SERVER } from "~/lib/utils";
 import api from "~/lib/api";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 const FormSchema = z.object({
   flname: z.string().min(2, {
@@ -56,6 +56,8 @@ const FormSchema = z.object({
 
 export function CheckoutSection() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const [modalOpen, setModalOpen] = useState(false);
   const { user } = useContext(UserContext);
   const email = user;
   const { cartProducts, setCartProducts } = useContext(CartContext);
@@ -80,7 +82,7 @@ export function CheckoutSection() {
         if (result.data.status !== "sold") {
           result.data.status = status;
         }
-        await api.put(`${SERVER}/products`, result.data);
+        await api.put(`${SERVER}/products/${result.data._id}`, result.data);
       }
     },
     [cartProducts]
@@ -191,6 +193,7 @@ export function CheckoutSection() {
             </div>
           ),
         });
+      navigate("/account");
       return;
     }
     //prompt to create account
@@ -206,6 +209,7 @@ export function CheckoutSection() {
         </div>
       ),
     });
+    navigate("/account");
   }
 
   useEffect(() => {
@@ -231,7 +235,9 @@ export function CheckoutSection() {
 
   return (
     <Sheet
+      open={modalOpen}
       onOpenChange={(open) => {
+        setModalOpen(open);
         setReserveProducts(open);
       }}
     >

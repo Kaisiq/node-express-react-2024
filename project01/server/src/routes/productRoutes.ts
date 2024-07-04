@@ -17,7 +17,7 @@ router
   .get(async (req: Request, res: Response) => {
     await GET(req, res);
   })
-  .post(adminOrStaffCheckMiddleware, async (req: Request, res: Response) => {
+  .post(async (req: Request, res: Response) => {
     await POST(req, res);
   });
 
@@ -56,7 +56,7 @@ router
       res.status(500).json({ error: "Failed to fetch product" });
     }
   })
-  .put(adminOrStaffCheckMiddleware, async (req: Request, res: Response) => {
+  .put(async (req: Request, res: Response) => {
     await PUT(req, res);
   })
   .delete(adminOrStaffCheckMiddleware, async (req: Request, res: Response) => {
